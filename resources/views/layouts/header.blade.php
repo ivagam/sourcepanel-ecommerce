@@ -1,0 +1,238 @@
+<header class="header">
+			<div class="header-top">
+				<!--<div class="container">
+					<div class="header-left d-none d-sm-block">
+						<p class="top-message text-uppercase">FREE Returns. Standard Shipping Orders $99+</p>
+					</div>
+
+					<div class="header-right header-dropdowns ml-0 ml-sm-auto w-sm-100">
+						<div class="header-dropdown dropdown-expanded d-none d-lg-block">
+							<a href="#">Links</a>
+							<div class="header-menu">
+								<ul>
+									<li><a href="dashboard.html">My Account</a></li>
+									<li><a href="about.html">About Us</a></li>
+									<li><a href="blog.html">Blog</a></li>
+									<li><a href="{{ route('wishlist.index') }}">My Wishlist</a></li>
+									<li><a href="{{ route('cart.index') }}">Cart</a></li>
+									<li><a href="login.html" class="login-link">Log In</a></li>
+								</ul>
+							</div>
+						</div>
+
+						<span class="separator"></span>
+
+						<div class="header-dropdown">
+							<a href="#"><i class="flag-us flag"></i>ENG</a>
+							<div class="header-menu">
+								<ul>
+									<li><a href="#"><i class="flag-us flag mr-2"></i>ENG</a>
+									</li>
+									<li><a href="#"><i class="flag-fr flag mr-2"></i>FRA</a></li>
+								</ul>
+							</div>
+						</div>
+
+						<div class="header-dropdown mr-auto mr-sm-3 mr-md-0">
+							<a href="#">USD</a>
+							<div class="header-menu">
+								<ul>
+									<li><a href="#">EUR</a></li>
+									<li><a href="#">USD</a></li>
+								</ul>
+							</div>
+						</div>
+
+						<span class="separator"></span>
+
+						<div class="social-icons">
+							<a href="#" class="social-icon social-facebook icon-facebook" target="_blank"></a>
+							<a href="#" class="social-icon social-twitter icon-twitter" target="_blank"></a>
+							<a href="#" class="social-icon social-instagram icon-instagram" target="_blank"></a>
+						</div>
+					</div>
+				</div>--><!-- End .container -->
+			</div><!-- End .header-top -->
+
+			<div class="header-middle sticky-header" data-sticky-options="{'mobile': true}">
+				<div class="container">
+					<div class="header-left col-lg-2 w-auto pl-0">
+						<button class="mobile-menu-toggler text-primary mr-2" type="button">
+							<i class="fas fa-bars"></i>
+						</button>
+						<a href="{{ route('home') }}" class="logo">
+							<img src="{{ asset('assets/images/logo.png') }}" width="111" height="44" alt="Porto Logo">
+						</a>
+					</div><!-- End .header-left -->
+
+					<div class="header-right w-lg-max">
+						<div
+							class="header-icon header-search header-search-inline header-search-category w-lg-max text-right mt-0">
+							<a href="#" class="search-toggle" role="button"><i class="icon-search-3"></i></a>
+							<form action="#" method="get">
+								<div class="header-search-wrapper">
+									<input type="search" class="form-control" name="q" id="q" placeholder="Search..."
+										required>
+									<div class="select-custom">
+										<select id="cat" name="cat">
+										<option value="">All Categories</option>
+											@php
+											function renderCategoryOptions($categories, $prefix = '')
+											{
+												foreach ($categories as $category) {
+													echo '<option value="' . $category->category_id . '">' . $prefix . $category->category_name . '</option>';
+
+													if ($category->children && $category->children->isNotEmpty()) {
+														renderCategoryOptions($category->children, $prefix . '- ');
+													}
+												}
+											}
+										@endphp
+
+										@php renderCategoryOptions($categories); @endphp
+										</select>
+									</div><!-- End .select-custom -->
+									<button class="btn icon-magnifier p-0" type="submit"></button>
+								</div><!-- End .header-search-wrapper -->
+							</form>
+						</div><!-- End .header-search -->
+
+						<div class="header-contact d-none d-lg-flex pl-4 pr-4">
+							<img alt="phone" src="{{ asset('assets/images/phone.png') }}" width="30" height="30" class="pb-1">
+							<h6><span>Call us now</span><a href="tel:#" class="text-dark font1">+123 4567 890</a></h6>
+						</div>
+
+						<!--<a href="{{ route('login') }}" class="header-icon" title="login"><i class="icon-user-2"></i></a>
+
+						<a href="{{ route('wishlist.index') }}" class="header-icon" title="wishlist"><i class="icon-wishlist-2"></i></a>-->
+
+						<div class="dropdown cart-dropdown">
+							<a href="#" title="Cart" class="dropdown-toggle dropdown-arrow cart-toggle" role="button"
+								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+								<i class="minicart-icon"></i>
+								<span class="cart-count badge-circle">{{ $globalCartCount }}</span>
+							</a>
+
+
+							<div class="cart-overlay"></div>
+
+							<div class="dropdown-menu mobile-cart">
+								<a href="#" title="Close (Esc)" class="btn-close">×</a>
+
+								<div class="dropdownmenu-wrapper custom-scrollbar">
+									<div class="dropdown-cart-header">Shopping Cart</div>
+									<!-- End .dropdown-cart-header -->
+
+									<div class="dropdown-cart-products">
+									
+									@foreach($globalCart as $item)
+										<div class="product">
+											<div class="product-details">
+												<h4 class="product-title">
+													<a href="{{ route('product.show', $item['id'] ?? '#') }}">{{ $item['name'] ?? 'Product' }}</a>
+												</h4>
+												<span class="cart-product-info">
+													<span class="cart-product-qty">{{ $item['qty'] ?? 0 }}</span> × ${{ $item['price'] ?? 0 }}
+												</span>
+											</div>
+											<figure class="product-image-container">
+                                                <a href="{{ url('product/' . $item['id']) }}" class="product-image">
+                                                    @php
+														$filePath = $item['file_path'] ?? '';
+														// If it's an array, take the first image
+														if (is_array($filePath)) {
+															$filePath = $filePath[0] ?? '';
+														}
+													@endphp
+
+													<img src="{{ asset('../source_panel/public/' . $filePath) }}" alt="product" width="80" height="80">
+                                                </a>
+
+                                                <a href="javascript:;" class="btn-remove remove-from-cart" data-id="{{ $item['id'] ?? '' }}" title="Remove Product">
+													<span>×</span>
+												</a>
+
+                                            </figure>
+										</div>
+									@endforeach
+
+									<!-- End .product -->
+									</div><!-- End .cart-product -->
+
+									<div class="dropdown-cart-total">
+										<span>SUBTOTAL:</span>
+
+										<span class="cart-total-price float-right">${{ number_format($globalCartTotal, 2) }}</span>
+
+									</div><!-- End .dropdown-cart-total -->
+
+									<div class="dropdown-cart-action">
+										<a href="{{ route('cart.index') }}" class="btn btn-gray btn-block view-cart">View
+											Cart</a>
+										<a href="{{ route('checkout.index') }}" class="btn btn-dark btn-block">Checkout</a>
+									</div><!-- End .dropdown-cart-total -->
+								</div><!-- End .dropdownmenu-wrapper -->
+							</div><!-- End .dropdown-menu -->
+						</div><!-- End .dropdown -->
+					</div><!-- End .header-right -->
+				</div><!-- End .container -->
+			</div><!-- End .header-middle -->
+
+			<div class="header-bottom sticky-header d-none d-lg-block" data-sticky-options="{'mobile': false}">
+				<div class="container">
+					<nav class="main-nav w-100">
+								@php
+							function renderCategoryTree($categories)
+							{
+								foreach ($categories as $category) {
+									echo '<li>';
+									echo '<a href="' . url('category/' . $category->category_id) . '">' . $category->category_name . '</a>';
+
+									if ($category->children->isNotEmpty()) {
+										echo '<ul class="submenu">';
+										renderCategoryTree($category->children); // 👈 recursive
+										echo '</ul>';
+									}
+
+									echo '</li>';
+								}
+							}
+						@endphp
+
+						<ul class="menu">
+							<li><a href="{{ route('home') }}">Home</a></li>
+							@php renderCategoryTree($categories); @endphp
+						</ul>
+					</nav>
+				</div><!-- End .container -->
+			</div><!-- End .header-bottom -->
+		</header>
+
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+		<script>
+    $(document).ready(function () {
+        $(document).on('click', '.remove-from-cart', function (e) {
+            e.preventDefault();
+
+            let productId = $(this).data('id');
+
+            $.ajax({
+                url: "{{ route('remove.from.cart') }}",
+                method: "POST",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    product_id: productId
+                },
+                success: function(response) {
+                    alert(response.success);
+                    location.reload(); // Refresh to update cart UI
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                    alert("Failed to remove product from cart.");
+                }
+            });
+        });
+    });
+</script>
