@@ -39,14 +39,19 @@ class HomeController extends Controller
     }
 
     public function loadMore(Request $request)
-    {
-        $offset = $request->input('offset', 0);
-        $products = Product::with('images')
-            ->latest()
-            ->skip($offset)
-            ->take(12)
-            ->get();
+{
+    $offset = $request->input('offset', 0);
+    $limit = 12;
 
-        return response()->json($products);
+    $query = Product::with('images')->latest();
+
+    // ✅ Filter by category if provided
+    if ($request->has('category') && !empty($request->category)) {
+        $query->where('category_id', $request->category);
     }
+
+    $products = $query->skip($offset)->take($limit)->get();
+
+    return response()->json($products);
+}
 }

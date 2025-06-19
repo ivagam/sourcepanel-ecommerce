@@ -84,7 +84,7 @@
 										<td>
 											<figure class="product-image-container">
 												<a href="{{ route('product.show', $item['id']) }}" class="product-image">
-													<img src="{{ asset('../source_panel/public/' . $item['file_path']) }}" alt="product">
+													<img src="{{ asset('../sourcepanel/public/' . $item['file_path']) }}" alt="product">
 												</a>
 												<a href="javascript:;" class="btn-remove icon-cancel remove-from-cart" data-id="{{ $item['id'] }}" title="Remove Product"></a>
 											</figure>
@@ -163,64 +163,6 @@
 										<td>${{ number_format($globalCartTotal ?? 0, 2) }}</td>
 									</tr>
 
-									<tr>
-										<td colspan="2" class="text-left">
-											<h4>Shipping</h4>
-
-											<div class="form-group form-group-custom-control">
-												<div class="custom-control custom-radio">
-													<input type="radio" class="custom-control-input" name="radio"
-														checked>
-													<label class="custom-control-label">Local pickup</label>
-												</div><!-- End .custom-checkbox -->
-											</div><!-- End .form-group -->
-
-											<div class="form-group form-group-custom-control mb-0">
-												<div class="custom-control custom-radio mb-0">
-													<input type="radio" name="radio" class="custom-control-input">
-													<label class="custom-control-label">Flat rate</label>
-												</div><!-- End .custom-checkbox -->
-											</div><!-- End .form-group -->
-
-											<form action="#">
-												<div class="form-group form-group-sm">
-													<label>Shipping to <strong>NY.</strong></label>
-													<div class="select-custom">
-														<select class="form-control form-control-sm">
-															<option value="USA">United States (US)</option>
-															<option value="Turkey">Turkey</option>
-															<option value="China">China</option>
-															<option value="Germany">Germany</option>
-														</select>
-													</div><!-- End .select-custom -->
-												</div><!-- End .form-group -->
-
-												<div class="form-group form-group-sm">
-													<div class="select-custom">
-														<select class="form-control form-control-sm">
-															<option value="NY">New York</option>
-															<option value="CA">California</option>
-															<option value="TX">Texas</option>
-														</select>
-													</div><!-- End .select-custom -->
-												</div><!-- End .form-group -->
-
-												<div class="form-group form-group-sm">
-													<input type="text" class="form-control form-control-sm"
-														placeholder="Town / City">
-												</div><!-- End .form-group -->
-
-												<div class="form-group form-group-sm">
-													<input type="text" class="form-control form-control-sm"
-														placeholder="ZIP">
-												</div><!-- End .form-group -->
-
-												<button type="submit" class="btn btn-shop btn-update-total">
-													Update Totals
-												</button>
-											</form>
-										</td>
-									</tr>
 								</tbody>
 
 								<tfoot>

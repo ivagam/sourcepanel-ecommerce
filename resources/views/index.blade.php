@@ -59,6 +59,13 @@
 
         <main class="main home">
             <div class="container mb-2">
+                @if(session('error'))
+                        <div id="error-alert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ session('error') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="dismissError()">            
+                            </button>
+                        </div>
+                    @endif            
                 <div class="info-boxes-container row row-joined mb-2 font2">
                     <!--<div class="info-box info-box-icon-left col-lg-4">
                         <i class="icon-shipping"></i>
@@ -105,7 +112,7 @@
                                 <div class="home-slide banner banner-md-vw banner-sm-vw d-flex align-items-center">
                                     <img class="slide-bg"
                                         style="background-color: {{ $banner->bg_color ?? '#ffffff' }};"
-                                        src="{{ asset('../source_panel/public/' . $banner->file_path) }}"
+                                        src="{{ asset('../sourcepanel/public/' . $banner->file_path) }}"
                                         width="880" height="428" alt="home-slider">
 
                                     <div class="banner-layer appear-animate" data-animation-name="fadeInUpShorter">
@@ -138,7 +145,7 @@
                                         <figure class="img-effect">
                                             <a href="{{ url('product/' . $product->product_url) }}">
                                                 @foreach($product->images->take(2) as $image)
-                                                    <img src="{{ asset('../source_panel/public/' . $image->file_path) }}" style="width: 205px; height: 205px; object-fit: cover;" alt="{{ $product->product_name }}">
+                                                    <img src="{{ asset('../sourcepanel/public/' . $image->file_path) }}" style="width: 205px; height: 205px; object-fit: cover;" alt="{{ $product->product_name }}">
                                                 @endforeach
                                             </a>
                                             @if($product->is_hot)
@@ -183,7 +190,7 @@
                         </div>
 
                         <div style="text-align:center; margin-top: 10px;">
-                            <button id="loadMoreBtn" style="padding: 10px 20px; font-size: 16px;">Load More</button>
+                            <button id="loadMoreBtn" class="btn btn-primary btn-lg rounded-pill mt-4">Load More</button>
                         </div>
 
                         <hr class="mt-1 mb-3 pb-2">
@@ -200,7 +207,7 @@
 
                             <nav class="side-nav">
                                 <ul class="menu menu-vertical sf-arrows">
-                            <li class="active"><a href="demo1.html"><i class="icon-home"></i>Home</a></li>
+                            <li class="active"><a href="{{ route('home') }}"><i class="icon-home"></i>Home</a></li>
 
                             @php
                                 function renderCategories($categories)
@@ -696,9 +703,16 @@
         loadMoreProducts();
     });
 
+    function getCategoryFromUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('category'); // returns string or null
+    }
+
     function loadMoreProducts() {
         isLoading = true;
         document.getElementById('loading').style.display = 'block';
+
+        const category = getCategoryFromUrl();
 
         fetch("{{ route('products.load.more') }}", {
             method: "POST",
@@ -706,7 +720,7 @@
                 "X-CSRF-TOKEN": "{{ csrf_token() }}",
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ offset: offset })
+            body: JSON.stringify({ offset: offset,  category: category })
         })
         .then(response => response.json())
         .then(products => {
@@ -719,7 +733,7 @@
             products.forEach(product => {
                 let imagesHtml = '';
                 product.images.slice(0, 2).forEach(image => {
-                    imagesHtml += `<img src="/source_panel/public/${image.file_path}" 
+                    imagesHtml += `<img src="/sourcepanel/public/${image.file_path}" 
                             style="width: 205px; height: 205px; object-fit: cover;" 
                             alt="${product.product_name}">`;
                 });

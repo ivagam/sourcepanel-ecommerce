@@ -12,11 +12,17 @@ use Illuminate\Support\Facades\DB;
 class CheckoutController extends Controller
 {
     public function index()
-    {
-        $globalCart = Session::get('cart', []);
-        $globalCartTotal = collect($globalCart)->sum(fn($item) => $item['price'] * $item['qty']);
-        return view('checkout.index', compact('globalCart', 'globalCartTotal'));
+{
+    $globalCart = Session::get('cart', []);
+
+    if (empty($globalCart)) {
+        return redirect()->route('home')->with('error', 'Your cart is empty.');
     }
+
+    $globalCartTotal = collect($globalCart)->sum(fn($item) => $item['price'] * $item['qty']);
+
+    return view('checkout.index', compact('globalCart', 'globalCartTotal'));
+}
 
     public function process(Request $request)
     {

@@ -9,6 +9,9 @@ class CartController extends Controller
     public function index()
     {
         $cartItems = session('cart', []);
+        if (empty($cartItems)) {
+            return redirect()->route('home')->with('error', 'Your cart is empty.');
+        }
         return view('cart.index', compact('cartItems'));
     }
 
