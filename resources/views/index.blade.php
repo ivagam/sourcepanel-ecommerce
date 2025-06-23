@@ -112,7 +112,7 @@
                                 <div class="home-slide banner banner-md-vw banner-sm-vw d-flex align-items-center">
                                     <img class="slide-bg"
                                         style="background-color: {{ $banner->bg_color ?? '#ffffff' }};"
-                                        src="{{ asset('../sourcepanel/public/' . $banner->file_path) }}"
+                                        src="{{ env('SOURCE_PANEL_URL') . '/public/' . $banner->file_path }}"
                                         width="880" height="428" alt="home-slider">
 
                                     <div class="banner-layer appear-animate" data-animation-name="fadeInUpShorter">
@@ -145,7 +145,7 @@
                                         <figure class="img-effect">
                                             <a href="{{ url('product/' . $product->product_url) }}">
                                                 @foreach($product->images->take(2) as $image)
-                                                    <img src="{{ asset('../sourcepanel/public/' . $image->file_path) }}" style="width: 205px; height: 205px; object-fit: cover;" alt="{{ $product->product_name }}">
+                                                    <img src="{{ env('SOURCE_PANEL_URL') . '/public/' . $image->file_path }}" style="width: 205px; height: 205px; object-fit: cover;" alt="{{ $product->product_name }}">
                                                 @endforeach
                                             </a>
                                             @if($product->is_hot)
@@ -733,9 +733,9 @@
             products.forEach(product => {
                 let imagesHtml = '';
                 product.images.slice(0, 2).forEach(image => {
-                    imagesHtml += `<img src="/sourcepanel/public/${image.file_path}" 
-                            style="width: 205px; height: 205px; object-fit: cover;" 
-                            alt="${product.product_name}">`;
+                    imagesHtml += `<img src="${process.env.SOURCE_PANEL_URL}/public/${image.file_path}" 
+                                    style="width: 205px; height: 205px; object-fit: cover;" 
+                                    alt="${product.product_name}">`;
                 });
 
                 let labelHtml = '';

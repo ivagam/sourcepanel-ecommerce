@@ -1,0 +1,3 @@
+ 'database' => env('DB_DATABASE', 'replqcci_source_panel'),
+            'username' => env('DB_USERNAME', 'replqcci_source_panel'),
+            'password' => env('DB_PASSWORD', 'Ml@J~m=1K9,['),

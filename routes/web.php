@@ -9,6 +9,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProductController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/live-search', [HomeController::class, 'liveSearch'])->name('live.search');
 Route::get('/documentation', [HomeController::class, 'documentation'])->name('documentation');
 Route::post('/load-more-products', [HomeController::class, 'loadMore'])->name('products.load.more');
 
@@ -51,4 +52,3 @@ Route::get('/order/success', function () {
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add.to.cart');
 Route::post('/remove-from-cart', [CartController::class, 'remove'])->name('remove.from.cart');
 Route::get('/get-cart-items', [CartController::class, 'getCartItems'])->name('get.cart.items');
-?>

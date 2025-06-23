@@ -15,15 +15,12 @@ class WishlistController extends Controller
                 ->whereIn('product_id', $wishlistIds)
                 ->get();
 
-        //print_r($products); exit;
-
         return view('wishlist.index', compact('products'));
     }
 
     public function add(Request $request)
     {
-        $productId = $request->product_id;
-        //echo $productId; exit;
+        $productId = $request->product_id;        
         $wishlist = session('wishlist', []);
 
         if (!in_array($productId, $wishlist)) {

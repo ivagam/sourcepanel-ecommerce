@@ -70,8 +70,8 @@
                                     @foreach ($product->images as $image)
                                         <div class="product-item">
                                             <img class="product-single-image"
-                                                src="{{ asset('../sourcepanel/public/' . $image->file_path) }}"
-                                                data-zoom-image="{{ asset('../sourcepanel/public/' . $image->file_path) }}"
+                                                src="{{ env('SOURCE_PANEL_URL') . '/public/' . $image->file_path }}"                                                
+                                                data-zoom-image="{{ env('SOURCE_PANEL_URL') . '/public/' . $image->file_path }}"
                                                 width="468" height="468" alt="product" />
                                         </div>
                                     @endforeach
@@ -85,7 +85,7 @@
                             <div class="prod-thumbnail owl-dots">
                                 @foreach ($product->images as $image)
                                     <div class="owl-dot">
-                                        <img src="{{ asset('../sourcepanel/public/' . $image->file_path) }}" width="110" height="110"
+                                        <img src="{{ env('SOURCE_PANEL_URL') . '/public/' . $image->file_path }}" width="110" height="110"
                                             alt="product-thumbnail" />
                                     </div>
                                 @endforeach

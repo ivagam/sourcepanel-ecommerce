@@ -55,10 +55,10 @@
 			<div class="container">
 				<ul class="checkout-progress-bar d-flex justify-content-center flex-wrap">
 					<li class="active">
-						<a href="cart.html">Shopping Cart</a>
+						<a href="">Shopping Cart</a>
 					</li>
 					<li>
-						<a href="checkout.html">Checkout</a>
+						<a href="{{route('checkout.index')}}">Checkout</a>
 					</li>
 					<li class="disabled">
 						<a href="cart.html">Order Complete</a>
@@ -84,7 +84,7 @@
 										<td>
 											<figure class="product-image-container">
 												<a href="{{ route('product.show', $item['id']) }}" class="product-image">
-													<img src="{{ asset('../sourcepanel/public/' . $item['file_path']) }}" alt="product">
+													<img src="{{ env('SOURCE_PANEL_URL') . '/public/' . $item['file_path'] }}" alt="product">													
 												</a>
 												<a href="javascript:;" class="btn-remove icon-cancel remove-from-cart" data-id="{{ $item['id'] }}" title="Remove Product"></a>
 											</figure>
@@ -265,10 +265,10 @@
 								<a href="wishlist.html">Wishlist</a>
 							</li>
 							<li>
-								<a href="cart.html">Shopping Cart</a>
+								<a href="">Shopping Cart</a>
 							</li>
 							<li>
-								<a href="checkout.html">Checkout</a>
+								<a href="{{route('checkout.index')}}">Checkout</a>
 							</li>
 							<li>
 								<a href="dashboard.html">Dashboard</a>

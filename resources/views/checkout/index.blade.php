@@ -70,10 +70,10 @@
             <div class="container checkout-container">
                 <ul class="checkout-progress-bar d-flex justify-content-center flex-wrap">
                     <li>
-                        <a href="cart.html">Shopping Cart</a>
+                        <a href="{{route('cart.index')}}">Shopping Cart</a>
                     </li>
                     <li class="active">
-                        <a href="checkout.html">Checkout</a>
+                        <a href="">Checkout</a>
                     </li>
                     <li class="disabled">
                         <a href="#">Order Complete</a>
@@ -377,10 +377,10 @@
                                 <a href="wishlist.html">Wishlist</a>
                             </li>
                             <li>
-                                <a href="cart.html">Shopping Cart</a>
+                                <a href="{{route('cart.index')}}">Shopping Cart</a>
                             </li>
                             <li>
-                                <a href="checkout.html">Checkout</a>
+                                <a href="">Checkout</a>
                             </li>
                             <li>
                                 <a href="dashboard.html">Dashboard</a>

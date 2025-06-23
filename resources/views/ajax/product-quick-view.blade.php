@@ -14,8 +14,8 @@
 					@foreach($product->images as $image)
 						<div class="product-item">
 							<img class="product-single-image"
-								src="{{ asset('../sourcepanel/public/' . $image->file_path) }}"
-								data-zoom-image="{{ asset('../sourcepanel/public/' . $image->file_path) }}"
+								src="{{ env('SOURCE_PANEL_URL') . '/public/' . $image->file_path }}"								
+								data-zoom-image="{{ env('SOURCE_PANEL_URL') . '/public/' . $image->file_path }}"
 								alt="{{ $product->product_name }}"
 								style="width:400px; height:400px; object-fit:cover; display:block;"
 							>
@@ -27,7 +27,7 @@
 			<div class="prod-thumbnail owl-dots">
 				@foreach($product->images as $image)
 					<div class="owl-dot">
-						<img src="{{ asset('../sourcepanel/public/' . $image->file_path) }}" alt="Thumbnail">
+						<img src="{{ env('SOURCE_PANEL_URL') . '/public/' . $image->file_path }}" alt="Thumbnail">
 					</div>
 				@endforeach
 			</div>

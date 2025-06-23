@@ -1,3 +1,24 @@
+<style>
+.live-results-box {
+    position: absolute;
+    z-index: 999;
+    background: white;
+    width: 100%;
+    border: 1px solid #ccc;
+    display: none;
+    max-height: 300px;
+    overflow-y: auto;
+}
+.live-results-box a {
+    display: block;
+    padding: 8px;
+    color: #333;
+    text-decoration: none;
+}
+.live-results-box a:hover {
+    background-color: #f0f0f0;
+}
+</style>
 <header class="header">
 			<div class="header-top">
 				<!--<div class="container">
@@ -71,27 +92,30 @@
 							<a href="#" class="search-toggle" role="button"><i class="icon-search-3"></i></a>
 							<form action="#" method="get">
 								<div class="header-search-wrapper">
-									<input type="search" class="form-control" name="q" id="q" placeholder="Search..."
-										required>
+									<input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." autocomplete="off" required>
+									<div id="live-search-results" class="live-results-box"></div>
 									<div class="select-custom">
-										<select id="cat" name="cat">
-										<option value="">All Categories</option>
-											@php
-											function renderCategoryOptions($categories, $prefix = '')
+										@php
+											$selectedCategory = request()->query('category');
+											function renderCategoryOptions($categories, $prefix = '', $selectedCategory = null)
 											{
 												foreach ($categories as $category) {
-													echo '<option value="' . $category->category_id . '">' . $prefix . $category->category_name . '</option>';
+													$selected = ($category->category_id == $selectedCategory) ? 'selected' : '';
+													echo '<option value="' . $category->category_id . '" ' . $selected . '>' . $prefix . e($category->category_name) . '</option>';
 
 													if ($category->children && $category->children->isNotEmpty()) {
-														renderCategoryOptions($category->children, $prefix . '- ');
+														renderCategoryOptions($category->children, $prefix . '- ', $selectedCategory);
 													}
 												}
 											}
 										@endphp
 
-										@php renderCategoryOptions($categories); @endphp
+										<select id="cat" name="cat" onchange="if(this.value) window.location.href='{{ url()->current() }}?category=' + this.value;">
+											<option value="" {{ $selectedCategory ? '' : 'selected' }}>All Categories</option>
+											@php renderCategoryOptions($categories, '', $selectedCategory); @endphp
 										</select>
-									</div><!-- End .select-custom -->
+									</div>
+								<!-- End .select-custom -->
 									<button class="btn icon-magnifier p-0" type="submit"></button>
 								</div><!-- End .header-search-wrapper -->
 							</form>
@@ -145,7 +169,7 @@
 														}
 													@endphp
 
-													<img src="{{ asset('../sourcepanel/public/' . $filePath) }}" alt="product" width="80" height="80">
+													<img src="{{ env('SOURCE_PANEL_URL') . '/public/' . $filePath }}" alt="product" width="80" height="80">													
                                                 </a>
 
                                                 <a href="javascript:;" class="btn-remove remove-from-cart" data-id="{{ $item['id'] ?? '' }}" title="Remove Product">
@@ -186,7 +210,7 @@
 							{
 								foreach ($categories as $category) {
 									echo '<li>';
-									echo '<a href="' . url('category/' . $category->category_id) . '">' . $category->category_name . '</a>';
+									echo '<a href="' . url()->current() . '?category=' . $category->category_id . '">' . e($category->category_name) . '</a>';
 
 									if ($category->children->isNotEmpty()) {
 										echo '<ul class="submenu">';
@@ -235,4 +259,38 @@
             });
         });
     });
+
+	$(document).ready(function() {
+    $('#search-input').on('keyup', function() {
+        let query = $(this).val();
+        if (query.length > 1) {
+            $.ajax({
+                url: '{{ route("live.search") }}',
+                type: 'GET',
+                data: { q: query },
+                success: function(data) {
+                    let resultBox = $('#live-search-results');
+                    resultBox.empty().show();
+
+                    if (data.length === 0) {
+                        resultBox.append('<div>No results found</div>');
+                    } else {
+                        data.forEach(item => {
+                            resultBox.append(`<a href="${item.url}">${item.name} <small>(${item.type})</small></a>`);
+                        });
+                    }
+                }
+            });
+        } else {
+            $('#live-search-results').hide();
+        }
+    });
+
+    // Hide dropdown on click outside
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('#search-input, #live-search-results').length) {
+            $('#live-search-results').hide();
+        }
+    });
+});
 </script>
