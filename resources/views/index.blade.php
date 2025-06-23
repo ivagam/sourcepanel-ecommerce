@@ -695,6 +695,9 @@
     <script src="assets/js/main.min.js"></script>
 
    <script>
+
+    const SOURCE_PANEL_URL = "{{ env('SOURCE_PANEL_URL') }}";
+
     let offset = {{ count($products) }};
     let isLoading = false;
 
@@ -733,9 +736,11 @@
             products.forEach(product => {
                 let imagesHtml = '';
                 product.images.slice(0, 2).forEach(image => {
-                    imagesHtml += `<img src="${process.env.SOURCE_PANEL_URL}/public/${image.file_path}" 
-                                    style="width: 205px; height: 205px; object-fit: cover;" 
-                                    alt="${product.product_name}">`;
+                    imagesHtml += `
+                                <img src="${SOURCE_PANEL_URL}/public/${image.file_path}" 
+                                style="width: 205px; height: 205px; object-fit: cover;" 
+                                alt="${product.product_name}">
+                        `;
                 });
 
                 let labelHtml = '';
