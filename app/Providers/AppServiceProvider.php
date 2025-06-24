@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\Category;
+use App\Models\Product;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -34,6 +35,14 @@ class AppServiceProvider extends ServiceProvider
             ->whereNull('subcategory_id')
             ->whereRaw('FIND_IN_SET(?, domains)', [$domainId])
             ->get();
+
+            foreach ($categories as $category) {
+                $category->products_count = Product::where('category_id', $category->category_id)->count();
+
+                foreach ($category->children as $child) {
+                    $child->products_count = Product::where('category_id', $child->category_id)->count();
+                }
+            }
 
             $view->with('categories', $categories);
         });

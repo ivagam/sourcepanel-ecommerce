@@ -213,30 +213,32 @@
 
                             <nav class="side-nav">
                                 <ul class="menu menu-vertical sf-arrows">
-                            <li class="active"><a href="{{ route('home') }}"><i class="icon-home"></i>Home</a></li>
+                                    <li class="active"><a href="{{ route('home') }}"><i class="icon-home"></i>Home</a></li>
 
-                            @php
-                                function renderCategories($categories)
-                                {
-                                    foreach ($categories as $category) {
-                                        echo '<li>';
-                                        echo '<a href="' . url()->current() . '?category=' . $category->category_id . '">' . $category->category_name . '</a>';
+                                    @php
+                                        function renderCategories($categories)
+                                        {
+                                            foreach ($categories as $category) {
+                                                echo '<li>';
+                                                echo '<a href="' . url()->current() . '?category=' . $category->category_id . '">';
+                                                echo e($category->category_name) . ' (' . ($category->products_count ?? 0) . ')';
+                                                echo '</a>';
 
-                                        if ($category->children && $category->children->isNotEmpty()) {
-                                            echo '<ul class="submenu">';
-                                            renderCategories($category->children); // Recursive call here
-                                            echo '</ul>';
+                                                if ($category->children && $category->children->isNotEmpty()) {
+                                                    echo '<ul class="submenu">';
+                                                    renderCategories($category->children);
+                                                    echo '</ul>';
+                                                }
+
+                                                echo '</li>';
+                                            }
                                         }
+                                    @endphp
 
-                                        echo '</li>';
-                                    }
-                                }
-                            @endphp
-
-                            @php renderCategories($categories); @endphp
-                        </ul>
-
+                                    @php renderCategories($categories); @endphp
+                                </ul>
                             </nav>
+
                         </div>
                         <!-- End .side-menu-container -->
 
