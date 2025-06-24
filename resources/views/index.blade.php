@@ -168,7 +168,13 @@
                                             <a href="{{ route('product-quick-view', $product->product_id) }}" class="btn-quickview" title="Quick View">Quick View</a>
                                         </figure>
                                         <div class="product-details">
-                                            
+                                             <div class="category-wrap">
+                                                <div class="category-list">
+                                                    <a href="{{ url()->current() }}?category={{ $product->category_id }}" class="product-category">
+                                                        {{ $product->category->category_name }}
+                                                    </a>
+                                                </div>                                               
+                                            </div>
                                             <h3 class="product-title">
                                                 <a href="{{ url('product/' . $product->product_url) }}">{{ $product->product_name }}</a>
                                             </h3>
@@ -766,7 +772,11 @@
                                 <a href="ajax/product-quick-view/${product.product_id}" class="btn-quickview" title="Quick View">Quick View</a>
                             </figure>
                             <div class="product-details">
-                               
+                                    <div class="category-list">
+                                         <a href="${window.location.pathname}?category=${product.category.category_id}" class="product-category">
+                                            ${product.category.category_name}
+                                        </a>
+                                    </div>    
                                 <h3 class="product-title">
                                     <a href="product/${product.product_url}">${product.product_name}</a>
                                 </h3>
