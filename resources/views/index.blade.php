@@ -144,7 +144,7 @@
                                     <div class="product-default inner-quickview inner-icon">
                                         <figure class="img-effect">
                                             <a href="{{ url('product/' . $product->product_url) }}">
-                                                @foreach($product->images->take(2) as $image)
+                                                @foreach($product->images->sortBy('serial_no')->take(2) as $image)
                                                     <img src="{{ env('SOURCE_PANEL_URL') . '/public/' . $image->file_path }}" style="width: 205px; height: 205px; object-fit: cover;" alt="{{ $product->product_name }}">
                                                 @endforeach
                                             </a>
@@ -162,7 +162,7 @@
                                                     data-product-id="{{ $product->product_id }}"
                                                     data-product-name="{{ $product->product_name }}"
                                                     data-product-price="{{ $product->product_price }}"
-                                                    data-product-filepath="{{ $image->file_path }}">
+                                                    data-product-filepath="{{ $image->file_path ?? '' }}">
                                                     <i class="icon-shopping-cart"></i></a>
                                             </div>
                                             <a href="{{ route('product-quick-view', $product->product_id) }}" class="btn-quickview" title="Quick View">Quick View</a>
@@ -171,7 +171,7 @@
                                              <div class="category-wrap">
                                                 <div class="category-list">
                                                     <a href="{{ url()->current() }}?category={{ $product->category_id }}" class="product-category">
-                                                        {{ $product->category->category_name }}
+                                                        {{ $product->category->category_name ?? '' }}
                                                     </a>
                                                 </div>                                               
                                             </div>

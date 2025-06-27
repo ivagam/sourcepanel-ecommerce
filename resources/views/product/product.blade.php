@@ -67,7 +67,7 @@
                                 </div>
 
                                 <div class="product-single-carousel owl-carousel owl-theme show-nav-hover">
-                                    @foreach ($product->images as $image)
+                                     @foreach ($product->images->sortBy('serial_no') as $image)
                                         <div class="product-item">
                                             <img class="product-single-image"
                                                 src="{{ env('SOURCE_PANEL_URL') . '/public/' . $image->file_path }}"                                                
@@ -83,7 +83,7 @@
                             </div>
 
                             <div class="prod-thumbnail owl-dots">
-                                @foreach ($product->images as $image)
+                                @foreach ($product->images->sortBy('serial_no') as $image)
                                     <div class="owl-dot">
                                         <img src="{{ env('SOURCE_PANEL_URL') . '/public/' . $image->file_path }}" width="110" height="110"
                                             alt="product-thumbnail" />
