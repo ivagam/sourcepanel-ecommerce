@@ -84,7 +84,7 @@
 										<td>
 											<figure class="product-image-container">
 												<a href="{{ route('product.show', $item['id']) }}" class="product-image">
-													<img src="{{ env('SOURCE_PANEL_URL') . '/public/' . $item['file_path'] }}" alt="product">													
+													<img src="{{ env('SOURCE_PANEL_IMAGE_URL') . $item['file_path'] }}" alt="product">													
 												</a>
 												<a href="javascript:;" class="btn-remove icon-cancel remove-from-cart" data-id="{{ $item['id'] }}" title="Remove Product"></a>
 											</figure>

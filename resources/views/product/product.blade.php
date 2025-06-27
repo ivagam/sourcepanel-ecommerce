@@ -70,8 +70,8 @@
                                      @foreach ($product->images->sortBy('serial_no') as $image)
                                         <div class="product-item">
                                             <img class="product-single-image"
-                                                src="{{ env('SOURCE_PANEL_URL') . '/public/' . $image->file_path }}"                                                
-                                                data-zoom-image="{{ env('SOURCE_PANEL_URL') . '/public/' . $image->file_path }}"
+                                                src="{{ env('SOURCE_PANEL_IMAGE_URL') . $image->file_path }}"                                                
+                                                data-zoom-image="{{ env('SOURCE_PANEL_IMAGE_URL') . $image->file_path }}"
                                                 width="468" height="468" alt="product" />
                                         </div>
                                     @endforeach
@@ -85,7 +85,7 @@
                             <div class="prod-thumbnail owl-dots">
                                 @foreach ($product->images->sortBy('serial_no') as $image)
                                     <div class="owl-dot">
-                                        <img src="{{ env('SOURCE_PANEL_URL') . '/public/' . $image->file_path }}" width="110" height="110"
+                                        <img src="{{ env('SOURCE_PANEL_IMAGE_URL') . $image->file_path }}" width="110" height="110"
                                             alt="product-thumbnail" />
                                     </div>
                                 @endforeach
@@ -146,12 +146,7 @@
                             <!-- End .price-box -->
 
                             <div class="product-desc">
-                                <p>
-                                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis
-                                    egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet,
-                                    ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est.
-                                    Mauris placerat eleifend leo.
-                                </p>
+                                <p>{{ $product->description }}</p>
                             </div><!-- End .product-desc -->
 
                             <ul class="single-info-list">

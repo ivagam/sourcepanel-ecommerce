@@ -23,6 +23,8 @@ class HomeController extends Controller
 
         $products = $query->take($initialLimit)->get();
 
+        //print_r($products); exit;
+
         $categories = Category::with('children')
                     ->whereNull('subcategory_id')
                     ->get();

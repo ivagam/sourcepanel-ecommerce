@@ -169,7 +169,7 @@
 														}
 													@endphp
 
-													<img src="{{ env('SOURCE_PANEL_URL') . '/public/' . $filePath }}" alt="product" width="80" height="80">													
+													<img src="{{ env('SOURCE_PANEL_IMAGE_URL') . $filePath }}" alt="product" width="80" height="80">													
                                                 </a>
 
                                                 <a href="javascript:;" class="btn-remove remove-from-cart" data-id="{{ $item['id'] ?? '' }}" title="Remove Product">
