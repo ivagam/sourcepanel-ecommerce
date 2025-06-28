@@ -18,6 +18,9 @@
 .live-results-box a:hover {
     background-color: #f0f0f0;
 }
+.logo {
+    max-width: 150px;
+}
 </style>
 <header class="header">
 			<div class="header-top">
@@ -82,7 +85,7 @@
 							<i class="fas fa-bars"></i>
 						</button>
 						<a href="{{ route('home') }}" class="logo">
-							<img src="{{ asset('assets/images/logo.png') }}" width="111" height="44" alt="Porto Logo">
+							<img src="{{ asset('assets/images/logo.png') }}" width="211" height="84" alt="Repladeez Logo">
 						</a>
 					</div><!-- End .header-left -->
 

@@ -6,10 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Porto - Bootstrap eCommerce Template</title>
+    <title>Repladeez - eCommerce Template</title>
 
     <meta name="keywords" content="HTML5 Template" />
-    <meta name="description" content="Porto - Bootstrap eCommerce Template">
+    <meta name="description" content="Repladeez - eCommerce Template">
     <meta name="author" content="SW-THEMES">
 
     <!-- Favicon -->
@@ -128,16 +128,7 @@
                                     </a>
                                 </div>
                             </div>
-
-                            <div class="ratings-container">
-                                <div class="product-ratings">
-                                    <span class="ratings" style="width:60%"></span><!-- End .ratings -->
-                                    <span class="tooltiptext tooltip-top"></span>
-                                </div><!-- End .product-ratings -->
-
-                                <a href="#" class="rating-link">( 6 Reviews )</a>
-                            </div><!-- End .ratings-container -->
-
+                          
                             <hr class="short-divider">
 
                             <div class="price-box">
@@ -149,57 +140,10 @@
                                 <p>{{ $product->description }}</p>
                             </div><!-- End .product-desc -->
 
-                            <ul class="single-info-list">
-                                <!---->
-                                <li>
-                                    SKU:
-                                    <strong>654613612</strong>
-                                </li>
-
-                                <li>
-                                    TAGs:
-                                    <strong><a href="#" class="product-category">CLOTHES</a></strong>,
-                                    <strong><a href="#" class="product-category">SWEATER</a></strong>
-                                </li>
-                            </ul>
-
-                            <div class="product-filters-container">
-                                <div class="product-single-filter"><label class="font2">Color:</label>
-                                    <ul class="config-size-list config-color-list config-filter-list">
-                                        <li class=""><a href="javascript:;" class="filter-color border-0"
-                                                style="background-color: rgb(1, 136, 204);"></a></li>
-                                        <li class=""><a href="javascript:;"
-                                                class="filter-color border-0 initial disabled"
-                                                style="background-color: rgb(221, 181, 119);"></a></li>
-                                        <li class=""><a href="javascript:;" class="filter-color border-0"
-                                                style="background-color: rgb(96, 133, 165);"></a></li>
-                                    </ul>
-                                </div>
-
-                                <div class="product-single-filter">
-                                    <label class="font2">Size:</label>
-                                    <ul class="config-size-list">
-                                        <li class=""><a href="javascript:;"
-                                                class="d-flex align-items-center justify-content-center">L</a></li>
-                                        <li class=""><a href="javascript:;"
-                                                class="d-flex align-items-center justify-content-center">M</a></li>
-                                        <li class=""><a href="javascript:;"
-                                                class="d-flex align-items-center justify-content-center">S</a></li>
-                                    </ul>
-                                </div>
-
-                                <div class="product-single-filter">
-                                    <label></label>
-                                    <a class="font1 text-uppercase clear-btn" href="#">Clear</a>
-                                </div>
-                                <!---->
-                            </div>
+                          
 
                             <div class="product-action">
-                                <div class="price-box product-filtered-price">
-                                    <del class="old-price"><span>$286.00</span></del>
-                                    <span class="product-price">$245.00</span>
-                                </div>
+                               
 
                                 <div class="product-single-qty">
                                     <input class="horizontal-quantity form-control" type="number" min="1" value="1" id="qty">
