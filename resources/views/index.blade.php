@@ -111,15 +111,49 @@
                        <div id="product-list" class="row pb-4">
                             @foreach($products as $product)
                                 <div class="col-sm-12 col-6 product-default left-details product-list mb-2">
-                                    <figure>
-                                        <a href="{{ url('product/' . $product->product_url) }}">
-                                            @foreach($product->images->sortBy('serial_no')->take(2) as $image)
-                                                <img src="{{ env('SOURCE_PANEL_IMAGE_URL') . $image->file_path }}" 
-                                                    alt="{{ $product->product_name }}" 
-                                                    style="width: 250px; height: 250px; object-fit: cover; display: block; margin-bottom: 5px;">
-                                            @endforeach
-                                        </a>
-                                    </figure>
+                                  @php
+    $videoExtensions = ['mp4', 'mov', 'avi', 'webm'];
+    $media = $product->images->sortBy('serial_no')->take(2);
+    $firstMedia = $media->first();
+    $secondMedia = $media->skip(1)->first();
+@endphp
+
+<figure>
+    <a href="{{ url('product/' . $product->product_url) }}">
+        <div class="media-wrapper" style="position: relative; width: 250px; height: 250px;">
+            {{-- First media --}}
+            @if($firstMedia)
+                @php $ext1 = strtolower(pathinfo($firstMedia->file_path, PATHINFO_EXTENSION)); @endphp
+                @if(in_array($ext1, $videoExtensions))
+                    <video class="preview-video" width="250" height="250" muted autoplay loop playsinline
+                        style="object-fit: cover; position: absolute; top: 0; left: 0; display: block;">
+                        <source src="{{ env('SOURCE_PANEL_IMAGE_URL') . $firstMedia->file_path }}" type="video/{{ $ext1 }}">
+                    </video>
+                @else
+                    <img class="preview-image" src="{{ env('SOURCE_PANEL_IMAGE_URL') . $firstMedia->file_path }}"
+                        alt="{{ $product->product_name }}"
+                        style="width: 250px; height: 250px; object-fit: cover; position: absolute; top: 0; left: 0; display: block;">
+                @endif
+            @endif
+
+            {{-- Second media --}}
+            @if($secondMedia)
+                @php $ext2 = strtolower(pathinfo($secondMedia->file_path, PATHINFO_EXTENSION)); @endphp
+                @if(in_array($ext2, $videoExtensions))
+                    <video class="hover-video" width="250" height="250" muted loop playsinline
+                        style="object-fit: cover; position: absolute; top: 0; left: 0; display: none; pointer-events: none;">
+                        <source src="{{ env('SOURCE_PANEL_IMAGE_URL') . $secondMedia->file_path }}" type="video/{{ $ext2 }}">
+                    </video>
+                @else
+                    <img class="hover-image" src="{{ env('SOURCE_PANEL_IMAGE_URL') . $secondMedia->file_path }}"
+                        alt="{{ $product->product_name }}"
+                        style="width: 250px; height: 250px; object-fit: cover; position: absolute; top: 0; left: 0; display: none; pointer-events: none;">
+                @endif
+            @endif
+        </div>
+    </a>
+</figure>
+
                                     <div class="product-details">
                                         <div class="category-list">
                                             <a href="{{ url()->current() }}?category={{ $product->category_id }}" class="product-category">
@@ -434,6 +468,36 @@ $(document).on('click', '.addToCartBtn', function (e) {
     });
 });
 
+
+document.querySelectorAll('.media-wrapper').forEach(wrapper => {
+    const previewMedia = wrapper.querySelector('.preview-video, .preview-image');
+    const hoverMedia = wrapper.querySelector('.hover-video, .hover-image');
+
+    if (previewMedia && hoverMedia) {
+        wrapper.addEventListener('mouseenter', () => {
+            // Hide preview media
+            previewMedia.style.display = 'none';
+
+            // Show hover media
+            hoverMedia.style.display = 'block';
+
+            // Play video if it's video
+            if (hoverMedia.tagName.toLowerCase() === 'video') {
+                hoverMedia.play();
+            }
+        });
+
+        wrapper.addEventListener('mouseleave', () => {            
+            if (hoverMedia.tagName.toLowerCase() === 'video') {
+                hoverMedia.pause();
+                hoverMedia.currentTime = 0;
+            }
+            hoverMedia.style.display = 'none';
+
+            previewMedia.style.display = 'block';
+        });
+    }
+});
 
 </script>
 

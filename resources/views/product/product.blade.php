@@ -67,14 +67,36 @@
                                 </div>
 
                                 <div class="product-single-carousel owl-carousel owl-theme show-nav-hover">
-                                     @foreach ($product->images->sortBy('serial_no') as $image)
-                                        <div class="product-item">
+                                    @php
+                                    $videoExtensions = ['mp4', 'mov', 'avi', 'webm'];
+                                @endphp
+
+                                @foreach ($product->images->sortBy('serial_no') as $image)
+                                    @php
+                                        $ext = strtolower(pathinfo($image->file_path, PATHINFO_EXTENSION));
+                                        $isVideo = in_array($ext, $videoExtensions);
+                                        $mediaUrl = env('SOURCE_PANEL_IMAGE_URL') . $image->file_path;
+                                    @endphp
+
+                                    <div class="product-item">
+                                        @if($isVideo)
+                                            <video class="product-single-image"
+                                                src="{{ $mediaUrl }}"
+                                                data-zoom-image="{{ $mediaUrl }}"
+                                                width="468" height="468"
+                                                muted autoplay loop playsinline
+                                                style="object-fit: cover;">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        @else
                                             <img class="product-single-image"
-                                                src="{{ env('SOURCE_PANEL_IMAGE_URL') . $image->file_path }}"                                                
-                                                data-zoom-image="{{ env('SOURCE_PANEL_IMAGE_URL') . $image->file_path }}"
-                                                width="468" height="468" alt="product" />
-                                        </div>
-                                    @endforeach
+                                                src="{{ $mediaUrl }}"
+                                                data-zoom-image="{{ $mediaUrl }}"
+                                                width="468" height="468"
+                                                alt="product" />
+                                        @endif
+                                    </div>
+                                @endforeach
                                 </div>
                                 <!-- End .product-single-carousel -->
                                 <span class="prod-full-screen">
@@ -83,12 +105,30 @@
                             </div>
 
                             <div class="prod-thumbnail owl-dots">
+                               @php
+                                    $videoExtensions = ['mp4', 'mov', 'avi', 'webm'];
+                                @endphp
+
                                 @foreach ($product->images->sortBy('serial_no') as $image)
+                                    @php
+                                        $ext = strtolower(pathinfo($image->file_path, PATHINFO_EXTENSION));
+                                        $isVideo = in_array($ext, $videoExtensions);
+                                        $mediaUrl = env('SOURCE_PANEL_IMAGE_URL') . $image->file_path;
+                                    @endphp
+
                                     <div class="owl-dot">
-                                        <img src="{{ env('SOURCE_PANEL_IMAGE_URL') . $image->file_path }}" width="110" height="110"
-                                            alt="product-thumbnail" />
+                                        @if($isVideo)
+                                            <video width="110" height="110" muted autoplay loop preload="metadata" playsinline
+                                                style="object-fit: cover; border-radius: 4px;">
+                                                <source src="{{ $mediaUrl }}" type="video/{{ $ext }}">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        @else
+                                            <img src="{{ $mediaUrl }}" width="110" height="110" alt="product-thumbnail" style="object-fit: cover; border-radius: 4px;" />
+                                        @endif
                                     </div>
                                 @endforeach
+
                             </div>
                         </div><!-- End .product-single-gallery -->
 
