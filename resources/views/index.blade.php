@@ -110,49 +110,49 @@
 
                        <div id="product-list" class="row pb-4">
                             @foreach($products as $product)
+                            @php
+                                    $videoExtensions = ['mp4', 'mov', 'avi', 'webm'];
+                                    $media = $product->images->sortBy('serial_no')->take(2);
+                                    $firstMedia = $media->first();
+                                    $secondMedia = $media->skip(1)->first();
+                                @endphp
+                                @if($firstMedia && !empty($firstMedia->file_path))
                                 <div class="col-sm-12 col-6 product-default left-details product-list mb-2">
-                                  @php
-    $videoExtensions = ['mp4', 'mov', 'avi', 'webm'];
-    $media = $product->images->sortBy('serial_no')->take(2);
-    $firstMedia = $media->first();
-    $secondMedia = $media->skip(1)->first();
-@endphp
+                                    <figure>
+                                        <a href="{{ url('product/' . $product->product_url) }}">
+                                            <div class="media-wrapper" style="position: relative; width: 250px; height: 250px;">
+                                                {{-- First media --}}
+                                                @if($firstMedia)
+                                                    @php $ext1 = strtolower(pathinfo($firstMedia->file_path, PATHINFO_EXTENSION)); @endphp
+                                                    @if(in_array($ext1, $videoExtensions))
+                                                        <video class="preview-video" width="250" height="250" muted autoplay loop playsinline
+                                                            style="object-fit: cover; position: absolute; top: 0; left: 0; display: block;">
+                                                            <source src="{{ env('SOURCE_PANEL_IMAGE_URL') . $firstMedia->file_path }}" type="video/{{ $ext1 }}">
+                                                        </video>
+                                                    @else
+                                                        <img class="preview-image" src="{{ env('SOURCE_PANEL_IMAGE_URL') . $firstMedia->file_path }}"
+                                                            alt="{{ $product->product_name }}"
+                                                            style="width: 250px; height: 250px; object-fit: cover; position: absolute; top: 0; left: 0; display: block;">
+                                                    @endif
+                                                @endif
 
-<figure>
-    <a href="{{ url('product/' . $product->product_url) }}">
-        <div class="media-wrapper" style="position: relative; width: 250px; height: 250px;">
-            {{-- First media --}}
-            @if($firstMedia)
-                @php $ext1 = strtolower(pathinfo($firstMedia->file_path, PATHINFO_EXTENSION)); @endphp
-                @if(in_array($ext1, $videoExtensions))
-                    <video class="preview-video" width="250" height="250" muted autoplay loop playsinline
-                        style="object-fit: cover; position: absolute; top: 0; left: 0; display: block;">
-                        <source src="{{ env('SOURCE_PANEL_IMAGE_URL') . $firstMedia->file_path }}" type="video/{{ $ext1 }}">
-                    </video>
-                @else
-                    <img class="preview-image" src="{{ env('SOURCE_PANEL_IMAGE_URL') . $firstMedia->file_path }}"
-                        alt="{{ $product->product_name }}"
-                        style="width: 250px; height: 250px; object-fit: cover; position: absolute; top: 0; left: 0; display: block;">
-                @endif
-            @endif
-
-            {{-- Second media --}}
-            @if($secondMedia)
-                @php $ext2 = strtolower(pathinfo($secondMedia->file_path, PATHINFO_EXTENSION)); @endphp
-                @if(in_array($ext2, $videoExtensions))
-                    <video class="hover-video" width="250" height="250" muted loop playsinline
-                        style="object-fit: cover; position: absolute; top: 0; left: 0; display: none; pointer-events: none;">
-                        <source src="{{ env('SOURCE_PANEL_IMAGE_URL') . $secondMedia->file_path }}" type="video/{{ $ext2 }}">
-                    </video>
-                @else
-                    <img class="hover-image" src="{{ env('SOURCE_PANEL_IMAGE_URL') . $secondMedia->file_path }}"
-                        alt="{{ $product->product_name }}"
-                        style="width: 250px; height: 250px; object-fit: cover; position: absolute; top: 0; left: 0; display: none; pointer-events: none;">
-                @endif
-            @endif
-        </div>
-    </a>
-</figure>
+                                                {{-- Second media --}}
+                                                @if($secondMedia)
+                                                    @php $ext2 = strtolower(pathinfo($secondMedia->file_path, PATHINFO_EXTENSION)); @endphp
+                                                    @if(in_array($ext2, $videoExtensions))
+                                                        <video class="hover-video" width="250" height="250" muted loop playsinline
+                                                            style="object-fit: cover; position: absolute; top: 0; left: 0; display: none; pointer-events: none;">
+                                                            <source src="{{ env('SOURCE_PANEL_IMAGE_URL') . $secondMedia->file_path }}" type="video/{{ $ext2 }}">
+                                                        </video>
+                                                    @else
+                                                        <img class="hover-image" src="{{ env('SOURCE_PANEL_IMAGE_URL') . $secondMedia->file_path }}"
+                                                            alt="{{ $product->product_name }}"
+                                                            style="width: 250px; height: 250px; object-fit: cover; position: absolute; top: 0; left: 0; display: none; pointer-events: none;">
+                                                    @endif
+                                                @endif
+                                            </div>
+                                        </a>
+                                    </figure>
 
                                     <div class="product-details">
                                         <div class="category-list">
@@ -182,6 +182,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                 @endif
                             @endforeach
                         </div>
 
@@ -198,6 +199,7 @@
                        
                         <!-- End .feature-boxes-container -->
                     </div>
+                    
                     <!-- End .col-lg-9 -->
 
                     <div class="sidebar-overlay"></div>
@@ -377,14 +379,19 @@ function loadMoreProducts() {
         }
 
         products.forEach(product => {
+            const media = (product.images || []).slice(0, 2);
+            if (!media[0] || !media[0].file_path) {
+                return; 
+            }
+
             let imagesHtml = '';
-            (product.images || []).slice(0, 2).forEach(image => {
+            media.forEach(image => {
                 imagesHtml += `
                     <img src="${SOURCE_PANEL_IMAGE_URL}${image.file_path}" width="250" height="250" style="object-fit:cover;" alt="${product.product_name}">
                 `;
             });
 
-            let filePath = (product.images && product.images.length > 0) ? product.images[0].file_path : '';
+            let filePath = media[0]?.file_path ?? '';
 
             let oldPriceHtml = product.old_price ? `<span class='old-price'>$${product.old_price}</span>` : '';
 
