@@ -21,6 +21,7 @@ class HomeController extends Controller
             $query->where('category_id', $categoryId);
         }
 
+        $totalProducts = $query->count();
         $products = $query->take($initialLimit)->get();
 
         //print_r($products); exit;
@@ -31,7 +32,7 @@ class HomeController extends Controller
 
         $brands = Brand::all();
         $banners = Banner::all();
-        return view('index', compact('products', 'categories', 'brands', 'banners'));
+        return view('index', compact('products', 'categories', 'brands', 'banners', 'totalProducts'));
     }
 
     public function documentation()
@@ -57,24 +58,24 @@ class HomeController extends Controller
     }
 
    public function liveSearch(Request $request)
-{
-    $query = $request->input('q');
+    {
+        $query = $request->input('q');
 
-    if (!$query) {
-        return response()->json([]);
+        if (!$query) {
+            return response()->json([]);
+        }
+
+        $products = Product::whereRaw('LOWER(product_name) LIKE ?', ['%' . strtolower($query) . '%'])
+            ->whereNotNull('product_url')
+            ->where('product_url', '!=', '')            
+            ->get()
+            ->map(fn($p) => [
+                'name' => $p->product_name,
+                'url' => url('/product/' . $p->product_url),
+                'type' => 'Product'
+            ]);
+
+        return response()->json($products);
     }
-
-    $products = Product::whereRaw('LOWER(product_name) LIKE ?', ['%' . strtolower($query) . '%'])
-    ->limit(10)
-    ->get()
-    ->filter(fn($p) => $p->slug)
-    ->map(fn($p) => [
-        'name' => $p->product_name,
-        'url' => url('/product/' . $p->slug),
-        'type' => 'Product'
-    ]);
-
-    return response()->json($products);
-}
 
 }

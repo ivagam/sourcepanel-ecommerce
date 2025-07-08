@@ -342,9 +342,15 @@
 const SOURCE_PANEL_IMAGE_URL = "{{ env('SOURCE_PANEL_IMAGE_URL') }}";
 
 let offset = {{ count($products) }};
+ let totalProducts = {{ $totalProducts }};
 let isLoading = false;
 
-// Load more button click
+if (offset >= totalProducts) {
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    if (loadMoreBtn) {
+        loadMoreBtn.style.display = 'none';
+    }
+}
 
 document.getElementById('loadMoreBtn').addEventListener('click', function () {
     if (isLoading) return;

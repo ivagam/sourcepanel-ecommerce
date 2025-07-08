@@ -163,23 +163,36 @@
 												</span>
 											</div>
 											<figure class="product-image-container">
-                                                <a href="{{ url('product/' . $item['id']) }}" class="product-image">
-                                                    @php
-														$filePath = $item['file_path'] ?? '';
-														// If it's an array, take the first image
-														if (is_array($filePath)) {
-															$filePath = $filePath[0] ?? '';
-														}
-													@endphp
+													<a href="{{ url('product/' . ($item['id'] ?? '')) }}" class="product-image">
+														@php
+															$filePath = $item['file_path'] ?? '';
 
-													<img src="{{ env('SOURCE_PANEL_IMAGE_URL') . $filePath }}" alt="product" width="80" height="80">													
-                                                </a>
+															// If it's an array, take the first file
+															if (is_array($filePath)) {
+																$filePath = $filePath[0] ?? '';
+															}
 
-                                                <a href="javascript:;" class="btn-remove remove-from-cart" data-id="{{ $item['id'] ?? '' }}" title="Remove Product">
-													<span>×</span>
-												</a>
+															$mediaUrl = env('SOURCE_PANEL_IMAGE_URL') . $filePath;
+															$fileExtension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+														@endphp
 
-                                            </figure>
+														@if(in_array($fileExtension, ['mp4', 'webm', 'ogg']))
+															<video width="80" height="80" autoplay muted loop style="object-fit: cover;">
+																<source src="{{ $mediaUrl }}" type="video/{{ $fileExtension }}">
+																Your browser does not support the video tag.
+															</video>
+														@elseif(!empty($filePath))
+															<img src="{{ $mediaUrl }}" alt="product" width="80" height="80" style="object-fit: cover;">
+														@else
+															<img src="{{ asset('images/no-image.png') }}" alt="No Image" width="80" height="80" style="object-fit: cover;">
+														@endif
+													</a>
+
+													<a href="javascript:;" class="btn-remove remove-from-cart" data-id="{{ $item['id'] ?? '' }}" title="Remove Product">
+														<span>×</span>
+													</a>
+												</figure>
+
 										</div>
 									@endforeach
 

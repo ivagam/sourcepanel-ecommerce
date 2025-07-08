@@ -81,14 +81,30 @@
 								<tbody>
 									@foreach($globalCart as $item)
 									<tr class="product-row">
+										@php
+											$filePath = $item['file_path'];
+											$fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
+											$mediaUrl = env('SOURCE_PANEL_IMAGE_URL') . $filePath;
+										@endphp
+
 										<td>
 											<figure class="product-image-container">
 												<a href="{{ route('product.show', $item['id']) }}" class="product-image">
-													<img src="{{ env('SOURCE_PANEL_IMAGE_URL') . $item['file_path'] }}" alt="product">													
+													@if(in_array(strtolower($fileExtension), ['mp4', 'webm', 'ogg']))
+														<video class="preview-video" width="100" height="100" muted autoplay loop playsinline
+                                                            style="object-fit: cover; position: absolute; top: 0; left: 0; display: block;">
+															<source src="{{ $mediaUrl }}" type="video/{{ $fileExtension }}">
+															Your browser does not support the video tag.
+														</video>
+													@else
+														<img src="{{ $mediaUrl }}" alt="product" width="100" height="100">
+													@endif
 												</a>
+
 												<a href="javascript:;" class="btn-remove icon-cancel remove-from-cart" data-id="{{ $item['id'] }}" title="Remove Product"></a>
 											</figure>
 										</td>
+
 										<td class="product-col">
 											<h5 class="product-title">
 												<a href="{{ route('product.show', $item['id']) }}">{{ $item['name'] }}</a>
@@ -125,20 +141,6 @@
 								<tfoot>
 									<tr>
 										<td colspan="5" class="clearfix">
-											<div class="float-left">
-												<div class="cart-discount">
-													<form action="#">
-														<div class="input-group">
-															<input type="text" class="form-control form-control-sm"
-																placeholder="Coupon Code" required>
-															<div class="input-group-append">
-																<button class="btn btn-sm" type="submit">Apply
-																	Coupon</button>
-															</div>
-														</div><!-- End .input-group -->
-													</form>
-												</div>
-											</div><!-- End .float-left -->
 
 											<div class="float-right">
 												<button type="submit" class="btn btn-shop btn-update-cart">
