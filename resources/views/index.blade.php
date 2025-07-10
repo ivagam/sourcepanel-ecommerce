@@ -108,84 +108,81 @@
                         <h2 class="section-title ls-n-10 m-b-4 appear-animate" data-animation-name="fadeInUpShorter">
                             Featured Products</h2>                                                        
 
-                       <div id="product-list" class="row pb-4">
+                      <div id="product-list" class="row pb-4">
                             @foreach($products as $product)
-                            @php
+                                @php
                                     $videoExtensions = ['mp4', 'mov', 'avi', 'webm'];
                                     $media = $product->images->sortBy('serial_no')->take(2);
                                     $firstMedia = $media->first();
                                     $secondMedia = $media->skip(1)->first();
                                 @endphp
                                 @if($firstMedia && !empty($firstMedia->file_path))
-                                <div class="col-sm-12 col-6 product-default left-details product-list mb-2">
-                                    <figure>
-                                        <a href="{{ url('product/' . $product->product_url) }}">
-                                            <div class="media-wrapper" style="position: relative; width: 250px; height: 250px;">
-                                                {{-- First media --}}
-                                                @if($firstMedia)
-                                                    @php $ext1 = strtolower(pathinfo($firstMedia->file_path, PATHINFO_EXTENSION)); @endphp
-                                                    @if(in_array($ext1, $videoExtensions))
-                                                        <video class="preview-video" width="250" height="250" muted autoplay loop playsinline
-                                                            style="object-fit: cover; position: absolute; top: 0; left: 0; display: block;">
-                                                            <source src="{{ env('SOURCE_PANEL_IMAGE_URL') . $firstMedia->file_path }}" type="video/{{ $ext1 }}">
-                                                        </video>
-                                                    @else
-                                                        <img class="preview-image" src="{{ env('SOURCE_PANEL_IMAGE_URL') . $firstMedia->file_path }}"
-                                                            alt="{{ $product->product_name }}"
-                                                            style="width: 250px; height: 250px; object-fit: cover; position: absolute; top: 0; left: 0; display: block;">
-                                                    @endif
-                                                @endif
+                                    <div class="col-12 col-sm-6 col-md-3 mb-4">  {{-- ✅ 3 per row on md+, 2 per row on sm --}}
+                                        <div class="product-default">
+                                            <figure>
+                                                <a href="{{ url('product/' . $product->product_url) }}">
+                                                    <div class="media-wrapper" style="position: relative; width: 100%; padding-top: 100%; overflow: hidden;">
+                                                        {{-- First media --}}
+                                                        @php $ext1 = strtolower(pathinfo($firstMedia->file_path, PATHINFO_EXTENSION)); @endphp
+                                                        @if(in_array($ext1, $videoExtensions))
+                                                            <video class="preview-video" muted autoplay loop playsinline
+                                                                style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                                                                <source src="{{ env('SOURCE_PANEL_IMAGE_URL') . $firstMedia->file_path }}" type="video/{{ $ext1 }}">
+                                                            </video>
+                                                        @else
+                                                            <img class="preview-image" src="{{ env('SOURCE_PANEL_IMAGE_URL') . $firstMedia->file_path }}"
+                                                                alt="{{ $product->product_name }}"
+                                                                style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                                                        @endif
 
-                                                {{-- Second media --}}
-                                                @if($secondMedia)
-                                                    @php $ext2 = strtolower(pathinfo($secondMedia->file_path, PATHINFO_EXTENSION)); @endphp
-                                                    @if(in_array($ext2, $videoExtensions))
-                                                        <video class="hover-video" width="250" height="250" muted loop playsinline
-                                                            style="object-fit: cover; position: absolute; top: 0; left: 0; display: none; pointer-events: none;">
-                                                            <source src="{{ env('SOURCE_PANEL_IMAGE_URL') . $secondMedia->file_path }}" type="video/{{ $ext2 }}">
-                                                        </video>
-                                                    @else
-                                                        <img class="hover-image" src="{{ env('SOURCE_PANEL_IMAGE_URL') . $secondMedia->file_path }}"
-                                                            alt="{{ $product->product_name }}"
-                                                            style="width: 250px; height: 250px; object-fit: cover; position: absolute; top: 0; left: 0; display: none; pointer-events: none;">
-                                                    @endif
-                                                @endif
-                                            </div>
-                                        </a>
-                                    </figure>
-
-                                    <div class="product-details">
-                                        <div class="category-list">
-                                            <a href="{{ url()->current() }}?category={{ $product->category_id }}" class="product-category">
-                                                {{ $product->category->category_name ?? 'Uncategorized' }}
-                                            </a>
-                                        </div>
-                                        <h3 class="product-title">
-                                            <a href="{{ url('product/' . $product->product_url) }}">{{ $product->product_name }}</a>
-                                        </h3>
-                                        
-                                        <p class="product-description">{{ $product->description ?? 'No description available.' }}</p>
-                                        <div class="price-box">                                            
-                                            <span class="product-price">${{ number_format($product->product_price ?? 0, 2) }}</span>
-                                        </div>
-                                        <div class="product-action">
-                                             <a href="javascript:;"
-                                                class="btn btn-primary btn-lg rounded-pill mt-4 addToCartBtn"
-                                                data-product-id="{{ $product->product_id }}"
-                                                data-product-name="{{ $product->product_name }}"
-                                                data-product-price="{{ $product->product_price }}"
-                                                data-product-filepath="{{ optional($product->images->sortBy('serial_no')->first())->file_path }}"
-                                                style="color: white;">
-                                                <i class="icon-shopping-cart"></i>
-                                                Add to Cart
+                                                        {{-- Second media --}}
+                                                        @if($secondMedia)
+                                                            @php $ext2 = strtolower(pathinfo($secondMedia->file_path, PATHINFO_EXTENSION)); @endphp
+                                                            @if(in_array($ext2, $videoExtensions))
+                                                                <video class="hover-video" muted loop playsinline
+                                                                    style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none;">
+                                                                    <source src="{{ env('SOURCE_PANEL_IMAGE_URL') . $secondMedia->file_path }}" type="video/{{ $ext2 }}">
+                                                                </video>
+                                                            @else
+                                                                <img class="hover-image" src="{{ env('SOURCE_PANEL_IMAGE_URL') . $secondMedia->file_path }}"
+                                                                    alt="{{ $product->product_name }}"
+                                                                    style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none;">
+                                                            @endif
+                                                        @endif
+                                                    </div>
                                                 </a>
+                                            </figure>
+
+                                            <div class="product-details text-center">
+                                                <div class="category-list">
+                                                    <a href="{{ url()->current() }}?category={{ $product->category_id }}" class="product-category">
+                                                        {{ $product->category->category_name ?? 'Uncategorized' }}
+                                                    </a>
+                                                </div>
+                                                <h3 class="product-title">
+                                                    <a href="{{ url('product/' . $product->product_url) }}">{{ $product->product_name }}</a>
+                                                </h3>
+                                                <p class="product-description">{{ $product->description ?? 'No description available.' }}</p>
+                                                <div class="price-box">
+                                                    <span class="product-price">${{ number_format($product->product_price ?? 0, 2) }}</span>
+                                                </div>
+                                                <div class="product-action">
+                                                    <a href="javascript:;" class="btn btn-primary btn-lg rounded-pill mt-4 addToCartBtn"                                                    
+                                                        data-product-id="{{ $product->product_id }}"
+                                                        data-product-name="{{ $product->product_name }}"
+                                                        data-product-price="{{ $product->product_price }}"
+                                                        data-product-filepath="{{ optional($product->images->sortBy('serial_no')->first())->file_path }}"
+                                                        style="color: white;">
+                                                        <i class="icon-shopping-cart"></i>
+                                                        Add to Cart
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                 @endif
+                                @endif
                             @endforeach
                         </div>
-
 
                         <div id="loading" style="text-align:center; display:none; padding: 10px;">
                             <strong>Loading more products...</strong>
@@ -196,6 +193,7 @@
                         </div>
 
                         <hr class="mt-1 mb-3 pb-2">
+
                        
                         <!-- End .feature-boxes-container -->
                     </div>
@@ -393,46 +391,49 @@ function loadMoreProducts() {
             let imagesHtml = '';
             media.forEach(image => {
                 imagesHtml += `
-                    <img src="${SOURCE_PANEL_IMAGE_URL}${image.file_path}" width="250" height="250" style="object-fit:cover;" alt="${product.product_name}">
+                    <img src="${SOURCE_PANEL_IMAGE_URL}${image.file_path}" style="object-fit:cover; width: 100%; height: 100%; position: absolute; top:0; left:0;" alt="${product.product_name}">
                 `;
             });
 
             let filePath = media[0]?.file_path ?? '';
-
             let oldPriceHtml = product.old_price ? `<span class='old-price'>$${product.old_price}</span>` : '';
 
             let newItem = `
-            <div class="col-sm-12 col-6 product-default left-details product-list mb-2">
-                <figure>
-                    <a href="product/${product.product_url}">
-                        ${imagesHtml}
-                    </a>
-                </figure>
-                <div class="product-details">
-                    <div class="category-list">
-                        <a href="${window.location.pathname}?category=${product.category_id}" class="product-category">
-                            ${product.category_name ?? 'Uncategorized'}
+            <div class="col-12 col-sm-6 col-md-3 mb-4">
+                <div class="product-default">
+                    <figure>
+                        <a href="product/${product.product_url}">
+                            <div class="media-wrapper" style="position: relative; width: 100%; padding-top: 100%; overflow: hidden;">
+                                ${imagesHtml}
+                            </div>
                         </a>
-                    </div>
-                    <h3 class="product-title">
-                        <a href="product/${product.product_url}">${product.product_name}</a>
-                    </h3>
-                   
-                    <p class="product-description">${product.description ?? 'No description available.'}</p>
-                    <div class="price-box">
-                        ${oldPriceHtml}
-                        <span class="product-price">$${product.product_price}</span>
-                    </div>
-                    <div class="product-action">
-                        <a href="#" class="btn btn-primary btn-lg rounded-pill mt-4 addToCartBtn"
-                           data-product-id="${product.product_id}"
-                           data-product-name="${product.product_name}"
-                           data-product-price="${product.product_price}"
-                           data-product-filepath="${filePath}" style="color: white;">
-                            <i class="icon-shopping-cart"></i>
-                            <span>ADD TO CART</span>
-                        </a>
-                       
+                    </figure>
+
+                    <div class="product-details text-center">
+                        <div class="category-list">
+                            <a href="${window.location.pathname}?category=${product.category_id}" class="product-category">
+                                ${product.category_name ?? 'Uncategorized'}
+                            </a>
+                        </div>
+                        <h3 class="product-title">
+                            <a href="product/${product.product_url}">${product.product_name}</a>
+                        </h3>
+
+                        <p class="product-description">${product.description ?? 'No description available.'}</p>
+                        <div class="price-box">
+                            ${oldPriceHtml}
+                            <span class="product-price">${{ number_format($product->product_price ?? 0, 2) }}</span>
+                        </div>                        
+                        <div class="product-action">
+                            <a href="javascript:;" class="btn btn-primary btn-lg rounded-pill mt-4 addToCartBtn"
+                               data-product-id="${product.product_id}"
+                               data-product-name="${product.product_name}"
+                               data-product-price="${product.product_price}"
+                               data-product-filepath="${filePath}" style="color: white;">
+                                <i class="icon-shopping-cart"></i>
+                                <span>ADD TO CART</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
