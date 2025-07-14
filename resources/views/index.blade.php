@@ -104,10 +104,7 @@
                 <div class="row">
                     <div class="col-lg-9">                        
                         <!-- End .home-slider -->                       
-
-                        <h2 class="section-title ls-n-10 m-b-4 appear-animate" data-animation-name="fadeInUpShorter">
-                            Featured Products</h2>                                                        
-
+                       
                       <div id="product-list" class="row pb-4">
                             @foreach($products as $product)
                                 @php
@@ -166,7 +163,7 @@
                                                 <div class="price-box">
                                                     <span class="product-price">${{ number_format($product->product_price ?? 0, 2) }}</span>
                                                 </div>
-                                                <div class="product-action">
+                                                <!--<div class="product-action">
                                                     <a href="javascript:;" class="btn btn-primary btn-lg rounded-pill mt-4 addToCartBtn"                                                    
                                                         data-product-id="{{ $product->product_id }}"
                                                         data-product-name="{{ $product->product_name }}"
@@ -176,7 +173,7 @@
                                                         <i class="icon-shopping-cart"></i>
                                                         Add to Cart
                                                     </a>
-                                                </div>
+                                                </div>-->
                                             </div>
                                         </div>
                                     </div>
@@ -424,16 +421,6 @@ function loadMoreProducts() {
                             ${oldPriceHtml}
                             <span class="product-price">${{ number_format($product->product_price ?? 0, 2) }}</span>
                         </div>                        
-                        <div class="product-action">
-                            <a href="javascript:;" class="btn btn-primary btn-lg rounded-pill mt-4 addToCartBtn"
-                               data-product-id="${product.product_id}"
-                               data-product-name="${product.product_name}"
-                               data-product-price="${product.product_price}"
-                               data-product-filepath="${filePath}" style="color: white;">
-                                <i class="icon-shopping-cart"></i>
-                                <span>ADD TO CART</span>
-                            </a>
-                        </div>
                     </div>
                 </div>
             </div>

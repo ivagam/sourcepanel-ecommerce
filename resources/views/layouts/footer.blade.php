@@ -5,31 +5,16 @@
 						<div class="col-lg-3 col-sm-6">
 							<div class="widget">
 								<h4 class="widget-title">Contact Info</h4>
-								<ul class="contact-info">
-									<li>
-										<span class="contact-info-label">Address:</span>123 Street Name, City, England
-									</li>
-									<li>
-										<span class="contact-info-label">Phone:</span><a href="tel:">(123)
-											456-7890</a>
-									</li>
-									<li>
-										<span class="contact-info-label">Email:</span> <a
-											href="mailto:mail@example.com">mail@example.com</a>
-									</li>
-									<li>
-										<span class="contact-info-label">Working Days/Hours:</span>
-										Mon - Sun / 9:00 AM - 8:00 PM
-									</li>
-								</ul>
-								<div class="social-icons">
-									<a href="#" class="social-icon social-facebook icon-facebook" target="_blank"
-										title="Facebook"></a>
-									<a href="#" class="social-icon social-twitter icon-twitter" target="_blank"
-										title="Twitter"></a>
-									<a href="#" class="social-icon social-instagram icon-instagram" target="_blank"
-										title="Instagram"></a>
-								</div><!-- End .social-icons -->
+								<div class="contact-image mt-3">
+        							<img src="{{ rtrim(env('SOURCE_PANEL_IMAGE_URL'), '/') . '/../Qrcode.jpeg' }}" alt="QR Code" class="img-fluid rounded">
+    							</div>
+
+								<div class="mt-1">
+									<a href="https://wa.me/qr/ZHOUTXW464FSB1" target="_blank" class="btn-success btn-sm">
+										Add me as a contact on WhatsApp
+									</a>
+								</div>
+								
 							</div><!-- End .widget -->
 						</div><!-- End .col-lg-3 -->
 
