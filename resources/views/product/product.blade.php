@@ -135,6 +135,12 @@
                         <div class="col-lg-7 col-md-6 product-single-details">
                             <h1 class="product-title">{{ $product->product_name }}</h1>
 
+                            @if(session('frontend'))
+                                <a target="_blank" href="{{ env('SOURCE_PANEL_URL') }}/product/editProduct/{{ $product->product_id }}">
+                                    Edit
+                                </a>
+                            @endif
+
                             <div class="product-nav">
                                 <div class="product-prev">
                                     <a href="#">
@@ -213,8 +219,7 @@
                                     data-product-price="{{ $product->product_price }}"
                                     data-product-filepath="{{ $image->file_path }}">
                                     Add to Cart
-                                    </a>
-
+                                </a>                                
 
                                 <a href="cart.html" class="btn btn-gray view-cart d-none">View cart</a>
                             </div><!-- End .product-action -->

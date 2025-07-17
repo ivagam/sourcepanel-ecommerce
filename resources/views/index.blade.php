@@ -163,6 +163,14 @@
                                                 <div class="price-box">
                                                     <span class="product-price">${{ number_format($product->product_price ?? 0, 2) }}</span>
                                                 </div>
+
+                                                @if(session('frontend'))
+                                                    <a target="_blank" href="{{ env('SOURCE_PANEL_URL') }}/product/editProduct/{{ $product->product_id }}">
+                                                        Edit
+                                                    </a>
+                                                @endif
+
+
                                                 <!--<div class="product-action">
                                                     <a href="javascript:;" class="btn btn-primary btn-lg rounded-pill mt-4 addToCartBtn"                                                    
                                                         data-product-id="{{ $product->product_id }}"
@@ -334,7 +342,9 @@
     <script src="assets/js/main.min.js"></script>
 
    <script>
+const SOURCE_PANEL_URL = "{{ env('SOURCE_PANEL_URL') }}";
 const SOURCE_PANEL_IMAGE_URL = "{{ env('SOURCE_PANEL_IMAGE_URL') }}";
+const isLoggedIn = {{ session('logged_in', false) ? 'true' : 'false' }};    
 
 let offset = {{ count($products) }};
  let totalProducts = {{ $totalProducts }};
@@ -419,8 +429,15 @@ function loadMoreProducts() {
                         <p class="product-description">${product.description ?? 'No description available.'}</p>
                         <div class="price-box">
                             ${oldPriceHtml}
-                            <span class="product-price">${{ number_format($product->product_price ?? 0, 2) }}</span>
-                        </div>                        
+                            <span class="product-price">${parseFloat(product.product_price ?? 0).toFixed(2)}</span>
+                        </div>
+                        ${isLoggedIn ? `
+                            <a href="${SOURCE_PANEL_URL}/product/editProduct/${product.product_id}"
+                                class="btn rounded-pill mt-4"
+                                style="background-color: #5bc0de; color: #fff; padding: 10px 20px; text-align: center; font-weight: 500;">
+                                Edit
+                            </a>
+                        ` : ''}
                     </div>
                 </div>
             </div>

@@ -128,7 +128,7 @@
 							<img alt="phone" src="{{ asset('assets/images/phone.png') }}" width="30" height="30" class="pb-1">
 							<h6><span>Call us now</span><a href="tel:#" class="text-dark font1">+123 4567 890</a></h6>
 						</div>
-
+						
 						<!--<a href="{{ route('login') }}" class="header-icon" title="login"><i class="icon-user-2"></i></a>
 
 						<a href="{{ route('wishlist.index') }}" class="header-icon" title="wishlist"><i class="icon-wishlist-2"></i></a>-->
@@ -215,6 +215,13 @@
 							</div><!-- End .dropdown-menu -->
 						</div><!-- End .dropdown -->
 					</div><!-- End .header-right -->
+					<div class="user-logout ml-3">
+						@if(session('logged_in'))
+						<form method="POST" action="{{ route('logout') }}" style="margin: 0;">
+							@csrf
+							<button type="submit" class="btn btn-sm btn-outline-primary">Logout</button>
+						</form>
+						@endif
 				</div><!-- End .container -->
 			</div><!-- End .header-middle -->
 

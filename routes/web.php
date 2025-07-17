@@ -13,8 +13,8 @@ Route::get('/live-search', [HomeController::class, 'liveSearch'])->name('live.se
 Route::get('/documentation', [HomeController::class, 'documentation'])->name('documentation');
 Route::post('/load-more-products', [HomeController::class, 'loadMore'])->name('products.load.more');
 
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
+Route::get('/login', [HomeController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [HomeController::class, 'login']);
 
 Route::get('/forgot-password', [AuthController::class, 'showForgotForm'])->name('forgot.password');
 Route::post('/forgot-password', [AuthController::class, 'sendResetLink']);
