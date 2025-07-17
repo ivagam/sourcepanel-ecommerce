@@ -161,9 +161,11 @@
                                                 </h3>
                                                 <p class="product-description">{{ $product->description ?? 'No description available.' }}</p>
                                                 <div class="price-box">
-                                                    <span class="product-price">${{ number_format($product->product_price ?? 0, 2) }}</span>
+                                                    <span class="product-price">${{ number_format($product->product_price ?? 0, 2) }}</span><br>                                                    
                                                 </div>
-
+                                                <div>
+                                                    <span style="color: red; font-size: 15px;">+ shipping fees</span>
+                                                </div>
                                                 @if(session('frontend'))
                                                     <a target="_blank" href="{{ env('SOURCE_PANEL_URL') }}/product/editProduct/{{ $product->product_id }}">
                                                         Edit

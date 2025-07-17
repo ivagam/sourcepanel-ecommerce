@@ -248,6 +248,17 @@
 
 						<ul class="menu">
 							<li><a href="{{ route('home') }}">Home</a></li>
+							<li><a href="{{ url()->current() }}?category=1">Watches</a></li>
+							<li><a href="{{ url()->current() }}?category=Handbags">Handbags</a></li>
+							<li><a href="{{ url()->current() }}?category=Clothings">Clothings</a></li>
+							<li><a href="{{ url()->current() }}?category=Shoes">Shoes</a></li>
+							<li><a href="{{ url()->current() }}?category=Belts">Belts</a></li>
+							<li><a href="{{ url()->current() }}?category=Jewelery">Jewelery</a></li>
+							<li><a href="{{ url()->current() }}?category=Glassware">Glassware</a></li>
+							<li><a href="{{ url()->current() }}?category=Others">Others</a></li>
+							<li><a href="{{ url()->current() }}?page=reviews">Reviews</a></li>
+							<li><a href="{{ url()->current() }}?page=about-us">About Us</a></li>
+							<li><a href="{{ url()->current() }}?page=contact-us">Contact Us</a></li>
 							@php renderCategoryTree($categories); @endphp
 						</ul>
 					</nav>
