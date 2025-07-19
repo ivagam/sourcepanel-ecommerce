@@ -57,6 +57,7 @@
 
                     <div class="row">
                         <div class="col-lg-5 col-md-6 product-single-gallery">
+                            
                             <div class="product-slider-container">
                                 <div class="label-group">
                                     <div class="product-label label-hot">HOT</div>
@@ -66,46 +67,39 @@
                                     </div>
                                 </div>
 
-                                <div class="product-single-carousel owl-carousel owl-theme show-nav-hover">
-                                    @php
-                                    $videoExtensions = ['mp4', 'mov', 'avi', 'webm'];
-                                @endphp
-
-                                @foreach ($product->images->sortBy('serial_no') as $image)
-                                    @php
-                                        $ext = strtolower(pathinfo($image->file_path, PATHINFO_EXTENSION));
-                                        $isVideo = in_array($ext, $videoExtensions);
-                                        $mediaUrl = env('SOURCE_PANEL_IMAGE_URL') . $image->file_path;
-                                    @endphp
-
-                                    <div class="product-item">
-                                        @if($isVideo)
-                                            <video class="product-single-image"
-                                                src="{{ $mediaUrl }}"
-                                                data-zoom-image="{{ $mediaUrl }}"
-                                                width="468" height="468"
-                                                muted autoplay loop playsinline
-                                                style="object-fit: cover;">
-                                                Your browser does not support the video tag.
-                                            </video>
-                                        @else
-                                            <img class="product-single-image"
-                                                src="{{ $mediaUrl }}"
-                                                data-zoom-image="{{ $mediaUrl }}"
-                                                width="468" height="468"
-                                                alt="product" />
-                                        @endif
-                                    </div>
-                                @endforeach
-                                </div>
+                                
                                 <!-- End .product-single-carousel -->
                                 <span class="prod-full-screen">
                                     <i class="icon-plus"></i>
                                 </span>
                             </div>
 
+                            
+
+                           <div class="product-single-carousel owl-carousel owl-theme show-nav-hover product-main-preview">
+                                @php
+                                    $mainImage = optional($product->images->sortBy('serial_no')->first())->file_path;
+                                    $mainExt = strtolower(pathinfo($mainImage, PATHINFO_EXTENSION));
+                                    $mediaUrl = env('SOURCE_PANEL_IMAGE_URL') . $mainImage;
+                                @endphp
+                            <div class="product-item">
+                                @if(in_array($mainExt, ['mp4', 'mov', 'avi', 'webm']))
+                                    <video id="mainProductMedia" width="100%" autoplay muted loop playsinline
+                                        style="object-fit: cover; border-radius: 6px;">
+                                        <source src="{{ $mediaUrl }}" type="video/{{ $mainExt }}">
+                                    </video>
+                                @else
+                                    <img id="mainProductMedia" src="{{ $mediaUrl }}" alt="{{ $product->product_name }}"
+                                        style="width: 100%; object-fit: cover; border-radius: 6px;" />
+                                @endif
+                                </div>
+                                <span class="prod-full-screen">
+                                            <i class="icon-plus"></i>
+                                        </span>
+                            </div>
+
                             <div class="prod-thumbnail owl-dots">
-                               @php
+                                @php
                                     $videoExtensions = ['mp4', 'mov', 'avi', 'webm'];
                                 @endphp
 
@@ -116,24 +110,32 @@
                                         $mediaUrl = env('SOURCE_PANEL_IMAGE_URL') . $image->file_path;
                                     @endphp
 
-                                    <div class="owl-dot">
+                                    <div class="owl-dot"
+                                        data-src="{{ $mediaUrl }}"
+                                        data-type="{{ $isVideo ? 'video' : 'image' }}"
+                                        data-ext="{{ $ext }}"
+                                        style="cursor:pointer;">
                                         @if($isVideo)
                                             <video width="110" height="110" muted autoplay loop preload="metadata" playsinline
                                                 style="object-fit: cover; border-radius: 4px;">
                                                 <source src="{{ $mediaUrl }}" type="video/{{ $ext }}">
-                                                Your browser does not support the video tag.
                                             </video>
                                         @else
-                                            <img src="{{ $mediaUrl }}" width="110" height="110" alt="product-thumbnail" style="object-fit: cover; border-radius: 4px;" />
+                                            <img src="{{ $mediaUrl }}" width="110" height="110" alt="product-thumbnail"
+                                                style="object-fit: cover; border-radius: 4px;" />
                                         @endif
                                     </div>
                                 @endforeach
-
                             </div>
+
                         </div><!-- End .product-single-gallery -->
+
+                        
 
                         <div class="col-lg-7 col-md-6 product-single-details">
                             <h1 class="product-title">{{ $product->product_name }}</h1>
+
+                            
 
                             @if(session('frontend'))
                                 <a target="_blank" href="{{ env('SOURCE_PANEL_URL') }}/product/editProduct/{{ $product->product_id }}">
@@ -176,10 +178,13 @@
                             </div>
                           
                             <hr class="short-divider">
-
+                            @php
+                                $firstVariant = $variants->first();
+                            @endphp
                             <div class="price-box">
-                                <span class="product-price">${{ number_format($product->product_price, 2) }}</span>
+                                <span id="variant-price" class="product-price">${{ number_format($firstVariant->product_price, 2) }}</span>
                             </div>
+                            
                             <!-- End .price-box -->
 
                             <div class="product-desc">
@@ -212,12 +217,17 @@
                                     <input class="horizontal-quantity form-control" type="number" min="1" value="1" id="qty">
                                 </div>
 
+                                @php
+                                    $firstVariant = $variants->first();
+                                    $firstImage = optional($firstVariant->images->sortBy('serial_no')->first())->file_path;                                    
+                                @endphp
+
                                 <a href="javascript:;"
                                     class="btn btn-dark mr-2 addToCartBtn"
-                                    data-product-id="{{ $product->product_id }}"
+                                    data-product-id="{{ $firstVariant->product_id }}"
                                     data-product-name="{{ $product->product_name }}"
-                                    data-product-price="{{ $product->product_price }}"
-                                    data-product-filepath="{{ $image->file_path }}">
+                                    data-product-price="{{ $firstVariant->product_price }}"
+                                    data-product-filepath="{{ $firstImage }}">
                                     Add to Cart
                                 </a>                                
 
@@ -278,245 +288,79 @@
                             <div class="product-desc-content">
                                 {{ $product->description }}
                             </div><!-- End .product-desc-content -->
-                        </div><!-- End .tab-pane -->
+                            <div class="d-flex align-items-center mb-3">
+                                <label class="mr-2" style="min-width: 60px;">Colors:</label>
+                                <div class="d-flex flex-wrap">
+                                
+                                    @foreach($variants as $variant)
+                                        @php
+                                            $firstImage = optional($variant->images->sortBy('serial_no')->first())->file_path;
+                                            $variantExt = strtolower(pathinfo($firstImage, PATHINFO_EXTENSION));
 
-                       
+                                            $imagesJson = $variant->images->sortBy('serial_no')->map(function($img) {
+                                                $ext = strtolower(pathinfo($img->file_path, PATHINFO_EXTENSION));
+                                                return [
+                                                    'url' => env('SOURCE_PANEL_IMAGE_URL') . $img->file_path,
+                                                    'ext' => $ext,
+                                                    'type' => in_array($ext, ['mp4', 'mov', 'avi', 'webm']) ? 'video' : 'image'
+                                                ];
+                                            });
+                                        @endphp
 
-                        @if (!empty($product->color) || !empty($product->size))
-                            <div class="tab-pane fade" id="product-tags-content" role="tabpanel"
-                                aria-labelledby="product-tab-tags">
-                                <table class="table table-striped mt-2">
-                                    <tbody>
-                                        @if (!empty($product->color))
-                                        <tr>
-                                            <th>Color</th>
-                                            <td>
-                                                <div style="display: flex; align-items: center; gap: 6px;">
-                                                    <div style="width: 16px; height: 16px; background-color: {{ $product->color }}; border: 1px solid #ccc;"></div>
-                                                    <span>{{ $product->color }}</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @endif
+                                        <div class="color-swatch"
+                                            data-media="{{ env('SOURCE_PANEL_IMAGE_URL') . $firstImage }}"
+                                            data-ext="{{ $variantExt }}"
+                                            data-product-id="{{ $variant->product_id }}"
+                                            data-size="{{ $variant->size }}"
+                                            data-price="{{ $variant->product_price }}"
+                                            data-images='@json($imagesJson)'
+                                            style="width: 20px; height: 20px; background-color: {{ $variant->color }}; border-radius: 50%; margin-right: 8px; border: 2px solid #ccc; cursor: pointer;">
+                                        </div>
+                                    @endforeach
 
-                                        @if (!empty($product->size))
-                                        <tr>
-                                            <th>Size</th>
-                                            <td>{{ $product->size }}</td>
-                                        </tr>
-                                        @endif
-                                    </tbody>
-                                </table>
+                                </div>
                             </div>
-                            @endif
-                        </div>
-                    </div>
 
+                            <p class="product-size">Size: <span id="variant-size">{{ $product->size }}</span></p>
+                        </div><!-- End .tab-pane -->
+                        
                         
                     </div><!-- End .tab-content -->
                 </div><!-- End .product-single-tabs -->
 
                 <div class="products-section pt-0">
                     <h2 class="section-title">Related Products</h2>
-
-                    <div class="products-slider 5col owl-carousel owl-theme dots-top dots-small">
-                        <div class="product-default inner-quickview inner-icon">
-                            <figure class="img-effect">
-                                <a href="demo1-product.html">
-                                    <img src="../assets/images/demoes/demo1/products/product-1.jpg" width="205"
-                                        height="205" alt="product">
-                                    <img src="../assets/images/demoes/demo1/products/product-1-2.jpg" width="205"
-                                        height="205" alt="product">
-                                </a>
-                                <div class="label-group">
-                                    <div class="product-label label-hot">HOT</div>
-                                    <div class="product-label label-sale">-20%</div>
-                                </div>
-                                <div class="btn-icon-group">
-                                    <a href="#" class="btn-icon btn-add-cart product-type-simple"><i
-                                            class="icon-shopping-cart"></i></a>
-                                </div>
-                                <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View">Quick
-                                    View</a>
-
-                                <div class="product-countdown-container">
-                                    <span class="product-countdown-title">offer ends in:</span>
-                                    <div class="product-countdown countdown-compact" data-until="2021, 10, 5"
-                                        data-compact="true">
-                                    </div><!-- End .product-countdown -->
-                                </div><!-- End .product-countdown-container -->
-                            </figure>
-                            <div class="product-details">
-                                <div class="category-wrap">
-                                    <div class="category-list">
-                                        <a href="demo1-shop.html" class="product-category">category</a>
+                        <div class="products-slider 5col owl-carousel owl-theme dots-top dots-small">
+                            @foreach($relatedProducts as $related)
+                                @php
+                                    $firstImage = optional($related->images->sortBy('serial_no')->first())->file_path;
+                                @endphp
+                                <div class="product-default inner-quickview inner-icon">
+                                    <figure class="img-effect">
+                                        <a href="{{ url('product/' . $related->product_url) }}">
+                                            <img src="{{ env('SOURCE_PANEL_IMAGE_URL') . $firstImage }}" width="205" height="205" alt="{{ $related->product_name }}">
+                                        </a>
+                                                                                
+                                    </figure>
+                                    <div class="product-details">
+                                        <div class="category-wrap">
+                                            <div class="category-list">
+                                                <a href="{{ url()->current() }}?category={{ $related->category_id }}" class="product-category">
+                                                    {{ $related->category->category_name ?? 'Category' }}
+                                                </a>
+                                            </div>                                            
+                                        </div>
+                                        <h3 class="product-title">
+                                            <a href="{{ url('product/' . $related->product_url) }}">{{ $related->product_name }}</a>
+                                        </h3>
+                                        <div class="price-box">
+                                            <span class="product-price">${{ number_format($related->product_price ?? 0, 2) }}</span>
+                                        </div>
                                     </div>
-                                    <a href="wishlist.html" title="Wishlist" class="btn-icon-wish"><i
-                                            class="icon-heart"></i></a>
                                 </div>
-                                <h3 class="product-title">
-                                    <a href="demo1-product.html">Black Grey Headset</a>
-                                </h3>
-                                <div class="ratings-container">
-                                    <div class="product-ratings">
-                                        <span class="ratings" style="width:100%"></span><!-- End .ratings -->
-                                        <span class="tooltiptext tooltip-top"></span>
-                                    </div><!-- End .product-ratings -->
-                                </div><!-- End .product-container -->
-                                <div class="price-box">
-                                    <span class="product-price">$9.00</span>
-                                </div><!-- End .price-box -->
-                            </div><!-- End .product-details -->
+                            @endforeach
                         </div>
-                        <div class="product-default inner-quickview inner-icon">
-                            <figure class="img-effect">
-                                <a href="demo1-product.html">
-                                    <img src="../assets/images/demoes/demo1/products/product-2.jpg" width="205"
-                                        height="205" alt="product" />
-                                </a>
-                                <div class="btn-icon-group">
-                                    <a href="demo1-product.html" class="btn-icon btn-add-cart"><i
-                                            class="fa fa-arrow-right"></i>
-                                    </a>
-                                </div>
-                                <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View">Quick
-                                    View</a>
-                            </figure>
-                            <div class="product-details">
-                                <div class="category-wrap">
-                                    <div class="category-list">
-                                        <a href="demo1-shop.html" class="product-category">category</a>
-                                    </div>
-                                    <a href="wishlist.html" title="Wishlist" class="btn-icon-wish"><i
-                                            class="icon-heart"></i></a>
-                                </div>
-                                <h3 class="product-title">
-                                    <a href="demo1-product.html">Battery Charger</a>
-                                </h3>
-                                <div class="ratings-container">
-                                    <div class="product-ratings">
-                                        <span class="ratings" style="width:100%"></span><!-- End .ratings -->
-                                        <span class="tooltiptext tooltip-top"></span>
-                                    </div><!-- End .product-ratings -->
-                                </div><!-- End .product-container -->
-                                <div class="price-box">
-                                    <span class="product-price">$9.00</span>
-                                </div><!-- End .price-box -->
-                            </div><!-- End .product-details -->
-                        </div>
-                        <div class="product-default inner-quickview inner-icon">
-                            <figure class="img-effect">
-                                <a href="demo1-product.html">
-                                    <img src="../assets/images/demoes/demo1/products/product-3.jpg" width="205"
-                                        height="205" alt="product">
-                                    <img src="../assets/images/demoes/demo1/products/product-3-2.jpg" width="205"
-                                        height="205" alt="product">
-                                </a>
-                                <div class="btn-icon-group">
-                                    <a href="#" class="btn-icon btn-add-cart product-type-simple"><i
-                                            class="icon-shopping-cart"></i></a>
-                                </div>
-                                <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View">Quick
-                                    View</a>
-                            </figure>
-                            <div class="product-details">
-                                <div class="category-wrap">
-                                    <div class="category-list">
-                                        <a href="demo1-shop.html" class="product-category">category</a>
-                                    </div>
-                                    <a href="wishlist.html" title="Wishlist" class="btn-icon-wish"><i
-                                            class="icon-heart"></i></a>
-                                </div>
-                                <h3 class="product-title">
-                                    <a href="demo1-product.html">Brown Bag</a>
-                                </h3>
-                                <div class="ratings-container">
-                                    <div class="product-ratings">
-                                        <span class="ratings" style="width:100%"></span><!-- End .ratings -->
-                                        <span class="tooltiptext tooltip-top"></span>
-                                    </div><!-- End .product-ratings -->
-                                </div><!-- End .product-container -->
-                                <div class="price-box">
-                                    <span class="product-price">$9.00</span>
-                                </div><!-- End .price-box -->
-                            </div><!-- End .product-details -->
-                        </div>
-                        <div class="product-default inner-quickview inner-icon">
-                            <figure class="img-effect">
-                                <a href="demo1-product.html">
-                                    <img src="../assets/images/demoes/demo1/products/product-4.jpg" width="205"
-                                        height="205" alt="product">
-                                    <img src="../assets/images/demoes/demo1/products/product-4-2.jpg" width="205"
-                                        height="205" alt="product">
-                                </a>
-                                <div class="btn-icon-group">
-                                    <a href="#" class="btn-icon btn-add-cart product-type-simple"><i
-                                            class="icon-shopping-cart"></i></a>
-                                </div>
-                                <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View">Quick
-                                    View</a>
-                            </figure>
-                            <div class="product-details">
-                                <div class="category-wrap">
-                                    <div class="category-list">
-                                        <a href="demo1-shop.html" class="product-category">category</a>
-                                    </div>
-                                    <a href="wishlist.html" title="Wishlist" class="btn-icon-wish"><i
-                                            class="icon-heart"></i></a>
-                                </div>
-                                <h3 class="product-title">
-                                    <a href="demo1-product.html">Casual Note Bag</a>
-                                </h3>
-                                <div class="ratings-container">
-                                    <div class="product-ratings">
-                                        <span class="ratings" style="width:100%"></span><!-- End .ratings -->
-                                        <span class="tooltiptext tooltip-top"></span>
-                                    </div><!-- End .product-ratings -->
-                                </div><!-- End .product-container -->
-                                <div class="price-box">
-                                    <span class="product-price">$9.00</span>
-                                </div><!-- End .price-box -->
-                            </div><!-- End .product-details -->
-                        </div>
-                        <div class="product-default inner-quickview inner-icon">
-                            <figure class="img-effect">
-                                <a href="demo1-product.html">
-                                    <img src="../assets/images/demoes/demo1/products/product-5.jpg" width="205"
-                                        height="205" alt="product">
-                                    <img src="../assets/images/demoes/demo1/products/product-5-2.jpg" width="205"
-                                        height="205" alt="product">
-                                </a>
-                                <div class="btn-icon-group">
-                                    <a href="demo1-product.html" class="btn-icon btn-add-cart"><i
-                                            class="fa fa-arrow-right"></i>
-                                    </a>
-                                </div>
-                                <a href="ajax/product-quick-view.html" class="btn-quickview" title="Quick View">Quick
-                                    View</a>
-                            </figure>
-                            <div class="product-details">
-                                <div class="category-wrap">
-                                    <div class="category-list">
-                                        <a href="demo1-shop.html" class="product-category">category</a>
-                                    </div>
-                                    <a href="wishlist.html" title="Wishlist" class="btn-icon-wish"><i
-                                            class="icon-heart"></i></a>
-                                </div>
-                                <h3 class="product-title">
-                                    <a href="demo1-product.html">Porto Extended Camera</a>
-                                </h3>
-                                <div class="ratings-container">
-                                    <div class="product-ratings">
-                                        <span class="ratings" style="width:100%"></span><!-- End .ratings -->
-                                        <span class="tooltiptext tooltip-top"></span>
-                                    </div><!-- End .product-ratings -->
-                                </div><!-- End .product-container -->
-                                <div class="price-box">
-                                    <span class="product-price">$9.00</span>
-                                </div><!-- End .price-box -->
-                            </div><!-- End .product-details -->
-                        </div>
-                    </div><!-- End .products-slider -->
+                   
                 </div><!-- End .products-section -->
 
                 <hr class="mt-0 m-b-5" />
@@ -1032,75 +876,140 @@
     <!-- Main JS File -->
     <script src="../assets/js/main.min.js"></script>
 
-    <script>
-    $(document).ready(function () {
-        $('.addToCartBtn').click(function (e) {
-            e.preventDefault();
+<script>
+$(document).ready(function () {
+    // ✅ Add to Cart
+    $('.addToCartBtn').click(function (e) {
+        e.preventDefault();
 
-            console.log('Add to Cart button clicked');
+        let productId = $(this).data('product-id');
+        let productName = $(this).data('product-name');
+        let productPrice = $(this).data('product-price');
+        let qty = $('#qty').val();
+        let filePath = $(this).data('product-filepath');
 
-            let productId = $(this).data('product-id');
-            let productName = $(this).data('product-name');
-            let productPrice = $(this).data('product-price');
-            let qty = $('#qty').val(); // Make sure this qty input is unique per product or handled properly
-            let filePath = $(this).data('product-filepath');
-
-            console.log('Sending AJAX request with:', {
-                productId,
-                productName,
-                productPrice,
+        $.ajax({
+            url: "{{ route('add.to.cart') }}",
+            method: "POST",
+            data: {
+                _token: '{{ csrf_token() }}',
+                product_id: productId,
+                product_name: productName,
+                product_price: productPrice,
                 quantity: qty,
                 file_path: filePath
-            });
-
-            $.ajax({
-                url: "{{ route('add.to.cart') }}",
-                method: "POST",
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    product_id: productId,
-                    product_name: productName,
-                    product_price: productPrice,
-                    quantity: qty,
-                    file_path: filePath
-                },
-                success: function(response) {
-                    alert(response.success);
-                    location.reload();
-                },
-                error: function (xhr) {
-                    console.error('AJAX error response:', xhr.responseText);
-                    alert("Failed to add to cart");
-                }
-            });
+            },
+            success: function(response) {
+                alert(response.success);
+                location.reload();
+            },
+            error: function (xhr) {
+                alert("Failed to add to cart");
+                console.error(xhr.responseText);
+            }
         });
     });
+});
 
-    document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll('.add-wishlist').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            let productId = this.getAttribute('data-id');
+document.addEventListener("DOMContentLoaded", function () {
+    const mainContainer = document.querySelector('.product-main-preview');
+    const thumbnailContainer = document.querySelector('.prod-thumbnail');
 
-            fetch("{{ route('wishlist.add') }}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                },
-                body: JSON.stringify({
-                    product_id: productId
-                }),
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    alert(data.success);
-                } else {
-                    alert(data.error);
-                }
+    if (!mainContainer || !thumbnailContainer) return;
+
+    function updateMainMedia(src, type, ext) {
+        
+        if (type === 'video') {
+            
+            mainContainer.innerHTML = `
+                <video width="100%" autoplay muted loop playsinline style="object-fit: cover; border-radius: 6px;">
+                    <source src="${src}" type="video/${ext}">
+                </video>`;
+        } else {
+            mainContainer.innerHTML = `
+                <img src="${src}" alt="Product" style="width: 100%; object-fit: cover; border-radius: 6px;" />`;
+        }
+    }
+
+    function bindThumbnailEvents() {
+        document.querySelectorAll('.owl-dot').forEach(dot => {
+            dot.addEventListener('click', function () {
+                updateMainMedia(this.dataset.src, this.dataset.type, this.dataset.ext);
             });
         });
+    }
+    bindThumbnailEvents();
+
+    document.querySelectorAll('.color-swatch').forEach(swatch => {
+    swatch.addEventListener('click', function () {
+        let media = this.dataset.media;
+        media = media.replace(/^.*\/uploads\//, '');
+        const fullMediaUrl = "{{ env('SOURCE_PANEL_IMAGE_URL') }}" + media;
+        const ext = this.dataset.ext;
+        const productId = this.dataset.productId;
+        const size = this.dataset.size;
+        const price = this.dataset.price;
+
+        let images = [];
+        try {
+            images = JSON.parse(this.dataset.images);
+        } catch (e) {
+            console.error('Invalid JSON in data-images', e);
+        }
+
+        updateMainMedia(fullMediaUrl, ['mp4','mov','avi','webm'].includes(ext) ? 'video' : 'image', ext);
+
+        let thumbnailsHtml = '';
+        images.forEach(img => {
+            if (img.type === 'video') {
+                thumbnailsHtml += `
+                    <div class="owl-dot" data-src="${img.url}" data-type="video" data-ext="${img.ext}">
+                        <video width="110" height="110" muted autoplay loop playsinline style="object-fit: cover; border-radius: 4px;">
+                            <source src="${img.url}" type="video/${img.ext}">
+                        </video>
+                    </div>`;
+            } else {
+                thumbnailsHtml += `
+                    <div class="owl-dot" data-src="${img.url}" data-type="image" data-ext="${img.ext}">
+                        <img src="${img.url}" width="110" height="110" alt="Thumbnail" style="object-fit: cover; border-radius: 4px;" />
+                    </div>`;
+            }
+        });
+
+        // Destroy old carousel
+        if ($('.prod-thumbnail').hasClass('owl-loaded')) {
+            $('.prod-thumbnail').trigger('destroy.owl.carousel')
+                .removeClass('owl-loaded owl-carousel owl-theme show-nav-hover');
+            $('.prod-thumbnail').find('.owl-stage-outer').children().unwrap();
+        }
+
+        // Replace thumbnails
+        thumbnailContainer.innerHTML = thumbnailsHtml;
+
+        // Reinitialize Owl Carousel with default style
+        $('.prod-thumbnail')
+            .addClass('owl-carousel owl-theme show-nav-hover')
+            .owlCarousel({
+                items: 4,
+                margin: 10,
+                nav: true,
+                dots: false
+            });
+
+        bindThumbnailEvents();
+
+        document.getElementById('variant-size').innerText = size;
+        document.getElementById('variant-price').innerText = `$${parseFloat(price).toFixed(2)}`;
+
+        const cartBtn = document.querySelector('.addToCartBtn');
+        if (cartBtn) {
+            cartBtn.dataset.productId = productId;
+            cartBtn.dataset.productPrice = price;
+            cartBtn.dataset.productFilepath = media; // Ensure media is relative if needed
+            cartBtn.dataset.productName = document.querySelector('.product-title')?.innerText || '';
+        }
     });
+});
 });
 </script>
 

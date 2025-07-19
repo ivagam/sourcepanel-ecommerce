@@ -114,7 +114,7 @@
                                     $secondMedia = $media->skip(1)->first();
                                 @endphp
                                 @if($firstMedia && !empty($firstMedia->file_path))
-                                    <div class="col-12 col-sm-6 col-md-3 mb-4">  {{-- ✅ 3 per row on md+, 2 per row on sm --}}
+                                    <div class="col-12 col-sm-6 col-md-3">  {{-- ✅ 3 per row on md+, 2 per row on sm --}}
                                         <div class="product-default">
                                             <figure>
                                                 <a href="{{ url('product/' . $product->product_url) }}">
@@ -432,6 +432,9 @@ function loadMoreProducts() {
                         <div class="price-box">
                             ${oldPriceHtml}
                             <span class="product-price">${parseFloat(product.product_price ?? 0).toFixed(2)}</span>
+                        </div>
+                        <div>
+                            <span style="color: red; font-size: 15px;">+ shipping fees</span>
                         </div>
                         ${isLoggedIn ? `
                             <a href="${SOURCE_PANEL_URL}/product/editProduct/${product.product_id}"

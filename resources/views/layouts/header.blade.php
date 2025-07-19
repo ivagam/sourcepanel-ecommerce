@@ -124,10 +124,10 @@
 							</form>
 						</div><!-- End .header-search -->
 
-						<div class="header-contact d-none d-lg-flex pl-4 pr-4">
+						<!--<div class="header-contact d-none d-lg-flex pl-4 pr-4">
 							<img alt="phone" src="{{ asset('assets/images/phone.png') }}" width="30" height="30" class="pb-1">
 							<h6><span>Call us now</span><a href="tel:#" class="text-dark font1">+123 4567 890</a></h6>
-						</div>
+						</div>-->
 						
 						<!--<a href="{{ route('login') }}" class="header-icon" title="login"><i class="icon-user-2"></i></a>
 
@@ -248,17 +248,17 @@
 
 						<ul class="menu">
 							<li><a href="{{ route('home') }}">Home</a></li>
-							<li><a href="{{ url()->current() }}?category=1">Watches</a></li>
-							<li><a href="{{ url()->current() }}?category=Handbags">Handbags</a></li>
-							<li><a href="{{ url()->current() }}?category=Clothings">Clothings</a></li>
-							<li><a href="{{ url()->current() }}?category=Shoes">Shoes</a></li>
-							<li><a href="{{ url()->current() }}?category=Belts">Belts</a></li>
-							<li><a href="{{ url()->current() }}?category=Jewelery">Jewelery</a></li>
-							<li><a href="{{ url()->current() }}?category=Glassware">Glassware</a></li>
-							<li><a href="{{ url()->current() }}?category=Others">Others</a></li>
-							<li><a href="{{ url()->current() }}?page=reviews">Reviews</a></li>
-							<li><a href="{{ url()->current() }}?page=about-us">About Us</a></li>
-							<li><a href="{{ url()->current() }}?page=contact-us">Contact Us</a></li>
+							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=1">Watches</a></li>
+							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Handbags">Handbags</a></li>
+							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Clothings">Clothings</a></li>
+							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Shoes">Shoes</a></li>
+							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Belts">Belts</a></li>
+							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Jewelery">Jewelery</a></li>
+							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Glassware">Glassware</a></li>
+							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Others">Others</a></li>
+							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?page=reviews">Reviews</a></li>
+							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?page=about-us">About Us</a></li>
+							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?page=contact-us">Contact Us</a></li>
 							@php renderCategoryTree($categories); @endphp
 						</ul>
 					</nav>

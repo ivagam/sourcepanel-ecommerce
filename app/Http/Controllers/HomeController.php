@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Banner;
 use App\Models\Admin;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -26,23 +27,40 @@ class HomeController extends Controller
     }
     public function index(Request $request)
     {
-        $isLoggedIn = session('frontend') == 'yes'?true:false;
-        // your existing product/category/brand queries here...
+        $isLoggedIn = session('frontend') == 'yes' ? true : false;
+
         $initialLimit = 12;
         $categoryId = $request->query('category');
 
-        $query = Product::with(['images', 'category'])->latest();
+        $productBaseQuery = Product::query();
 
         if ($categoryId) {
-            $query->where('category_id', $categoryId);
+            $matchingCategoryIds = Category::whereRaw("FIND_IN_SET(?, category_ids)", [$categoryId])
+                ->pluck('category_id')
+                ->toArray();
+
+            $matchingCategoryIds[] = $categoryId;
+
+            $productBaseQuery->whereIn('category_id', $matchingCategoryIds);
         }
 
-        $totalProducts = $query->count();
-        $products = $query->take($initialLimit)->get();
+        $subQuery = $productBaseQuery
+            ->select(DB::raw('MIN(product_id) as id'))
+            ->groupBy('product_url');
+
+        $totalProducts = $subQuery->get()->count();
+
+        $productIds = $subQuery->pluck('id')->toArray();
+
+        $products = Product::with(['images', 'category'])
+            ->whereIn('product_id', $productIds)
+            ->latest()
+            ->take($initialLimit)
+            ->get();
 
         $categories = Category::with('children')
-                    ->whereNull('subcategory_id')
-                    ->get();
+            ->whereNull('subcategory_id')
+            ->get();
 
         $brands = Brand::all();
         $banners = Banner::all();
