@@ -42,16 +42,7 @@
 
 <body>
     <div class="page-wrapper">
-        <div class="top-notice text-white bg-dark">
-            <div class="container text-center">
-                <h5 class="d-inline-block mb-0">Get Up to <b>40% OFF</b> New-Season Styles</h5>
-                <a href="demo1-shop.html" class="category">MEN</a>
-                <a href="demo1-shop.html" class="category">WOMEN</a>
-                <small>* Limited time only.</small>
-                <button title="Close (Esc)" type="button" class="mfp-close">×</button>
-            </div>
-            <!-- End .container -->
-        </div>
+        
         <!-- End .top-notice -->
 
         @include('layouts.header')
@@ -66,41 +57,7 @@
                             </button>
                         </div>
                     @endif            
-                <div class="info-boxes-container row row-joined mb-2 font2">
-                    <!--<div class="info-box info-box-icon-left col-lg-4">
-                        <i class="icon-shipping"></i>
-
-                        <div class="info-box-content">
-                            <h4>FREE SHIPPING &amp; RETURN</h4>
-                            <p class="text-body">Free shipping on all orders over $99</p>
-                        </div>
-                    
-                    </div>
-                    
-
-                    <div class="info-box info-box-icon-left col-lg-4">
-                        <i class="icon-money"></i>
-
-                        <div class="info-box-content">
-                            <h4>MONEY BACK GUARANTEE</h4>
-                            <p class="text-body">100% money back guarantee</p>
-                        </div>
-                    
-                    </div>
-                    
-
-                    <div class="info-box info-box-icon-left col-lg-4">
-                        <i class="icon-support"></i>
-
-                        <div class="info-box-content">
-                            <h4>ONLINE SUPPORT 24/7</h4>
-                            <p class="text-body">Lorem ipsum dolor sit amet.</p>
-                        </div>
-                        
-                    </div>-->
-                    <!-- End .info-box -->
-                </div>
-
+             
                 <div class="row">
                     <div class="col-lg-9">                        
                         <!-- End .home-slider -->                       
@@ -122,8 +79,7 @@
                                                         {{-- First media --}}
                                                         @php $ext1 = strtolower(pathinfo($firstMedia->file_path, PATHINFO_EXTENSION)); @endphp
                                                         @if(in_array($ext1, $videoExtensions))
-                                                            <video class="preview-video" muted autoplay loop playsinline
-                                                                style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                                                            <video class="preview-video" muted autoplay loop playsinline controls style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
                                                                 <source src="{{ env('SOURCE_PANEL_IMAGE_URL') . $firstMedia->file_path }}" type="video/{{ $ext1 }}">
                                                             </video>
                                                         @else
@@ -157,14 +113,16 @@
                                                     </a>
                                                 </div>
                                                 <h3 class="product-title">
-                                                    <a href="{{ url('product/' . $product->product_url) }}">{{ $product->product_name }}</a>
+                                                    <a href="{{ url('product/' . $product->product_url) }}">{{ \Illuminate\Support\Str::title($product->product_name) }}</a>                                                    
                                                 </h3>
-                                                <p class="product-description">{{ $product->description ?? 'No description available.' }}</p>
+                                                @if(!empty($product->size))
+                                                    <p class="product-description">Size: {{ $product->size }}</p>
+                                                @endif
                                                 <div class="price-box">
                                                     <span class="product-price">${{ number_format($product->product_price ?? 0, 2) }}</span><br>                                                    
                                                 </div>
                                                 <div>
-                                                    <span style="color: red; font-size: 15px;">+ shipping fees</span>
+                                                    <span style="color: red; font-size: 12px;">+ shipping fees</span>
                                                 </div>
                                                 @if(session('frontend'))
                                                     <a target="_blank" href="{{ env('SOURCE_PANEL_URL') }}/product/editProduct/{{ $product->product_id }}">
@@ -425,13 +383,15 @@ function loadMoreProducts() {
                             </a>
                         </div>
                         <h3 class="product-title">
-                            <a href="product/${product.product_url}">${product.product_name}</a>
+                            <a href="product/${product.product_url}">
+                                ${product.product_name.toLowerCase().replace(/\b\w/g, char => char.toUpperCase())}
+                            </a>
                         </h3>
 
                         <p class="product-description">${product.description ?? 'No description available.'}</p>
                         <div class="price-box">
                             ${oldPriceHtml}
-                            <span class="product-price">${parseFloat(product.product_price ?? 0).toFixed(2)}</span>
+                            <span class="product-price">$${parseFloat(product.product_price ?? 0).toFixed(2)}</span>
                         </div>
                         <div>
                             <span style="color: red; font-size: 15px;">+ shipping fees</span>

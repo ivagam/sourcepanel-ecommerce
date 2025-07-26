@@ -15,24 +15,39 @@ class ProductController extends Controller
     }
 
      public function show($slug)
-    {
-        $product = Product::with('images', 'category') // Load category as well
+    {        
+        
+        $product = Product::with('images', 'category')
             ->where('product_url', $slug)
-            ->firstOrFail();
+            ->firstOrFail();            
 
+       
         $variants = Product::with('images')
             ->where('product_url', $slug)
             ->orderBy('size')
             ->get();
 
-        // Fetch related products from the same category
-        $relatedProducts = Product::with('images')
-            ->where('category_id', $product->category_id) // same category
-            ->where('product_id', '!=', $product->product_id) // exclude current product
-            ->take(10) // limit to 10 related products
-            ->get();
+        if (!empty($product->sku)) {
+            $relatedProducts = Product::with('images', 'category')
+                ->where('sku', $product->sku)
+                ->where('product_id', '!=', $product->product_id)
+                ->take(10)
+                ->get();
+        } else {
+            $relatedProducts = collect(); // return empty collection
+        }
 
-        return view('product.product', compact('product', 'variants', 'relatedProducts'));
+        $prevProduct = Product::with('images')
+            ->where('product_id', '<', $product->product_id)
+            ->orderBy('product_id', 'desc')
+            ->first();
+
+        $nextProduct = Product::with('images')
+            ->where('product_id', '>', $product->product_id)
+            ->orderBy('product_id', 'asc')
+            ->first();
+
+        return view('product.product', compact('product', 'variants', 'relatedProducts', 'prevProduct', 'nextProduct'));
     }
 
 }

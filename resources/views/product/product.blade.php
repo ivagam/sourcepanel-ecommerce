@@ -35,7 +35,14 @@
     <link rel="stylesheet" type="text/css" href="../assets/vendor/simple-line-icons/css/simple-line-icons.min.css">
     <link rel="stylesheet" type="text/css" href="../assets/vendor/fontawesome-free/css/all.min.css">
 </head>
+<style>
+    .product-media-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* space between items */
+}
 
+</style>
 <body>
     <div class="page-wrapper">
      @include('layouts.header')   
@@ -81,28 +88,26 @@
                                     $mainImage = optional($product->images->sortBy('serial_no')->first())->file_path;
                                     $mainExt = strtolower(pathinfo($mainImage, PATHINFO_EXTENSION));
                                     $mediaUrl = env('SOURCE_PANEL_IMAGE_URL') . $mainImage;
+                                    $videoExtensions = ['mp4', 'mov', 'avi', 'webm'];
                                 @endphp
-                            <div class="product-item">
-                                @if(in_array($mainExt, ['mp4', 'mov', 'avi', 'webm']))
-                                    <video id="mainProductMedia" width="100%" autoplay muted loop playsinline
-                                        style="object-fit: cover; border-radius: 6px;">
-                                        <source src="{{ $mediaUrl }}" type="video/{{ $mainExt }}">
-                                    </video>
-                                @else
-                                    <img id="mainProductMedia" src="{{ $mediaUrl }}" alt="{{ $product->product_name }}"
-                                        style="width: 100%; object-fit: cover; border-radius: 6px;" />
-                                @endif
+                                
+                                <div class="product-item">
+                                    @if(in_array($mainExt, $videoExtensions))
+                                        <video id="mainProductMedia" width="100%" autoplay muted loop playsinline controls
+                                            style="object-fit: cover; border-radius: 6px;">
+                                            <source src="{{ $mediaUrl }}" type="video/{{ $mainExt }}">
+                                        </video>
+                                    @else
+                                        <img id="mainProductMedia" src="{{ $mediaUrl }}" alt="{{ $product->product_name }}"
+                                            style="width: 100%; object-fit: cover; border-radius: 6px;" />
+                                    @endif
                                 </div>
                                 <span class="prod-full-screen">
-                                            <i class="icon-plus"></i>
-                                        </span>
+                                    <i class="icon-plus"></i>
+                                </span>
                             </div>
 
                             <div class="prod-thumbnail owl-dots">
-                                @php
-                                    $videoExtensions = ['mp4', 'mov', 'avi', 'webm'];
-                                @endphp
-
                                 @foreach ($product->images->sortBy('serial_no') as $image)
                                     @php
                                         $ext = strtolower(pathinfo($image->file_path, PATHINFO_EXTENSION));
@@ -115,8 +120,9 @@
                                         data-type="{{ $isVideo ? 'video' : 'image' }}"
                                         data-ext="{{ $ext }}"
                                         style="cursor:pointer;">
+
                                         @if($isVideo)
-                                            <video width="110" height="110" muted autoplay loop preload="metadata" playsinline
+                                            <video width="110" height="110" muted autoplay loop playsinline preload="metadata" controls
                                                 style="object-fit: cover; border-radius: 4px;">
                                                 <source src="{{ $mediaUrl }}" type="video/{{ $ext }}">
                                             </video>
@@ -127,15 +133,11 @@
                                     </div>
                                 @endforeach
                             </div>
-
                         </div><!-- End .product-single-gallery -->
 
-                        
-
+            
                         <div class="col-lg-7 col-md-6 product-single-details">
-                            <h1 class="product-title">{{ $product->product_name }}</h1>
-
-                            
+                            <h1 class="product-title">{{ \Illuminate\Support\Str::title($product->product_name) }}</h1>                           
 
                             @if(session('frontend'))
                                 <a target="_blank" href="{{ env('SOURCE_PANEL_URL') }}/product/editProduct/{{ $product->product_id }}">
@@ -144,37 +146,42 @@
                             @endif
 
                             <div class="product-nav">
-                                <div class="product-prev">
-                                    <a href="#">
-                                        <span class="product-link"></span>
+                                @if($prevProduct)
+                                    <div class="product-prev">
+                                        <a href="{{ url('product/' . $prevProduct->product_url) }}">
+                                            <span class="product-link"></span>
+                                            <span class="product-popup">
+                                                <span class="box-content">
+                                                    <img alt="product" width="150" height="150"
+                                                        src="{{ $prevProduct->images->first()?->file_path 
+                                                                ? env('SOURCE_PANEL_IMAGE_URL') . '/' . $prevProduct->images->first()->file_path 
+                                                                : asset('images/dummy.jpg') }}"
+                                                        style="padding-top: 0px;">
 
-                                        <span class="product-popup">
-                                            <span class="box-content">
-                                                <img alt="product" width="150" height="150"
-                                                    src="../assets/images/products/product-3.jpg"
-                                                    style="padding-top: 0px;">
-
-                                                <span>Circled Ultimate 3D Speaker</span>
+                                                    <span>{{ $prevProduct->title }}</span>
+                                                </span>
                                             </span>
-                                        </span>
-                                    </a>
-                                </div>
+                                        </a>
+                                    </div>
+                                @endif
 
-                                <div class="product-next">
-                                    <a href="#">
-                                        <span class="product-link"></span>
-
-                                        <span class="product-popup">
-                                            <span class="box-content">
-                                                <img alt="product" width="150" height="150"
-                                                    src="../assets/images/products/product-4.jpg"
-                                                    style="padding-top: 0px;">
-
-                                                <span>Blue Backpack for the Young</span>
+                                @if($nextProduct)
+                                    <div class="product-next">
+                                        <a href="{{ url('product/' . $nextProduct->product_url) }}">
+                                            <span class="product-link"></span>
+                                            <span class="product-popup">
+                                                <span class="box-content">
+                                                   <img alt="product" width="150" height="150"
+                                                        src="{{ $nextProduct->images->first()?->file_path 
+                                                                ? env('SOURCE_PANEL_IMAGE_URL') . '/' . $nextProduct->images->first()->file_path 
+                                                                : asset('images/dummy.jpg') }}"
+                                                        style="padding-top: 0px;">
+                                                    <span>{{ $nextProduct->title }}</span>
+                                                </span>
                                             </span>
-                                        </span>
-                                    </a>
-                                </div>
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
                           
                             <hr class="short-divider">
@@ -265,20 +272,37 @@
                     </div><!-- End .row -->
                 </div><!-- End .product-single-container -->
 
+                <div class="product-media-list">
+                @foreach ($product->images->sortBy('serial_no') as $image)
+                    @php
+                        $ext = strtolower(pathinfo($image->file_path, PATHINFO_EXTENSION));
+                        $isVideo = in_array($ext, $videoExtensions);
+                        $mediaUrl = env('SOURCE_PANEL_IMAGE_URL') . $image->file_path;
+                    @endphp
+
+                    <div class="media-item" style="margin-bottom: 20px;">
+                        @if($isVideo)
+                            <video muted autoplay loop playsinline controls
+                                style="width: 100%; height: auto; object-fit: cover; border-radius: 6px;">
+                                <source src="{{ $mediaUrl }}" type="video/{{ $ext }}">
+                            </video>
+                        @else
+                            <img src="{{ $mediaUrl }}" alt="product-media"
+                                style="width: 100%; height: auto; object-fit: cover; border-radius: 6px;">
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+            
                 <div class="product-single-tabs">
                     <ul class="nav nav-tabs" role="tablist">
+                        @if (!empty($product->color) || !empty($product->size))
                         <li class="nav-item">
                             <a class="nav-link active" id="product-tab-desc" data-toggle="tab"
                                 href="#product-desc-content" role="tab" aria-controls="product-desc-content"
                                 aria-selected="true">Description</a>
-                        </li>
-                    
-                         @if (!empty($product->color) || !empty($product->size))
-                        <li class="nav-item">
-                            <a class="nav-link" id="product-tab-tags" data-toggle="tab" href="#product-tags-content"
-                                role="tab" aria-controls="product-tags-content" aria-selected="false">Additional
-                                Information</a>
-                        </li>
+                        </li>                   
+                       
                       @endif
                     </ul>
 
@@ -289,9 +313,9 @@
                                 {{ $product->description }}
                             </div><!-- End .product-desc-content -->
                             <div class="d-flex align-items-center mb-3">
+                                @if (!empty($product->color) || !empty($product->size))
                                 <label class="mr-2" style="min-width: 60px;">Colors:</label>
-                                <div class="d-flex flex-wrap">
-                                
+                                <div class="d-flex flex-wrap">                                
                                     @foreach($variants as $variant)
                                         @php
                                             $firstImage = optional($variant->images->sortBy('serial_no')->first())->file_path;
@@ -322,12 +346,13 @@
                             </div>
 
                             <p class="product-size">Size: <span id="variant-size">{{ $product->size }}</span></p>
+                            @endif
                         </div><!-- End .tab-pane -->
                         
                         
                     </div><!-- End .tab-content -->
                 </div><!-- End .product-single-tabs -->
-
+            @if($relatedProducts->isNotEmpty())
                 <div class="products-section pt-0">
                     <h2 class="section-title">Related Products</h2>
                         <div class="products-slider 5col owl-carousel owl-theme dots-top dots-small">
@@ -345,14 +370,14 @@
                                     <div class="product-details">
                                         <div class="category-wrap">
                                             <div class="category-list">
-                                                <a href="{{ url()->current() }}?category={{ $related->category_id }}" class="product-category">
+                                                <a href="{{ url('/') }}?category={{ $related->category_id }}" class="product-category">
                                                     {{ $related->category->category_name ?? 'Category' }}
                                                 </a>
                                             </div>                                            
                                         </div>
                                         <h3 class="product-title">
                                             <a href="{{ url('product/' . $related->product_url) }}">{{ $related->product_name }}</a>
-                                        </h3>
+                                        </h3>                                        
                                         <div class="price-box">
                                             <span class="product-price">${{ number_format($related->product_price ?? 0, 2) }}</span>
                                         </div>
@@ -362,342 +387,10 @@
                         </div>
                    
                 </div><!-- End .products-section -->
-
+            @endif
                 <hr class="mt-0 m-b-5" />
 
-                <div class="product-widgets-container row pb-2">
-                    <div class="col-lg-3 col-sm-6 pb-5 pb-md-0">                        
-                        <div class="product-default left-details product-widget">
-                            <figure>
-                                <a href="demo1-product.html">
-                                    <img src="../assets/images/products/small/product-1.jpg" width="74" height="74"
-                                        alt="product">
-                                    <img src="../assets/images/products/small/product-1-2.jpg" width="74" height="74"
-                                        alt="product">
-                                </a>
-                            </figure>
-
-                            <div class="product-details">
-                                <h3 class="product-title"> <a href="demo1-product.html">Ultimate 3D Bluetooth
-                                        Speaker</a> </h3>
-
-                                <div class="ratings-container">
-                                    <div class="product-ratings">
-                                        <span class="ratings" style="width:100%"></span><!-- End .ratings -->
-                                        <span class="tooltiptext tooltip-top"></span>
-                                    </div><!-- End .product-ratings -->
-                                </div><!-- End .product-container -->
-
-                                <div class="price-box">
-                                    <span class="product-price">$49.00</span>
-                                </div><!-- End .price-box -->
-                            </div><!-- End .product-details -->
-                        </div>
-
-                        <div class="product-default left-details product-widget">
-                            <figure>
-                                <a href="demo1-product.html">
-                                    <img src="../assets/images/products/small/product-2.jpg" width="74" height="74"
-                                        alt="product">
-                                    <img src="../assets/images/products/small/product-2-2.jpg" width="74" height="74"
-                                        alt="product">
-                                </a>
-                            </figure>
-
-                            <div class="product-details">
-                                <h3 class="product-title"> <a href="demo1-product.html">Brown Women Casual HandBag</a>
-                                </h3>
-
-                                <div class="ratings-container">
-                                    <div class="product-ratings">
-                                        <span class="ratings" style="width:100%"></span><!-- End .ratings -->
-                                        <span class="tooltiptext tooltip-top">5.00</span>
-                                    </div><!-- End .product-ratings -->
-                                </div><!-- End .product-container -->
-
-                                <div class="price-box">
-                                    <span class="product-price">$49.00</span>
-                                </div><!-- End .price-box -->
-                            </div><!-- End .product-details -->
-                        </div>
-
-                        <div class="product-default left-details product-widget">
-                            <figure>
-                                <a href="demo1-product.html">
-                                    <img src="../assets/images/products/small/product-3.jpg" width="74" height="74"
-                                        alt="product">
-                                    <img src="../assets/images/products/small/product-3-2.jpg" width="74" height="74"
-                                        alt="product">
-                                </a>
-                            </figure>
-
-                            <div class="product-details">
-                                <h3 class="product-title"> <a href="demo1-product.html">Circled Ultimate 3D Speaker</a>
-                                </h3>
-
-                                <div class="ratings-container">
-                                    <div class="product-ratings">
-                                        <span class="ratings" style="width:100%"></span><!-- End .ratings -->
-                                        <span class="tooltiptext tooltip-top"></span>
-                                    </div><!-- End .product-ratings -->
-                                </div><!-- End .product-container -->
-
-                                <div class="price-box">
-                                    <span class="product-price">$49.00</span>
-                                </div><!-- End .price-box -->
-                            </div><!-- End .product-details -->
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-sm-6 pb-5 pb-md-0">
-                        <h4 class="section-sub-title">Best Selling Products</h4>
-                        <div class="product-default left-details product-widget">
-                            <figure>
-                                <a href="demo1-product.html">
-                                    <img src="../assets/images/products/small/product-4.jpg" width="74" height="74"
-                                        alt="product">
-                                    <img src="../assets/images/products/small/product-4-2.jpg" width="74" height="74"
-                                        alt="product">
-                                </a>
-                            </figure>
-
-                            <div class="product-details">
-                                <h3 class="product-title"> <a href="demo1-product.html">Blue Backpack for the Young -
-                                        S</a> </h3>
-
-                                <div class="ratings-container">
-                                    <div class="product-ratings">
-                                        <span class="ratings" style="width:100%"></span><!-- End .ratings -->
-                                        <span class="tooltiptext tooltip-top">5.00</span>
-                                    </div><!-- End .product-ratings -->
-                                </div><!-- End .product-container -->
-
-                                <div class="price-box">
-                                    <span class="product-price">$49.00</span>
-                                </div><!-- End .price-box -->
-                            </div><!-- End .product-details -->
-                        </div>
-
-                        <div class="product-default left-details product-widget">
-                            <figure>
-                                <a href="demo1-product.html">
-                                    <img src="../assets/images/products/small/product-5.jpg" width="74" height="74"
-                                        alt="product">
-                                    <img src="../assets/images/products/small/product-5-2.jpg" width="74" height="74"
-                                        alt="product">
-                                </a>
-                            </figure>
-
-                            <div class="product-details">
-                                <h3 class="product-title"> <a href="demo1-product.html">Casual Spring Blue Shoes</a>
-                                </h3>
-
-                                <div class="ratings-container">
-                                    <div class="product-ratings">
-                                        <span class="ratings" style="width:100%"></span><!-- End .ratings -->
-                                        <span class="tooltiptext tooltip-top"></span>
-                                    </div><!-- End .product-ratings -->
-                                </div><!-- End .product-container -->
-
-                                <div class="price-box">
-                                    <span class="product-price">$49.00</span>
-                                </div><!-- End .price-box -->
-                            </div><!-- End .product-details -->
-                        </div>
-
-                        <div class="product-default left-details product-widget">
-                            <figure>
-                                <a href="demo1-product.html">
-                                    <img src="../assets/images/products/small/product-6.jpg" width="74" height="74"
-                                        alt="product">
-                                    <img src="../assets/images/products/small/product-6-2.jpg" width="74" height="74"
-                                        alt="product">
-                                </a>
-                            </figure>
-
-                            <div class="product-details">
-                                <h3 class="product-title"> <a href="demo1-product.html">Men Black Gentle Belt</a> </h3>
-
-                                <div class="ratings-container">
-                                    <div class="product-ratings">
-                                        <span class="ratings" style="width:100%"></span><!-- End .ratings -->
-                                        <span class="tooltiptext tooltip-top">5.00</span>
-                                    </div><!-- End .product-ratings -->
-                                </div><!-- End .product-container -->
-
-                                <div class="price-box">
-                                    <span class="product-price">$49.00</span>
-                                </div><!-- End .price-box -->
-                            </div><!-- End .product-details -->
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-sm-6 pb-5 pb-md-0">
-                        <h4 class="section-sub-title">Latest Products</h4>
-                        <div class="product-default left-details product-widget">
-                            <figure>
-                                <a href="demo1-product.html">
-                                    <img src="../assets/images/products/small/product-7.jpg" width="74" height="74"
-                                        alt="product">
-                                    <img src="../assets/images/products/small/product-7-2.jpg" width="74" height="74"
-                                        alt="product">
-                                </a>
-                            </figure>
-
-                            <div class="product-details">
-                                <h3 class="product-title"> <a href="demo1-product.html">Brown-Black Men Casual
-                                        Glasses</a> </h3>
-
-                                <div class="ratings-container">
-                                    <div class="product-ratings">
-                                        <span class="ratings" style="width:100%"></span><!-- End .ratings -->
-                                        <span class="tooltiptext tooltip-top"></span>
-                                    </div><!-- End .product-ratings -->
-                                </div><!-- End .product-container -->
-
-                                <div class="price-box">
-                                    <span class="product-price">$49.00</span>
-                                </div><!-- End .price-box -->
-                            </div><!-- End .product-details -->
-                        </div>
-
-                        <div class="product-default left-details product-widget">
-                            <figure>
-                                <a href="demo1-product.html">
-                                    <img src="../assets/images/products/small/product-8.jpg" width="74" height="74"
-                                        alt="product">
-                                    <img src="../assets/images/products/small/product-8-2.jpg" width="74" height="74"
-                                        alt="product">
-                                </a>
-                            </figure>
-
-                            <div class="product-details">
-                                <h3 class="product-title"> <a href="demo1-product.html">Brown-Black Men Casual
-                                        Glasses</a> </h3>
-
-                                <div class="ratings-container">
-                                    <div class="product-ratings">
-                                        <span class="ratings" style="width:100%"></span><!-- End .ratings -->
-                                        <span class="tooltiptext tooltip-top">5.00</span>
-                                    </div><!-- End .product-ratings -->
-                                </div><!-- End .product-container -->
-
-                                <div class="price-box">
-                                    <span class="product-price">$49.00</span>
-                                </div><!-- End .price-box -->
-                            </div><!-- End .product-details -->
-                        </div>
-
-                        <div class="product-default left-details product-widget">
-                            <figure>
-                                <a href="demo1-product.html">
-                                    <img src="../assets/images/products/small/product-9.jpg" width="74" height="74"
-                                        alt="product">
-                                    <img src="../assets/images/products/small/product-9-2.jpg" width="74" height="74"
-                                        alt="product">
-                                </a>
-                            </figure>
-
-                            <div class="product-details">
-                                <h3 class="product-title"> <a href="demo1-product.html">Black Men Casual Glasses</a>
-                                </h3>
-
-                                <div class="ratings-container">
-                                    <div class="product-ratings">
-                                        <span class="ratings" style="width:100%"></span><!-- End .ratings -->
-                                        <span class="tooltiptext tooltip-top"></span>
-                                    </div><!-- End .product-ratings -->
-                                </div><!-- End .product-container -->
-
-                                <div class="price-box">
-                                    <span class="product-price">$49.00</span>
-                                </div><!-- End .price-box -->
-                            </div><!-- End .product-details -->
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-sm-6 pb-5 pb-md-0">
-                        <h4 class="section-sub-title">Top Rated Products</h4>
-                        <div class="product-default left-details product-widget">
-                            <figure>
-                                <a href="demo1-product.html">
-                                    <img src="../assets/images/products/small/product-10.jpg" width="74" height="74"
-                                        alt="product">
-                                    <img src="../assets/images/products/small/product-10-2.jpg" width="74" height="74"
-                                        alt="product">
-                                </a>
-                            </figure>
-
-                            <div class="product-details">
-                                <h3 class="product-title"> <a href="demo1-product.html">Basketball Sports Blue Shoes</a>
-                                </h3>
-
-                                <div class="ratings-container">
-                                    <div class="product-ratings">
-                                        <span class="ratings" style="width:100%"></span><!-- End .ratings -->
-                                        <span class="tooltiptext tooltip-top"></span>
-                                    </div><!-- End .product-ratings -->
-                                </div><!-- End .product-container -->
-
-                                <div class="price-box">
-                                    <span class="product-price">$49.00</span>
-                                </div><!-- End .price-box -->
-                            </div><!-- End .product-details -->
-                        </div>
-
-                        <div class="product-default left-details product-widget">
-                            <figure>
-                                <a href="demo1-product.html">
-                                    <img src="../assets/images/products/small/product-11.jpg" width="74" height="74"
-                                        alt="product">
-                                    <img src="../assets/images/products/small/product-11-2.jpg" width="74" height="74"
-                                        alt="product">
-                                </a>
-                            </figure>
-
-                            <div class="product-details">
-                                <h3 class="product-title"> <a href="demo1-product.html">Men Sports Travel Bag</a> </h3>
-
-                                <div class="ratings-container">
-                                    <div class="product-ratings">
-                                        <span class="ratings" style="width:100%"></span><!-- End .ratings -->
-                                        <span class="tooltiptext tooltip-top">5.00</span>
-                                    </div><!-- End .product-ratings -->
-                                </div><!-- End .product-container -->
-
-                                <div class="price-box">
-                                    <span class="product-price">$49.00</span>
-                                </div><!-- End .price-box -->
-                            </div><!-- End .product-details -->
-                        </div>
-
-                        <div class="product-default left-details product-widget">
-                            <figure>
-                                <a href="demo1-product.html">
-                                    <img src="../assets/images/products/small/product-12.jpg" width="74" height="74"
-                                        alt="product">
-                                    <img src="../assets/images/products/small/product-12-2.jpg" width="74" height="74"
-                                        alt="product">
-                                </a>
-                            </figure>
-
-                            <div class="product-details">
-                                <h3 class="product-title"> <a href="demo1-product.html">Brown HandBag</a> </h3>
-
-                                <div class="ratings-container">
-                                    <div class="product-ratings">
-                                        <span class="ratings" style="width:100%"></span><!-- End .ratings -->
-                                        <span class="tooltiptext tooltip-top"></span>
-                                    </div><!-- End .product-ratings -->
-                                </div><!-- End .product-container -->
-
-                                <div class="price-box">
-                                    <span class="product-price">$49.00</span>
-                                </div><!-- End .price-box -->
-                            </div><!-- End .product-details -->
-                        </div>
-                    </div>
-                </div><!-- End .row -->
+             
             </div><!-- End .container -->
         </main><!-- End .main -->
 

@@ -22,64 +22,10 @@
     max-width: 150px;
 }
 </style>
-<header class="header">
-			<div class="header-top">
-				<!--<div class="container">
-					<div class="header-left d-none d-sm-block">
-						<p class="top-message text-uppercase">FREE Returns. Standard Shipping Orders $99+</p>
-					</div>
-
-					<div class="header-right header-dropdowns ml-0 ml-sm-auto w-sm-100">
-						<div class="header-dropdown dropdown-expanded d-none d-lg-block">
-							<a href="#">Links</a>
-							<div class="header-menu">
-								<ul>
-									<li><a href="dashboard.html">My Account</a></li>
-									<li><a href="about.html">About Us</a></li>
-									<li><a href="blog.html">Blog</a></li>
-									<li><a href="{{ route('wishlist.index') }}">My Wishlist</a></li>
-									<li><a href="{{ route('cart.index') }}">Cart</a></li>
-									<li><a href="login.html" class="login-link">Log In</a></li>
-								</ul>
-							</div>
-						</div>
-
-						<span class="separator"></span>
-
-						<div class="header-dropdown">
-							<a href="#"><i class="flag-us flag"></i>ENG</a>
-							<div class="header-menu">
-								<ul>
-									<li><a href="#"><i class="flag-us flag mr-2"></i>ENG</a>
-									</li>
-									<li><a href="#"><i class="flag-fr flag mr-2"></i>FRA</a></li>
-								</ul>
-							</div>
-						</div>
-
-						<div class="header-dropdown mr-auto mr-sm-3 mr-md-0">
-							<a href="#">USD</a>
-							<div class="header-menu">
-								<ul>
-									<li><a href="#">EUR</a></li>
-									<li><a href="#">USD</a></li>
-								</ul>
-							</div>
-						</div>
-
-						<span class="separator"></span>
-
-						<div class="social-icons">
-							<a href="#" class="social-icon social-facebook icon-facebook" target="_blank"></a>
-							<a href="#" class="social-icon social-twitter icon-twitter" target="_blank"></a>
-							<a href="#" class="social-icon social-instagram icon-instagram" target="_blank"></a>
-						</div>
-					</div>
-				</div>--><!-- End .container -->
-			</div><!-- End .header-top -->
+<header class="header">			
 
 			<div class="header-middle sticky-header" data-sticky-options="{'mobile': true}">
-				<div class="container">
+				<div class="container" style="margin-bottom:7px">
 					<div class="header-left col-lg-2 w-auto pl-0">
 						<button class="mobile-menu-toggler text-primary mr-2" type="button">
 							<i class="fas fa-bars"></i>
