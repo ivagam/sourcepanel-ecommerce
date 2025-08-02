@@ -9,6 +9,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProductController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
 Route::get('/live-search', [HomeController::class, 'liveSearch'])->name('live.search');
 Route::get('/documentation', [HomeController::class, 'documentation'])->name('documentation');
 Route::post('/load-more-products', [HomeController::class, 'loadMore'])->name('products.load.more');

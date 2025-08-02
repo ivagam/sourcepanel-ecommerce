@@ -1,9 +1,12 @@
 <style>
 .live-results-box {
     position: absolute;
+	top: 50px;
     z-index: 999;
     background: white;
     width: 100%;
+	left: 0;
+    right: auto;
     border: 1px solid #ccc;
     display: none;
     max-height: 300px;
@@ -11,9 +14,11 @@
 }
 .live-results-box a {
     display: block;
-    padding: 8px;
+    padding: 8px 12px;
     color: #333;
+	text-align: left;
     text-decoration: none;
+    cursor: pointer;
 }
 .live-results-box a:hover {
     background-color: #f0f0f0;
@@ -39,7 +44,7 @@
 						<div
 							class="header-icon header-search header-search-inline header-search-category w-lg-max text-right mt-0">
 							<a href="#" class="search-toggle" role="button"><i class="icon-search-3"></i></a>
-							<form action="#" method="get">
+							<form action="javascript:void(0);" method="get" autocomplete="off">
 								<div class="header-search-wrapper">
 									<input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." autocomplete="off" required>
 									<div id="live-search-results" class="live-results-box"></div>
@@ -201,7 +206,7 @@
 							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Belts">Belts</a></li>
 							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Jewelery">Jewelery</a></li>
 							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Glassware">Glassware</a></li>
-							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Others">Others</a></li>
+							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=113">Others</a></li>
 							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?page=reviews">Reviews</a></li>
 							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?page=about-us">About Us</a></li>
 							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?page=contact-us">Contact Us</a></li>
@@ -241,19 +246,22 @@
     });
 
 	$(document).ready(function() {
-    $('#search-input').on('keyup', function() {
-        let query = $(this).val();
+    const input = $('#search-input');
+    const resultBox = $('#live-search-results');
+
+    input.on('keyup', function() {
+        let query = $(this).val().trim();
+
         if (query.length > 1) {
             $.ajax({
                 url: '{{ route("live.search") }}',
                 type: 'GET',
                 data: { q: query },
                 success: function(data) {
-                    let resultBox = $('#live-search-results');
                     resultBox.empty().show();
 
                     if (data.length === 0) {
-                        resultBox.append('<div>No results found</div>');
+                        resultBox.append('<div class="px-3 py-2 text-muted">No results found</div>');
                     } else {
                         data.forEach(item => {
                             resultBox.append(`<a href="${item.url}">${item.name} <small>(${item.type})</small></a>`);
@@ -262,15 +270,21 @@
                 }
             });
         } else {
-            $('#live-search-results').hide();
+            resultBox.hide();
         }
     });
 
-    // Hide dropdown on click outside
+    // Hide results if clicking outside input or results
     $(document).on('click', function(e) {
         if (!$(e.target).closest('#search-input, #live-search-results').length) {
-            $('#live-search-results').hide();
+            resultBox.hide();
         }
+    });
+
+    // Optional: Hide results after clicking a result
+    resultBox.on('click', 'a', function() {
+        resultBox.hide();
+        input.val(''); // Optional: clear search input
     });
 });
 </script>

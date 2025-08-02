@@ -68,6 +68,49 @@ class HomeController extends Controller
         return view('index', compact('products', 'categories', 'brands', 'banners', 'totalProducts', 'isLoggedIn'));
     }
 
+    public function gallery(Request $request)
+    {
+        $isLoggedIn = session('frontend') == 'yes' ? true : false;
+
+        $initialLimit = 12;
+        $categoryId = $request->query('category');
+
+        $productBaseQuery = Product::query();
+
+        if ($categoryId) {
+            $matchingCategoryIds = Category::whereRaw("FIND_IN_SET(?, category_ids)", [$categoryId])
+                ->pluck('category_id')
+                ->toArray();
+
+            $matchingCategoryIds[] = $categoryId;
+
+            $productBaseQuery->whereIn('category_id', $matchingCategoryIds);
+        }
+
+        $subQuery = $productBaseQuery
+            ->select(DB::raw('MIN(product_id) as id'))
+            ->groupBy('product_url');
+
+        $totalProducts = $subQuery->get()->count();
+
+        $productIds = $subQuery->pluck('id')->toArray();
+
+        $products = Product::with(['images', 'category'])
+            ->whereIn('product_id', $productIds)
+            ->latest()
+            ->take($initialLimit)
+            ->get();
+
+        $categories = Category::with('children')
+            ->whereNull('subcategory_id')
+            ->get();
+
+        $brands = Brand::all();
+        $banners = Banner::all();
+
+        return view('gallery', compact('products', 'categories', 'brands', 'banners', 'totalProducts', 'isLoggedIn'));
+    }
+
     public function documentation()
     {
         return view('documentation');
@@ -92,23 +135,36 @@ class HomeController extends Controller
 
    public function liveSearch(Request $request)
     {
-        $query = $request->input('q');
+        $search = strtolower($request->input('q'));
 
-        if (!$query) {
+        if (!$search) {
             return response()->json([]);
         }
 
-        $products = Product::whereRaw('LOWER(product_name) LIKE ?', ['%' . strtolower($query) . '%'])
-            ->whereNotNull('product_url')
-            ->where('product_url', '!=', '')            
+        $query = Product::leftJoin('category', function ($join) {
+            $join->on(DB::raw("FIND_IN_SET(category.category_id, products.category_ids)"), '>', DB::raw('0'));
+        })
+        ->select('products.*', 'category.category_name')
+        ->where(function ($q) use ($search) {
+            $q->whereRaw("MATCH(products.product_name, products.description) AGAINST(? IN BOOLEAN MODE)", [$search])
+            ->orWhereRaw("LOWER(category.category_name) LIKE ?", ['%' . $search . '%'])
+            ->orWhereRaw("LOWER(products.sku) LIKE ?", ['%' . $search . '%']);
+        });
+
+        $products = $query->whereNotNull('product_url')
+            ->where('product_url', '!=', '')
+            ->limit(10)
             ->get()
-            ->map(fn($p) => [
-                'name' => $p->product_name,
-                'url' => url('/product/' . $p->product_url),
-                'type' => 'Product'
-            ]);
+            ->map(function ($product) {
+                return [
+                    'name' => $product->product_name,
+                    'url' => url('/product/' . $product->product_url),
+                    'type' => 'Product',
+                ];
+            });
 
         return response()->json($products);
     }
+
 
 }

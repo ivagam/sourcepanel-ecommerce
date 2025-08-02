@@ -70,39 +70,54 @@
                                     $firstMedia = $media->first();
                                     $secondMedia = $media->skip(1)->first();
                                 @endphp
-                                @if($firstMedia && !empty($firstMedia->file_path))
+                                
                                     <div class="col-12 col-sm-6 col-md-3">  {{-- ✅ 3 per row on md+, 2 per row on sm --}}
                                         <div class="product-default">
                                             <figure>
                                                 <a href="{{ url('product/' . $product->product_url) }}">
-                                                    <div class="media-wrapper" style="position: relative; width: 100%; padding-top: 100%; overflow: hidden;">
-                                                        {{-- First media --}}
-                                                        @php $ext1 = strtolower(pathinfo($firstMedia->file_path, PATHINFO_EXTENSION)); @endphp
-                                                        @if(in_array($ext1, $videoExtensions))
-                                                            <video class="preview-video" muted autoplay loop playsinline controls style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-                                                                <source src="{{ env('SOURCE_PANEL_IMAGE_URL') . $firstMedia->file_path }}" type="video/{{ $ext1 }}">
+                                                    @php
+                                                    $defaultImage = env('SOURCE_PANEL_IMAGE_URL') . 'NPIA.png';
+
+                                                    $file1 = $firstMedia && !empty($firstMedia->file_path) ? $firstMedia->file_path : 'NPIA.png';
+                                                    $ext1 = strtolower(pathinfo($file1, PATHINFO_EXTENSION));
+                                                @endphp
+
+                                                <div class="media-wrapper" style="position: relative; width: 100%; padding-top: 100%; overflow: hidden;">
+
+                                                    {{-- First media --}}
+                                                    @if(in_array($ext1, $videoExtensions) && $file1 !== 'NPIA.png')
+                                                        <video class="preview-video" muted autoplay loop playsinline controls
+                                                            style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                                                            <source src="{{ env('SOURCE_PANEL_IMAGE_URL') . $file1 }}" type="video/{{ $ext1 }}">
+                                                        </video>
+                                                    @else
+                                                        <img class="preview-image"
+                                                            src="{{ env('SOURCE_PANEL_IMAGE_URL') . $file1 }}"
+                                                            alt="{{ $product->product_name ?? 'Default Image' }}"
+                                                            style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                                                    @endif
+
+                                                    {{-- Second media --}}
+                                                    @php
+                                                        $file2 = $secondMedia && !empty($secondMedia->file_path) ? $secondMedia->file_path : null;
+                                                        $ext2 = $file2 ? strtolower(pathinfo($file2, PATHINFO_EXTENSION)) : null;
+                                                    @endphp
+
+                                                    @if($file2)
+                                                        @if(in_array($ext2, $videoExtensions))
+                                                            <video class="hover-video" muted loop playsinline
+                                                                style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none;">
+                                                                <source src="{{ env('SOURCE_PANEL_IMAGE_URL') . $file2 }}" type="video/{{ $ext2 }}">
                                                             </video>
                                                         @else
-                                                            <img class="preview-image" src="{{ env('SOURCE_PANEL_IMAGE_URL') . $firstMedia->file_path }}"
-                                                                alt="{{ $product->product_name }}"
-                                                                style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                                                            <img class="hover-image"
+                                                                src="{{ env('SOURCE_PANEL_IMAGE_URL') . $file2 }}"
+                                                                alt="{{ $product->product_name ?? 'Hover Image' }}"
+                                                                style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none;">
                                                         @endif
+                                                    @endif
 
-                                                        {{-- Second media --}}
-                                                        @if($secondMedia)
-                                                            @php $ext2 = strtolower(pathinfo($secondMedia->file_path, PATHINFO_EXTENSION)); @endphp
-                                                            @if(in_array($ext2, $videoExtensions))
-                                                                <video class="hover-video" muted loop playsinline
-                                                                    style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none;">
-                                                                    <source src="{{ env('SOURCE_PANEL_IMAGE_URL') . $secondMedia->file_path }}" type="video/{{ $ext2 }}">
-                                                                </video>
-                                                            @else
-                                                                <img class="hover-image" src="{{ env('SOURCE_PANEL_IMAGE_URL') . $secondMedia->file_path }}"
-                                                                    alt="{{ $product->product_name }}"
-                                                                    style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none;">
-                                                            @endif
-                                                        @endif
-                                                    </div>
+                                                </div>
                                                 </a>
                                             </figure>
 
@@ -113,7 +128,7 @@
                                                     </a>
                                                 </div>
                                                 <h3 class="product-title">
-                                                    <a href="{{ url('product/' . $product->product_url) }}">{{ \Illuminate\Support\Str::title($product->product_name) }}</a>                                                    
+                                                    <a href="{{ url('product/' . $product->product_url) }}">{{ \Illuminate\Support\Str::title($product->product_name) }}</a>
                                                 </h3>
                                                 @if(!empty($product->size))
                                                     <p class="product-description">Size: {{ $product->size }}</p>
@@ -145,7 +160,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                @endif
+                                
                             @endforeach
                         </div>
 
@@ -327,11 +342,19 @@ function getCategoryFromUrl() {
     return urlParams.get('category');
 }
 
+const videoExtensions = ['mp4', 'mov', 'avi', 'webm'];
+
+function isVideo(filePath) {
+    const ext = filePath.split('.').pop().toLowerCase();
+    return videoExtensions.includes(ext);
+}
+
 function loadMoreProducts() {
     isLoading = true;
     document.getElementById('loading').style.display = 'block';
 
     const category = getCategoryFromUrl();
+    const defaultImagePath = `${SOURCE_PANEL_IMAGE_URL}NPIA.png`;
 
     fetch("{{ route('products.load.more') }}", {
         method: "POST",
@@ -351,61 +374,90 @@ function loadMoreProducts() {
 
         products.forEach(product => {
             const media = (product.images || []).slice(0, 2);
-            if (!media[0] || !media[0].file_path) {
-                return; 
-            }
+
+            const file1 = media[0]?.file_path ? `${SOURCE_PANEL_IMAGE_URL}${media[0].file_path}` : defaultImagePath;
+            const file2 = media[1]?.file_path ? `${SOURCE_PANEL_IMAGE_URL}${media[1].file_path}` : null;
 
             let imagesHtml = '';
-            media.forEach(image => {
-                imagesHtml += `
-                    <img src="${SOURCE_PANEL_IMAGE_URL}${image.file_path}" style="object-fit:cover; width: 100%; height: 100%; position: absolute; top:0; left:0;" alt="${product.product_name}">
-                `;
-            });
 
-            let filePath = media[0]?.file_path ?? '';
-            let oldPriceHtml = product.old_price ? `<span class='old-price'>$${product.old_price}</span>` : '';
+            if (file1 && isVideo(file1)) {
+                imagesHtml += `
+                    <video class="preview-video" muted autoplay loop playsinline controls
+                        style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                        <source src="${file1}" type="video/${file1.split('.').pop().toLowerCase()}">
+                    </video>
+                `;
+            } else {
+                imagesHtml += `
+                    <img class="preview-image"
+                        src="${file1}"
+                        alt="${product.product_name}"
+                        style="object-fit:cover; width: 100%; height: 100%; position: absolute; top:0; left:0;">
+                `;
+            }
+
+            if (file2) {
+                if (isVideo(file2)) {
+                    imagesHtml += `
+                        <video class="hover-video" muted loop playsinline
+                            style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none;">
+                            <source src="${file2}" type="video/${file2.split('.').pop().toLowerCase()}">
+                        </video>
+                    `;
+                } else {
+                    imagesHtml += `
+                        <img class="hover-image"
+                            src="${file2}"
+                            alt="${product.product_name}"
+                            style="object-fit:cover; width: 100%; height: 100%; position: absolute; top:0; left:0; display: none;">
+                    `;
+                }
+            }
+
+            let oldPriceHtml = product.old_price
+                ? `<span class='old-price'>$${parseFloat(product.old_price).toFixed(2)}</span>`
+                : '';
 
             let newItem = `
-            <div class="col-12 col-sm-6 col-md-3 mb-4">
-                <div class="product-default">
-                    <figure>
-                        <a href="product/${product.product_url}">
-                            <div class="media-wrapper" style="position: relative; width: 100%; padding-top: 100%; overflow: hidden;">
-                                ${imagesHtml}
-                            </div>
-                        </a>
-                    </figure>
-
-                    <div class="product-details text-center">
-                        <div class="category-list">
-                            <a href="${window.location.pathname}?category=${product.category_id}" class="product-category">
-                                ${product.category_name ?? 'Uncategorized'}
-                            </a>
-                        </div>
-                        <h3 class="product-title">
+                <div class="col-12 col-sm-6 col-md-3 mb-4">
+                    <div class="product-default">
+                        <figure>
                             <a href="product/${product.product_url}">
-                                ${product.product_name.toLowerCase().replace(/\b\w/g, char => char.toUpperCase())}
+                                <div class="media-wrapper" style="position: relative; width: 100%; padding-top: 100%; overflow: hidden;">
+                                    ${imagesHtml}
+                                </div>
                             </a>
-                        </h3>
+                        </figure>
 
-                        <p class="product-description">${product.description ?? 'No description available.'}</p>
-                        <div class="price-box">
-                            ${oldPriceHtml}
-                            <span class="product-price">$${parseFloat(product.product_price ?? 0).toFixed(2)}</span>
+                        <div class="product-details text-center">
+                            <div class="category-list">
+                                <a href="${window.location.pathname}?category=${product.category_id}" class="product-category">
+                                    ${product.category_name ?? 'Uncategorized'}
+                                </a>
+                            </div>
+                            <h3 class="product-title">
+                                <a href="product/${product.product_url}">
+                                    ${product.product_name.toLowerCase().replace(/\b\w/g, char => char.toUpperCase())}
+                                </a>
+                            </h3>
+                            
+                            <div class="price-box">
+                                ${oldPriceHtml}
+                                <span class="product-price">$${parseFloat(product.product_price ?? 0).toFixed(2)}</span>
+                            </div>
+                            <div>
+                                <span style="color: red; font-size: 15px;">+ shipping fees</span>
+                            </div>
+                            ${isLoggedIn ? `
+                                <a href="${SOURCE_PANEL_URL}/product/editProduct/${product.product_id}"
+                                    class="btn rounded-pill mt-4"
+                                    style="background-color: #5bc0de; color: #fff; padding: 10px 20px; text-align: center; font-weight: 500;">
+                                    Edit
+                                </a>
+                            ` : ''}
                         </div>
-                        <div>
-                            <span style="color: red; font-size: 15px;">+ shipping fees</span>
-                        </div>
-                        ${isLoggedIn ? `
-                            <a href="${SOURCE_PANEL_URL}/product/editProduct/${product.product_id}"
-                                class="btn rounded-pill mt-4"
-                                style="background-color: #5bc0de; color: #fff; padding: 10px 20px; text-align: center; font-weight: 500;">
-                                Edit
-                            </a>
-                        ` : ''}
                     </div>
                 </div>
-            </div>
             `;
 
             document.getElementById('product-list').insertAdjacentHTML('beforeend', newItem);
@@ -453,31 +505,20 @@ $(document).on('click', '.addToCartBtn', function (e) {
 
 
 document.querySelectorAll('.media-wrapper').forEach(wrapper => {
-    const previewMedia = wrapper.querySelector('.preview-video, .preview-image');
-    const hoverMedia = wrapper.querySelector('.hover-video, .hover-image');
+    const preview = wrapper.querySelector('.preview-image, .preview-video');
+    const hover = wrapper.querySelector('.hover-image, .hover-video');
 
-    if (previewMedia && hoverMedia) {
+    if (preview && hover) {
         wrapper.addEventListener('mouseenter', () => {
-            // Hide preview media
-            previewMedia.style.display = 'none';
-
-            // Show hover media
-            hoverMedia.style.display = 'block';
-
-            // Play video if it's video
-            if (hoverMedia.tagName.toLowerCase() === 'video') {
-                hoverMedia.play();
-            }
+            preview.style.display = 'none';
+            hover.style.display = 'block';
+            if (hover.tagName === 'VIDEO') hover.play();
         });
 
-        wrapper.addEventListener('mouseleave', () => {            
-            if (hoverMedia.tagName.toLowerCase() === 'video') {
-                hoverMedia.pause();
-                hoverMedia.currentTime = 0;
-            }
-            hoverMedia.style.display = 'none';
-
-            previewMedia.style.display = 'block';
+        wrapper.addEventListener('mouseleave', () => {
+            preview.style.display = 'block';
+            hover.style.display = 'none';
+            if (hover.tagName === 'VIDEO') hover.pause();
         });
     }
 });

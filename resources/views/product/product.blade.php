@@ -153,10 +153,10 @@
                                             <span class="product-popup">
                                                 <span class="box-content">
                                                     <img alt="product" width="150" height="150"
-                                                        src="{{ $prevProduct->images->first()?->file_path 
-                                                                ? env('SOURCE_PANEL_IMAGE_URL') . '/' . $prevProduct->images->first()->file_path 
-                                                                : asset('images/dummy.jpg') }}"
-                                                        style="padding-top: 0px;">
+                                                        src="{{ $nextProduct->images->first()?->file_path 
+                                                                ? env('SOURCE_PANEL_IMAGE_URL') . '/' . $nextProduct->images->first()->file_path 
+                                                                : env('SOURCE_PANEL_IMAGE_URL') . '/NPIA.png' }}"
+                                                                style="padding-top: 0px;">                                                        
 
                                                     <span>{{ $prevProduct->title }}</span>
                                                 </span>
@@ -173,8 +173,9 @@
                                                 <span class="box-content">
                                                    <img alt="product" width="150" height="150"
                                                         src="{{ $nextProduct->images->first()?->file_path 
-                                                                ? env('SOURCE_PANEL_IMAGE_URL') . '/' . $nextProduct->images->first()->file_path 
-                                                                : asset('images/dummy.jpg') }}"
+                                                            ? env('SOURCE_PANEL_IMAGE_URL') . '/' . $nextProduct->images->first()->file_path 
+                                                            : env('SOURCE_PANEL_IMAGE_URL') . '/NPIA.png' }}"
+
                                                         style="padding-top: 0px;">
                                                     <span>{{ $nextProduct->title }}</span>
                                                 </span>
@@ -240,78 +241,10 @@
 
                                 <a href="cart.html" class="btn btn-gray view-cart d-none">View cart</a>
                             </div><!-- End .product-action -->
-
-                            <hr class="divider mb-0 mt-0">
-
-                            <div class="product-single-share mb-2">
-                                <label class="sr-only">Share:</label>
-
-                                <div class="social-icons mr-2">
-                                    <a href="#" class="social-icon social-facebook icon-facebook" target="_blank"
-                                        title="Facebook"></a>
-                                    <a href="#" class="social-icon social-twitter icon-twitter" target="_blank"
-                                        title="Twitter"></a>
-                                    <a href="#" class="social-icon social-linkedin fab fa-linkedin-in" target="_blank"
-                                        title="Linkedin"></a>
-                                    <a href="#" class="social-icon social-gplus fab fa-google-plus-g" target="_blank"
-                                        title="Google +"></a>
-                                    <a href="#" class="social-icon social-mail icon-mail-alt" target="_blank"
-                                        title="Mail"></a>
-                                </div><!-- End .social-icons -->
-
-                               <!--<a href="javascript:void(0);" 
-                                    class="btn-icon-wish add-wishlist" 
-                                    data-id="{{ $product->product_id }}" 
-                                    title="Add to Wishlist">
-                                    <i class="icon-wishlist-2"></i>
-                                    <span>Add to Wishlist</span>
-                                </a>-->
-
-                            </div><!-- End .product single-share -->
-                        </div><!-- End .product-single-details -->
-                    </div><!-- End .row -->
-                </div><!-- End .product-single-container -->
-
-                <div class="product-media-list">
-                @foreach ($product->images->sortBy('serial_no') as $image)
-                    @php
-                        $ext = strtolower(pathinfo($image->file_path, PATHINFO_EXTENSION));
-                        $isVideo = in_array($ext, $videoExtensions);
-                        $mediaUrl = env('SOURCE_PANEL_IMAGE_URL') . $image->file_path;
-                    @endphp
-
-                    <div class="media-item" style="margin-bottom: 20px;">
-                        @if($isVideo)
-                            <video muted autoplay loop playsinline controls
-                                style="width: 100%; height: auto; object-fit: cover; border-radius: 6px;">
-                                <source src="{{ $mediaUrl }}" type="video/{{ $ext }}">
-                            </video>
-                        @else
-                            <img src="{{ $mediaUrl }}" alt="product-media"
-                                style="width: 100%; height: auto; object-fit: cover; border-radius: 6px;">
-                        @endif
-                    </div>
-                @endforeach
-            </div>
-            
-                <div class="product-single-tabs">
-                    <ul class="nav nav-tabs" role="tablist">
-                        @if (!empty($product->color) || !empty($product->size))
-                        <li class="nav-item">
-                            <a class="nav-link active" id="product-tab-desc" data-toggle="tab"
-                                href="#product-desc-content" role="tab" aria-controls="product-desc-content"
-                                aria-selected="true">Description</a>
-                        </li>                   
-                       
-                      @endif
-                    </ul>
-
-                    <div class="tab-content">
+                        <div class="tab-content">
                         <div class="tab-pane fade show active" id="product-desc-content" role="tabpanel"
                             aria-labelledby="product-tab-desc">
-                            <div class="product-desc-content">
-                                {{ $product->description }}
-                            </div><!-- End .product-desc-content -->
+                            
                             <div class="d-flex align-items-center mb-3">
                                 @if (!empty($product->color) || !empty($product->size))
                                 <label class="mr-2" style="min-width: 60px;">Colors:</label>
@@ -351,6 +284,54 @@
                         
                         
                     </div><!-- End .tab-content -->
+                            <hr class="divider mb-0 mt-0">
+
+                            <div class="product-single-share mb-2">
+                                <label class="sr-only">Share:</label>
+
+                                <div class="social-icons mr-2">
+                                    <a href="#" class="social-icon social-facebook icon-facebook" target="_blank"
+                                        title="Facebook"></a>
+                                    <a href="#" class="social-icon social-twitter icon-twitter" target="_blank"
+                                        title="Twitter"></a>
+                                    <a href="#" class="social-icon social-linkedin fab fa-linkedin-in" target="_blank"
+                                        title="Linkedin"></a>
+                                    <a href="#" class="social-icon social-gplus fab fa-google-plus-g" target="_blank"
+                                        title="Google +"></a>
+                                    <a href="#" class="social-icon social-mail icon-mail-alt" target="_blank"
+                                        title="Mail"></a>
+                                </div><!-- End .social-icons -->
+
+                            </div><!-- End .product single-share -->
+                            
+                        </div><!-- End .product-single-details -->
+                    </div><!-- End .row -->
+                </div><!-- End .product-single-container -->
+
+                <div class="product-media-list">
+                @foreach ($product->images->sortBy('serial_no') as $image)
+                    @php
+                        $ext = strtolower(pathinfo($image->file_path, PATHINFO_EXTENSION));
+                        $isVideo = in_array($ext, $videoExtensions);
+                        $mediaUrl = env('SOURCE_PANEL_IMAGE_URL') . $image->file_path;
+                    @endphp
+
+                    <div class="media-item" style="margin-bottom: 20px;">
+                        @if($isVideo)
+                            <video muted autoplay loop playsinline controls
+                                style="width: 100%; height: auto; object-fit: cover; border-radius: 6px;">
+                                <source src="{{ $mediaUrl }}" type="video/{{ $ext }}">
+                            </video>
+                        @else
+                            <img src="{{ $mediaUrl }}" alt="product-media"
+                                style="width: 100%; height: auto; object-fit: cover; border-radius: 6px;">
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+            
+                <div class="product-single-tabs">
+                   
                 </div><!-- End .product-single-tabs -->
             @if($relatedProducts->isNotEmpty())
                 <div class="products-section pt-0">
