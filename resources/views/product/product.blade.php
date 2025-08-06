@@ -153,8 +153,8 @@
                                             <span class="product-popup">
                                                 <span class="box-content">
                                                     <img alt="product" width="150" height="150"
-                                                        src="{{ $nextProduct->images->first()?->file_path 
-                                                                ? env('SOURCE_PANEL_IMAGE_URL') . '/' . $nextProduct->images->first()->file_path 
+                                                        src="{{ $prevProduct->images->first()?->file_path 
+                                                                ? env('SOURCE_PANEL_IMAGE_URL') . '/' . $prevProduct->images->first()->file_path 
                                                                 : env('SOURCE_PANEL_IMAGE_URL') . '/NPIA.png' }}"
                                                                 style="padding-top: 0px;">                                                        
 

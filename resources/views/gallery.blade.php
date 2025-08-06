@@ -46,9 +46,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <h3>{{ $product->product_name }}<br>                                    
-                                    <span>{{ $product->category->category_name ?? 'Unknown Category' }}</span>                                    
-                                </h3>
+                                <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/product/{{ $product->product_url }}"><h3>{{ $product->product_name }}<h3></a><br>
                                 
                             </div>
                             <div>
@@ -114,23 +112,12 @@
                             </div>
                             
                                 <p class="message">
-                                    <h3>{{ $product->product_name }}</h3>
+                                    <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/product/{{ $product->product_url }}"><h3>{{ $product->product_name }}</h3></a>
+                                    <p>{{ $product->category->category_name ?? 'Unknown Category' }}</p>
                                     <p>${{ $product->product_price ?? '0.00' }}</p>
                                     {{ \Illuminate\Support\Str::limit($product->description, 200) }}
                                 </p>
                             
-                           
-                            <a href="#">
-                                <h5 class="postTime">{{ $product->created_at->format('n/j/Y, g:i:s A') }}</h5>
-                            </a>
-
-                            <div class="addComments">
-                                <div class="reaction">
-                                    <h3><i class="far fa-smile"></i></h3>
-                                </div>
-                                <input type="text" class="text" placeholder="Add a comment...">
-                                <a href="#">Post</a>
-                            </div>
                         </div>
                     </div>
                 @endforeach
@@ -197,9 +184,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <h3>${product.product_name}<br>
-                                    <span>${product.category?.category_name || 'Unknown Category'}</span>                                    
-                                </h3>
+                                <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/product/${product.product_url}"><h3>${product.product_name}<br></h3></a>
                             </div>
                             <div>
                                 <span class="dot">
@@ -243,22 +228,12 @@
                                 </div>
                             
                                 <p class="message">
-                                    <h3>${product.product_name}</h3>
+                                    <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/product/${product.product_url}"><h3>${product.product_name}<br></h3></a>
+                                    <p>${product.category?.category_name || 'Unknown Category'}</p>
                                     <p>$${product.product_price || '0.00'}</p>
                                     ${product.description?.substring(0, 200) || ''}
                                 </p>                    
 
-                            <a href="#">
-                                <h5 class="postTime">${new Date(product.created_at).toLocaleString()}</h5>
-                            </a>
-
-                            <div class="addComments">
-                                <div class="reaction">
-                                    <h3><i class="far fa-smile"></i></h3>
-                                </div>
-                                <input type="text" class="text" placeholder="Add a comment...">
-                                <a href="#">Post</a>
-                            </div>
                         </div>
                     `;
 
