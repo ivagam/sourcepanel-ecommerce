@@ -245,42 +245,7 @@
                         <div class="tab-pane fade show active" id="product-desc-content" role="tabpanel"
                             aria-labelledby="product-tab-desc">
                             
-                            <div class="d-flex align-items-center mb-3">
-                                @if (!empty($product->color) || !empty($product->size))
-                                <label class="mr-2" style="min-width: 60px;">Colors:</label>
-                                <div class="d-flex flex-wrap">                                
-                                    @foreach($variants as $variant)
-                                        @php
-                                            $firstImage = optional($variant->images->sortBy('serial_no')->first())->file_path;
-                                            $variantExt = strtolower(pathinfo($firstImage, PATHINFO_EXTENSION));
-
-                                            $imagesJson = $variant->images->sortBy('serial_no')->map(function($img) {
-                                                $ext = strtolower(pathinfo($img->file_path, PATHINFO_EXTENSION));
-                                                return [
-                                                    'url' => env('SOURCE_PANEL_IMAGE_URL') . $img->file_path,
-                                                    'ext' => $ext,
-                                                    'type' => in_array($ext, ['mp4', 'mov', 'avi', 'webm']) ? 'video' : 'image'
-                                                ];
-                                            });
-                                        @endphp
-
-                                        <div class="color-swatch"
-                                            data-media="{{ env('SOURCE_PANEL_IMAGE_URL') . $firstImage }}"
-                                            data-ext="{{ $variantExt }}"
-                                            data-product-id="{{ $variant->product_id }}"
-                                            data-size="{{ $variant->size }}"
-                                            data-price="{{ $variant->product_price }}"
-                                            data-images='@json($imagesJson)'
-                                            style="width: 20px; height: 20px; background-color: {{ $variant->color }}; border-radius: 50%; margin-right: 8px; border: 2px solid #ccc; cursor: pointer;">
-                                        </div>
-                                    @endforeach
-
-                                </div>
-                            </div>
-
-                            <p class="product-size">Size: <span id="variant-size">{{ $product->size }}</span></p>
-                            @endif
-                        </div><!-- End .tab-pane -->
+                           <!-- End .tab-pane -->
                         
                         
                     </div><!-- End .tab-content -->
@@ -301,11 +266,87 @@
                                     <a href="#" class="social-icon social-mail icon-mail-alt" target="_blank"
                                         title="Mail"></a>
                                 </div><!-- End .social-icons -->
-
                             </div><!-- End .product single-share -->
-                            
+
+                      <div class="container mt-4">
+                        <div class="d-flex align-items-center flex-wrap mb-3">
+                            @if (!empty($product->color))
+                                <div class="d-flex align-items-center me-3">
+                                    <label class="me-2" style="min-width: 60px;">Colors:</label>
+                                    <div class="d-flex flex-wrap">
+                                        @foreach($variants as $variant)
+                                            @php
+                                                $firstImage = optional($variant->images->sortBy('serial_no')->first())->file_path;
+                                                $variantExt = strtolower(pathinfo($firstImage, PATHINFO_EXTENSION));
+
+                                                $imagesJson = $variant->images->sortBy('serial_no')->map(function($img) {
+                                                    $ext = strtolower(pathinfo($img->file_path, PATHINFO_EXTENSION));
+                                                    return [
+                                                        'url' => env('SOURCE_PANEL_IMAGE_URL') . $img->file_path,
+                                                        'ext' => $ext,
+                                                        'type' => in_array($ext, ['mp4', 'mov', 'avi', 'webm']) ? 'video' : 'image'
+                                                    ];
+                                                });
+                                            @endphp
+
+                                            <div class="color-swatch"
+                                                data-media="{{ env('SOURCE_PANEL_IMAGE_URL') . $firstImage }}"
+                                                data-ext="{{ $variantExt }}"
+                                                data-product-id="{{ $variant->product_id }}"
+                                                data-size="{{ $variant->size }}"
+                                                data-price="{{ $variant->product_price }}"
+                                                data-images='@json($imagesJson)'
+                                                style="width: 20px; height: 20px; background-color: {{ $variant->color }}; border-radius: 50%; margin-right: 8px; border: 2px solid #ccc; cursor: pointer;">
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>             
+                        </div>
+                        @endif  
+                        @if (!empty($product->size))
+                            <strong class="product-size me-3">Size: <span id="variant-size">{{ $product->size }}</span></strong>
+                        @endif
+                    </div>
+
+                        <div class="row">
+                            @foreach($skuProducts as $p)
+                                @foreach($p->images->sortBy('serial_no') as $image)
+                                    @php
+                                        $ext = strtolower(pathinfo($image->file_path, PATHINFO_EXTENSION));
+                                        $isVideo = in_array($ext, ['mp4', 'mov', 'avi', 'webm']);
+                                        $mediaUrl = rtrim(env('SOURCE_PANEL_IMAGE_URL'), '/') . '/' . $image->file_path;
+                                    @endphp
+
+                                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                                        <a href="{{ url('product/' . $p->product_url) }}" style="text-decoration: none; color: inherit;">
+                                            <div class="border p-2 text-center d-flex flex-column justify-content-between" style="height: 180px;">
+                                                <div style="height: 80%; display: flex; align-items: center; justify-content: center;">
+                                                    @if($isVideo)
+                                                        <video muted autoplay loop playsinline style="max-height: 100%; max-width: 100%; object-fit: cover; border-radius: 4px;">
+                                                            <source src="{{ $mediaUrl }}" type="video/{{ $ext }}">
+                                                            Your browser does not support the video tag.
+                                                        </video>
+                                                    @else
+                                                        <img src="{{ $mediaUrl }}" alt="Image" style="max-height: 100%; max-width: 100%; object-fit: cover; border-radius: 4px;">
+                                                    @endif
+                                                </div>                                                    
+                                                <div style="height: 20%; margin-top: 8px; font-size: 18px;">
+                                                    <strong>{{ $p->product_price ? '$' . number_format($p->product_price, 2) : 'No Price' }}</strong>
+                                                </div>
+                                                
+                                            </div>
+                                        </a>
+                                    </div>
+                                @endforeach
+                            @endforeach
+                        </div>
+                    </div>
+
+
+
+
                         </div><!-- End .product-single-details -->
-                    </div><!-- End .row -->
+                    </div><!-- End .row -->                    
                 </div><!-- End .product-single-container -->
 
                 <div class="product-media-list">

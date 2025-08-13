@@ -19,12 +19,15 @@ class ProductController extends Controller
         
         $product = Product::with('images', 'category')
             ->where('product_url', $slug)
-            ->firstOrFail();            
-
+            ->firstOrFail();                    
        
         $variants = Product::with('images')
             ->where('product_url', $slug)
             ->orderBy('size')
+            ->get();
+
+        $skuProducts = Product::with('images')
+            ->where('sku', $product->sku)
             ->get();
 
         if (!empty($product->sku)) {
@@ -47,7 +50,7 @@ class ProductController extends Controller
             ->orderBy('product_id', 'asc')
             ->first();
 
-        return view('product.product', compact('product', 'variants', 'relatedProducts', 'prevProduct', 'nextProduct'));
+        return view('product.product', compact('product', 'variants', 'relatedProducts', 'prevProduct', 'nextProduct', 'skuProducts'));
     }
 
 }
