@@ -14,7 +14,7 @@ class ProductController extends Controller
         return view('ajax.product-quick-view', compact('product'));
     }
 
-     public function show($slug)
+    public function show($slug)
     {        
         
         $product = Product::with('images', 'category')
@@ -26,8 +26,11 @@ class ProductController extends Controller
             ->orderBy('size')
             ->get();
 
-        $skuProducts = Product::with('images')
+        $skuProducts = Product::with(['images' => function($query) {
+                $query->orderBy('serial_no')->limit(1);
+            }])
             ->where('sku', $product->sku)
+            ->where('product_id', '!=', $product->product_id)
             ->get();
 
         if (!empty($product->sku)) {

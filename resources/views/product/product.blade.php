@@ -184,8 +184,7 @@
                                     </div>
                                 @endif
                             </div>
-                          
-                            <hr class="short-divider">
+                                                      
                             @php
                                 $firstVariant = $variants->first();
                             @endphp
@@ -193,7 +192,9 @@
                                 <span id="variant-price" class="product-price">${{ number_format($firstVariant->product_price, 2) }}</span>
                             </div>
                             
-                            <!-- End .price-box -->
+                            <div class="product-meta" style="margin: 10px 0;">
+                                <p>{{ $product->sku }} / {{ $product->purchase_code }}</p>
+                            </div>
 
                             <div class="product-desc">
                                 <p>{{ $product->description }}</p>
@@ -331,7 +332,7 @@
                                                     @endif
                                                 </div>                                                    
                                                 <div style="height: 20%; margin-top: 8px; font-size: 18px;">
-                                                    <strong>{{ $p->product_price ? '$' . number_format($p->product_price, 2) : 'No Price' }}</strong>
+                                                    <strong>{{ $p->product_price ? '$' . number_format($p->product_price, 2) : '$0.00' }}</strong>
                                                 </div>
                                                 
                                             </div>
