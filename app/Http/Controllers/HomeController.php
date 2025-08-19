@@ -69,29 +69,34 @@ class HomeController extends Controller
     }
 
     public function gallery(Request $request)
-    {
-        $isLoggedIn = session('frontend') == 'yes' ? true : false;
+    {            
 
         $initialLimit = 12;
-        $categoryId = $request->query('category');
+        $categoryName = $request->query('category');
+       
 
         $productBaseQuery = Product::query();
 
-        if ($categoryId) {
-            $matchingCategoryIds = Category::whereRaw("FIND_IN_SET(?, category_ids)", [$categoryId])
+        if ($categoryName) {
+            $matchingCategoryIds = Category::where('category_name', 'like', "%$categoryName%")
                 ->pluck('category_id')
                 ->toArray();
 
-            $matchingCategoryIds[] = $categoryId;
-
-            $productBaseQuery->whereIn('category_id', $matchingCategoryIds);
+            if (!empty($matchingCategoryIds)) {            
+                $productBaseQuery->where(function ($query) use ($matchingCategoryIds) {
+                    foreach ($matchingCategoryIds as $catId) {
+                        $query->orWhere('category_id', $catId)
+                            ->orWhereRaw("FIND_IN_SET(?, category_ids)", [$catId]);
+                    }
+                });
+            } else {
+                $productBaseQuery->whereRaw('0 = 1');
+            }
         }
 
         $subQuery = $productBaseQuery
             ->select(DB::raw('MIN(product_id) as id'))
-            ->groupBy('product_url');
-
-        $totalProducts = $subQuery->get()->count();
+            ->groupBy('product_url');        
 
         $productIds = $subQuery->pluck('id')->toArray();
 
@@ -101,34 +106,49 @@ class HomeController extends Controller
             ->take($initialLimit)
             ->get();
 
-        $categories = Category::with('children')
-            ->whereNull('subcategory_id')
-            ->get();
-
-        $brands = Brand::all();
-        $banners = Banner::all();
-
-        return view('gallery', compact('products', 'categories', 'brands', 'banners', 'totalProducts', 'isLoggedIn'));
-    }
-
-    public function documentation()
-    {
-        return view('documentation');
+       
+        return view('gallery', compact(
+            'products','categoryName'
+        ));
     }
 
     public function loadMore(Request $request)
     {
         $offset = $request->input('offset', 0);
         $limit = 12;
+        $categoryName = $request->input('category');
 
-        $query = Product::with(['images', 'category'])->latest();
+        $productBaseQuery = Product::query();
 
-        // ✅ Filter by category if provided
-        if ($request->has('category') && !empty($request->category)) {
-            $query->where('category_id', $request->category);
+        if ($categoryName) {
+            $matchingCategoryIds = Category::where('category_name', 'like', "%$categoryName%")
+                ->pluck('category_id')
+                ->toArray();
+
+            if (!empty($matchingCategoryIds)) {
+                $productBaseQuery->where(function ($query) use ($matchingCategoryIds) {
+                    foreach ($matchingCategoryIds as $catId) {
+                        $query->orWhere('category_id', $catId)
+                            ->orWhereRaw("FIND_IN_SET(?, category_ids)", [$catId]);
+                    }
+                });
+            } else {
+                $productBaseQuery->whereRaw('0 = 1');
+            }
         }
 
-        $products = $query->skip($offset)->take($limit)->get();
+        $subQuery = $productBaseQuery
+            ->select(DB::raw('MIN(product_id) as id'))
+            ->groupBy('product_url');
+
+        $productIds = $subQuery->pluck('id')->toArray();
+
+        $products = Product::with(['images', 'category'])
+            ->whereIn('product_id', $productIds)
+            ->latest()
+            ->skip($offset)
+            ->take($limit)
+            ->get();
 
         return response()->json($products);
     }
@@ -166,5 +186,10 @@ class HomeController extends Controller
         return response()->json($products);
     }
 
+    
+    public function documentation()
+    {
+        return view('documentation');
+    }
 
 }
