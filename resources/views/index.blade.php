@@ -373,8 +373,14 @@ function loadMoreProducts() {
         }
 
         products.forEach(product => {
-            const media = (product.images || []).slice(0, 2);
+            const images = (product.images || []);
 
+            if (images.length === 0) return;
+
+            images.sort((a, b) => (a.serial_no || 0) - (b.serial_no || 0));
+
+            const media = images.slice(0, 2);
+            
             const file1 = media[0]?.file_path ? `${SOURCE_PANEL_IMAGE_URL}${media[0].file_path}` : defaultImagePath;
             const file2 = media[1]?.file_path ? `${SOURCE_PANEL_IMAGE_URL}${media[1].file_path}` : null;
 
