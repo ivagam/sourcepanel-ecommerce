@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Repladeez - eCommerce Template</title>
+    <title>Repladeez - China factory direct supply for Watches HandBags Shoes Clothes Sunglasses Jewellery</title>
 
     <meta name="keywords" content="HTML5 Template" />
     <meta name="description" content="Repladeez - eCommerce Template">
@@ -23,6 +23,16 @@
     <link rel="stylesheet" href="../assets/css/demo1.min.css">
     <link rel="stylesheet" type="text/css" href="../assets/vendor/simple-line-icons/css/simple-line-icons.min.css">
     <link rel="stylesheet" type="text/css" href="../assets/vendor/fontawesome-free/css/all.min.css">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q2JZF5MT1B"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-Q2JZF5MT1B');
+    </script>
+
 </head>
 
 <body>

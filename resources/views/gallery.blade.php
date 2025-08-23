@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,13 +15,21 @@
 
     <link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.png">
 
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q2JZF5MT1B"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Q2JZF5MT1B');
+    </script>
+
     <style>
         #category-header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: #ffffffff;
+            background: #fff;
             box-shadow: 0 2px 5px rgba(6, 83, 35, 0.1);
             z-index: 1000;
             padding: 10px 0;
@@ -33,20 +42,46 @@
             color:#000;
         }
         #category-header a:hover{
-            padding: 10px;
-            float:left;
-            cursor: pointer;
-            color: #035b34ff;
+            color: #035b34;
         }
         .bottom{
             padding: 5px !important;
         }
-      
+
+        .slider-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;            
+            border-radius: 10px;
+        }
+        .slider-wrapper {
+            display: flex;
+            transition: transform 0.4s ease-in-out;
+        }
+        .slide {
+            min-width: 100%;
+            height: 100%;
+        }
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            outline: none;
+            box-shadow: none;
+            color: green;
+            font-size: 32px;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+        .slider-btn.prev { left: 10px; }
+        .slider-btn.next { right: 10px; }
+
     </style>
 </head>
 <body>
-
-
     <header id="category-header">
         <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}" title="Go to Home">
             <img src="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/assets/images/logo.png" 
@@ -66,19 +101,15 @@
             <div class="col-9">
                 <div id="product-list">
                     @foreach($products as $product)
-                        @php
-                            $media = optional($product->images->sortBy('serial_no')->first());
-                            $file1 = $media && $media->file_path ? $media->file_path : null;                            
-                            if (empty($file1)) continue;
-                            $filePath = env('SOURCE_PANEL_IMAGE_URL') . $file1;
-                            $ext = strtolower(pathinfo($file1, PATHINFO_EXTENSION));
-                            $isVideo = in_array($ext, ['mp4', 'webm', 'mov', 'avi']);
+                    
+                        @php                        
+                            $images = $product->images->sortBy('serial_no');
+                            if ($images->isEmpty()) continue;
                         @endphp
 
                         <div class="card">
                             <div class="top">
-                                <div class="userDetails">                                   
-
+                                <div class="userDetails">
                                     <div class="bottom">
                                         <div class="actionBtns">
                                             <div class="left">
@@ -118,8 +149,6 @@
                                                     View Page
                                                 </a>
                                             </div>
-
-                                            
                                         </div>                            
                                     </div>
                                 </div>
@@ -128,16 +157,36 @@
                                 </div>
                             </div>
 
-                            <div class="imgBx">
-                                @if($isVideo)
-                                    <video class="cover" muted autoplay loop playsinline controls style="width: 100%; height: 100%; object-fit: cover;">
-                                        <source src="{{ $filePath }}" type="video/{{ $ext }}">
-                                        Your browser does not support the video tag.
-                                    </video>
-                                @else
-                                    <img src="{{ $filePath }}" alt="{{ $product->product_name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                            <!-- Slider Start -->
+                            <div class="imgBx slider-container">
+                                <div class="slider-wrapper">
+                                    @foreach($images as $media)
+                                        @php
+                                            $file = $media->file_path;
+                                            if (!$file) continue;
+                                            $filePath = env('SOURCE_PANEL_IMAGE_URL') . $file;
+                                            $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                                            $isVideo = in_array($ext, ['mp4', 'webm', 'mov', 'avi']);
+                                        @endphp
+                                        <div class="slide">
+                                            @if($isVideo)
+                                                <video muted autoplay loop playsinline controls style="width:100%; height:100%; object-fit: cover;">
+                                                    <source src="{{ $filePath }}" type="video/{{ $ext }}">
+                                                </video>
+                                            @else
+                                                <img src="{{ $filePath }}" alt="{{ $product->product_name }}" style="width:100%; height:100%; object-fit: cover;">
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                </div>
+
+                                {{-- Only show arrows if more than 1 image/video --}}
+                                @if($images->count() > 1)
+                                    <button class="slider-btn prev">&#10094;</button>
+                                    <button class="slider-btn next">&#10095;</button>
                                 @endif
-                            </div>                        
+                            </div>
+                            <!-- Slider End -->
                         </div>
                     @endforeach
                 </div>
@@ -145,7 +194,7 @@
             </div>
         </div>
     </main>
-        <input type="hidden" id="categoryName" value="{{ $categoryName }}"/>
+    <input type="hidden" id="categoryName" value="{{ $categoryName }}"/>
 
     <script>
 let offset = {{ count($products) }};
@@ -182,14 +231,7 @@ function loadMoreProducts() {
             let images = product.images || [];
             if (images.length === 0) return;
 
-            // Sort images by serial_no
             images.sort((a, b) => (a.serial_no || 0) - (b.serial_no || 0));
-            let file = images[0].file_path;
-            if (!file) return;
-
-            let ext = file.split('.').pop().toLowerCase();
-            let url = '{{ env("SOURCE_PANEL_IMAGE_URL") }}' + file;
-            let isVideo = ['mp4', 'mov', 'webm', 'avi'].includes(ext);
 
             let priceHTML = '';
             if (product.product_price && product.product_price > 0) {
@@ -198,6 +240,32 @@ function loadMoreProducts() {
 
             const card = document.createElement('div');
             card.className = 'card';
+
+            let slidesHTML = images.map(img => {
+                if (!img.file_path) return '';
+                    let file = img.file_path;
+                if (!file) return '';
+                    let url = '{{ env("SOURCE_PANEL_IMAGE_URL") }}' + file;
+                    let ext = file.split('.').pop().toLowerCase();
+                    let isVideo = ['mp4','mov','webm','avi'].includes(ext);
+                    return `
+                        <div class="slide">
+                            ${isVideo 
+                                ? `<video muted autoplay loop playsinline controls style="width:100%; height:100%; object-fit: cover;">
+                                    <source src="${url}" type="video/${ext}">
+                                </video>`
+                                : `<img src="${url}" alt="${product.product_name}" style="width:100%; height:100%; object-fit: cover;">`}
+                        </div>`;
+            }).join('');
+
+            let sliderButtons = "";
+            if (images.length > 1) {
+                sliderButtons = `
+                    <button class="slider-btn prev">&#10094;</button>
+                    <button class="slider-btn next">&#10095;</button>
+                `;
+            }
+
             card.innerHTML = `
                 <div class="top">
                     <div class="userDetails">
@@ -236,12 +304,11 @@ function loadMoreProducts() {
                     </div>
                 </div>
 
-                <div class="imgBx">
-                    ${isVideo 
-                        ? `<video class="cover" muted autoplay loop playsinline controls style="width:100%; height:100%; object-fit: cover;">
-                                <source src="${url}" type="video/${ext}">
-                           </video>` 
-                        : `<img src="${url}" style="width:100%; height:100%; object-fit: cover;">`}
+                <div class="imgBx slider-container">
+                    <div class="slider-wrapper">
+                        ${slidesHTML}
+                    </div>
+                    ${sliderButtons}
                 </div>
             `;
             container.appendChild(card);
@@ -250,6 +317,8 @@ function loadMoreProducts() {
         offset += products.length;
         loading = false;
         document.getElementById('loader').style.display = 'none';
+
+        initSliders();
     })
     .catch(err => {
         console.error(err);
@@ -257,8 +326,67 @@ function loadMoreProducts() {
         document.getElementById('loader').style.display = 'none';
     });
 }
+function initSliders() {
+    document.querySelectorAll('.slider-container').forEach(container => {
+        const wrapper = container.querySelector('.slider-wrapper');
+        const slides = container.querySelectorAll('.slide');
+        let index = 0;
+        let startX = 0;
+        let endX = 0;
+
+        const updateSlide = () => {
+            wrapper.style.transform = `translateX(-${index * 100}%)`;
+
+            slides.forEach((slide, i) => {
+                const video = slide.querySelector('video');
+                if (video) {
+                    if (i === index) {
+                        video.play().catch(() => {});
+                    } else {
+                        video.pause();
+                    }
+                }
+            });
+        };
+
+        const prevBtn = container.querySelector('.prev');
+        const nextBtn = container.querySelector('.next');
+
+        if (prevBtn && nextBtn) {
+            prevBtn.onclick = () => {
+                index = (index > 0) ? index - 1 : slides.length - 1;
+                updateSlide();
+            };
+            nextBtn.onclick = () => {
+                index = (index < slides.length - 1) ? index + 1 : 0;
+                updateSlide();
+            };
+        }
+
+        wrapper.addEventListener("touchstart", e => {
+            startX = e.touches[0].clientX;
+        });
+
+        wrapper.addEventListener("touchmove", e => {
+            endX = e.touches[0].clientX;
+        });
+
+        wrapper.addEventListener("touchend", () => {
+            if (startX - endX > 50) {
+                index = (index < slides.length - 1) ? index + 1 : 0;
+                updateSlide();
+            } else if (endX - startX > 50) {
+                index = (index > 0) ? index - 1 : slides.length - 1;
+                updateSlide();
+            }
+            startX = endX = 0;
+        });
+
+        updateSlide();
+    });
+}
+
+initSliders();
 </script>
-
-
 </body>
 </html>

@@ -38,6 +38,17 @@
     <link rel="stylesheet" href="assets/css/demo1.min.css">
     <link rel="stylesheet" type="text/css" href="assets/vendor/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="assets/vendor/simple-line-icons/css/simple-line-icons.min.css">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q2JZF5MT1B"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-Q2JZF5MT1B');
+    </script>
+
 </head>
 
 <body>
@@ -389,7 +400,7 @@ function loadMoreProducts() {
             if (file1 && isVideo(file1)) {
                 imagesHtml += `
                     <video class="preview-video" muted autoplay loop playsinline controls
-                        style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                        style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%; display:block;">
                         <source src="${file1}" type="video/${file1.split('.').pop().toLowerCase()}">
                     </video>
                 `;
@@ -398,12 +409,12 @@ function loadMoreProducts() {
                     <img class="preview-image"
                         src="${file1}"
                         alt="${product.product_name}"
-                        style="object-fit:cover; width: 100%; height: 100%; position: absolute; top:0; left:0;">
+                        style="object-fit:cover; width: 100%; height: 100%; position: absolute; top:0; left:0; display:block;">
                 `;
             }
 
-            if (file2) {
-                if (isVideo(file2)) {
+            if (file2) {                
+                if (isVideo(file2)) {                    
                     imagesHtml += `
                         <video class="hover-video" muted loop playsinline
                             style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none;">
