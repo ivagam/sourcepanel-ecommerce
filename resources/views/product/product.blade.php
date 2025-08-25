@@ -208,8 +208,8 @@
                             </div>
 
                             <div class="product-desc">
-                                <p>{{ $product->description }}</p>
-                            </div><!-- End .product-desc -->
+                                {!! $product->description !!}
+                            </div>
 
                             @php
                                 use App\Models\Category;

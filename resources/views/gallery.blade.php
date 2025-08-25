@@ -142,12 +142,23 @@
                                                     </span>
                                                 @endif                                               
 
+                                                <div style="display: flex; align-items: center; gap: 15px; flex: 1;">
                                                 <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/product/{{ $product->product_url }}" 
-                                                   title="View Product" 
-                                                   target="_blank"
-                                                   style="display: flex; align-items: center;">
+                                                    title="View Product" 
+                                                    target="_blank"
+                                                    style="display: flex; align-items: center;">
                                                     View Page
                                                 </a>
+
+                                                <a href="https://wa.me/8618202031361?text={{ urlencode('Hi! I am interested in ' . $product->product_name . '. Please share the price/availability. Link: ' . env('SOURCE_PANEL_ECOMMERCE_URL') . '/product/' . $product->product_url) }}"
+                                                    title="Ask Price / Contact Us"
+                                                    target="_blank"
+                                                    rel="noopener"
+                                                    style="display: flex; align-items: center; margin-left: auto;">
+                                                    Ask Price / Contact Us
+                                                </a>
+
+                                                </div>
                                             </div>
                                         </div>                            
                                     </div>
@@ -292,12 +303,21 @@ function loadMoreProducts() {
                                     </a>
                                     ${priceHTML}                                        
 
+                                <div style="display: flex; align-items: center; gap: 15px; flex: 1;">
                                     <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/product/${product.product_url}" 
                                        title="View Product" 
                                        target="_blank"
                                        style="display: flex; align-items: center;">
                                         View Page
                                     </a>
+                                    <a href="https://wa.me/8618202031361?text=${encodeURIComponent('Hi! I am interested in ' + product.product_name + '. Please share the price/availability. Link: ' + '{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/product/' + product.product_url)}"
+                                        title="Ask Price / Contact Us"
+                                        target="_blank"
+                                        rel="noopener"
+                                        style="display: flex; align-items: center; margin-left: auto;">
+                                        Ask Price / Contact Us
+                                    </a>
+                                </div>
                                 </div>
                             </div>
                         </div>
