@@ -69,47 +69,58 @@ class HomeController extends Controller
     }
 
     public function gallery(Request $request)
-    {            
-
+    {
         $initialLimit = 12;
         $categoryName = $request->query('category');
-       
 
         $productBaseQuery = Product::query();
 
-        if ($categoryName) {
-            $matchingCategoryIds = Category::where('category_name', 'like', "%$categoryName%")
-                ->pluck('category_id')
-                ->toArray();
+        if ($categoryName === 'videos') {
+            $productBaseQuery->whereHas('images', function ($q) {
+                $q->whereRaw("LOWER(SUBSTRING_INDEX(file_path, '.', -1)) IN ('mp4','webm','mov','avi')");
+            });
 
-            if (!empty($matchingCategoryIds)) {            
-                $productBaseQuery->where(function ($query) use ($matchingCategoryIds) {
-                    foreach ($matchingCategoryIds as $catId) {
-                        $query->orWhere('category_id', $catId)
-                            ->orWhereRaw("FIND_IN_SET(?, category_ids)", [$catId]);
-                    }
-                });
-            } else {
-                $productBaseQuery->whereRaw('0 = 1');
+            $products = $productBaseQuery
+                ->with(['images' => function ($q) {
+                    $q->whereRaw("LOWER(SUBSTRING_INDEX(file_path, '.', -1)) IN ('mp4','webm','mov','avi')")
+                    ->orderBy('serial_no');
+                }, 'category'])
+                ->latest()
+                ->take($initialLimit)
+                ->get();
+
+        } else {
+            if ($categoryName) {
+                $matchingCategoryIds = Category::where('category_name', 'like', "%$categoryName%")
+                    ->pluck('category_id')
+                    ->toArray();
+
+                if (!empty($matchingCategoryIds)) {
+                    $productBaseQuery->where(function ($query) use ($matchingCategoryIds) {
+                        foreach ($matchingCategoryIds as $catId) {
+                            $query->orWhere('category_id', $catId)
+                                ->orWhereRaw("FIND_IN_SET(?, category_ids)", [$catId]);
+                        }
+                    });
+                } else {
+                    $productBaseQuery->whereRaw('0 = 1');
+                }
             }
+
+            $subQuery = $productBaseQuery
+                ->select(DB::raw('MIN(product_id) as id'))
+                ->groupBy('product_url');
+
+            $productIds = $subQuery->pluck('id')->toArray();
+
+            $products = Product::with(['images', 'category'])
+                ->whereIn('product_id', $productIds)
+                ->latest()
+                ->take($initialLimit)
+                ->get();
         }
 
-        $subQuery = $productBaseQuery
-            ->select(DB::raw('MIN(product_id) as id'))
-            ->groupBy('product_url');        
-
-        $productIds = $subQuery->pluck('id')->toArray();
-
-        $products = Product::with(['images', 'category'])
-            ->whereIn('product_id', $productIds)
-            ->latest()
-            ->take($initialLimit)
-            ->get();
-
-       
-        return view('gallery', compact(
-            'products','categoryName'
-        ));
+        return view('gallery', compact('products', 'categoryName'));
     }
 
     public function loadMore(Request $request)
@@ -120,38 +131,56 @@ class HomeController extends Controller
 
         $productBaseQuery = Product::query();
 
-        if ($categoryName) {
-            $matchingCategoryIds = Category::where('category_name', 'like', "%$categoryName%")
-                ->pluck('category_id')
-                ->toArray();
+        if ($categoryName === 'videos') {
+            $productBaseQuery->whereHas('images', function ($q) {
+                $q->whereRaw("LOWER(SUBSTRING_INDEX(file_path, '.', -1)) IN ('mp4','webm','mov','avi')");
+            });
 
-            if (!empty($matchingCategoryIds)) {
-                $productBaseQuery->where(function ($query) use ($matchingCategoryIds) {
-                    foreach ($matchingCategoryIds as $catId) {
-                        $query->orWhere('category_id', $catId)
-                            ->orWhereRaw("FIND_IN_SET(?, category_ids)", [$catId]);
-                    }
-                });
-            } else {
-                $productBaseQuery->whereRaw('0 = 1');
+            $products = $productBaseQuery
+                ->with(['images' => function ($q) {
+                    $q->whereRaw("LOWER(SUBSTRING_INDEX(file_path, '.', -1)) IN ('mp4','webm','mov','avi')")
+                    ->orderBy('serial_no');
+                }, 'category'])
+                ->latest()
+                ->skip($offset)
+                ->take($limit)
+                ->get();
+
+        } else {
+            if ($categoryName) {
+                $matchingCategoryIds = Category::where('category_name', 'like', "%$categoryName%")
+                    ->pluck('category_id')
+                    ->toArray();
+
+                if (!empty($matchingCategoryIds)) {
+                    $productBaseQuery->where(function ($query) use ($matchingCategoryIds) {
+                        foreach ($matchingCategoryIds as $catId) {
+                            $query->orWhere('category_id', $catId)
+                                ->orWhereRaw("FIND_IN_SET(?, category_ids)", [$catId]);
+                        }
+                    });
+                } else {
+                    $productBaseQuery->whereRaw('0 = 1');
+                }
             }
+
+            $subQuery = $productBaseQuery
+                ->select(DB::raw('MIN(product_id) as id'))
+                ->groupBy('product_url');
+
+            $productIds = $subQuery->pluck('id')->toArray();
+
+            $products = Product::with(['images', 'category'])
+                ->whereIn('product_id', $productIds)
+                ->latest()
+                ->skip($offset)
+                ->take($limit)
+                ->get();
         }
-
-        $subQuery = $productBaseQuery
-            ->select(DB::raw('MIN(product_id) as id'))
-            ->groupBy('product_url');
-
-        $productIds = $subQuery->pluck('id')->toArray();
-
-        $products = Product::with(['images', 'category'])
-            ->whereIn('product_id', $productIds)
-            ->latest()
-            ->skip($offset)
-            ->take($limit)
-            ->get();
 
         return response()->json($products);
     }
+
 
    public function liveSearch(Request $request)
     {
@@ -190,6 +219,11 @@ class HomeController extends Controller
     public function documentation()
     {
         return view('documentation');
+    }
+
+    public function cal(Request $request)
+    {  
+        return view('cal');
     }
 
 }
