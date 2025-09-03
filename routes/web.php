@@ -15,6 +15,9 @@ Route::get('/live-search', [HomeController::class, 'liveSearch'])->name('live.se
 Route::get('/documentation', [HomeController::class, 'documentation'])->name('documentation');
 Route::post('/load-more-products', [HomeController::class, 'loadMore'])->name('products.load.more');
 
+Route::get('/about-us', [HomeController::class, 'aboutus'])->name('about-us');
+Route::get('/contact-us', [HomeController::class, 'contactus'])->name('contact-us');
+
 Route::get('/login', [HomeController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [HomeController::class, 'login']);
 

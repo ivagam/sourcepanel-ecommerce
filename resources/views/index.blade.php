@@ -104,7 +104,7 @@
                                                     @else
                                                         <img class="preview-image"
                                                             src="{{ env('SOURCE_PANEL_IMAGE_URL') . $file1 }}"
-                                                            alt="{{ $product->product_name ?? 'Default Image' }}"
+                                                            alt="{{ $product->product_name ?? '' }}"
                                                             style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
                                                     @endif
 

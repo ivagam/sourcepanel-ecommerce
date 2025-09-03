@@ -206,10 +206,9 @@
 							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Belts">Belts</a></li>
 							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Jewelery">Jewelery</a></li>
 							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Glassware">Glassware</a></li>
-							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=113">Others</a></li>
-							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?page=reviews">Reviews</a></li>
-							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?page=about-us">About Us</a></li>
-							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?page=contact-us">Contact Us</a></li>
+							<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=113">Others</a></li>							
+							<li><a href="{{ route('about-us') }}">About Us</a></li>
+							<li><a href="{{ route('contact-us') }}">Contact Us</a></li>
 							@php renderCategoryTree($categories); @endphp
 						</ul>
 					</nav>

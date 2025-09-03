@@ -90,10 +90,10 @@
                                     <figure class="product-image-container">
                                         <a href="{{ url('product/' . $product->product_id) }}" class="product-image">
                                             @if ($product->images->isNotEmpty())
-            <img src="{{ asset($product->images->first()->file_path) }}" alt="Product Image" width="150">
-        @else
-            <img src="{{ asset('assets/images/no-image.png') }}" alt="No Image" width="150">
-        @endif
+                                                <img src="{{ asset($product->images->first()->file_path) }}" alt="Product Image" width="150">
+                                            @else
+                                                <img src="{{ asset('assets/images/no-image.png') }}" alt="No Image" width="150">
+                                            @endif
                                         </a>
                                         <form method="POST" action="{{ route('wishlist.remove', ['productId' => $product->product_id]) }}" style="display:inline;">
                                             @csrf

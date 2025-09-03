@@ -23,52 +23,22 @@
 								<h4 class="widget-title">Customer Service</h4>
 
 								<ul class="links">
-									<li><a href="#">Help & FAQs</a></li>
-									<li><a href="#">Order Tracking</a></li>
-									<li><a href="#">Shipping & Delivery</a></li>
-									<li><a href="#">Orders History</a></li>
-									<li><a href="#">Advanced Search</a></li>
-									<li><a href="dashboard.html">My Account</a></li>
-									<li><a href="#">Careers</a></li>
-									<li><a href="about.html">About Us</a></li>
-									<li><a href="#">Corporate Sales</a></li>
-									<li><a href="#">Privacy</a></li>
+									<li><a href="{{ route('home') }}">Home</a></li>
+									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=1">Watches</a></li>
+									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Handbags">Handbags</a></li>
+									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Clothings">Clothings</a></li>
+									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Shoes">Shoes</a></li>
+									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Belts">Belts</a></li>
+									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Jewelery">Jewelery</a></li>
+									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Glassware">Glassware</a></li>
+									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=113">Others</a></li>
+									<li><a href="{{ route('about-us') }}">About Us</a></li>
+									<li><a href="{{ route('contact-us') }}">Contact Us</a></li>
 								</ul>
 							</div><!-- End .widget -->
 						</div><!-- End .col-lg-3 -->
 
-						<div class="col-lg-3 col-sm-6">
-							<div class="widget">
-								<h4 class="widget-title">Popular Tags</h4>
-
-								<div class="tagcloud">
-									<a href="#">Bag</a>
-									<a href="#">Black</a>
-									<a href="#">Blue</a>
-									<a href="#">Clothes</a>
-									<a href="#">Fashion</a>
-									<a href="#">Hub</a>
-									<a href="#">Shirt</a>
-									<a href="#">Shoes</a>
-									<a href="#">Skirt</a>
-									<a href="#">Sports</a>
-									<a href="#">Sweater</a>
-								</div>
-							</div><!-- End .widget -->
-						</div><!-- End .col-lg-3 -->
-
-						<div class="col-lg-3 col-sm-6">
-							<div class="widget widget-newsletter">
-								<h4 class="widget-title">Subscribe newsletter</h4>
-								<p>Get all the latest information on events, sales and offers. Sign up for newsletter:
-								</p>
-								<form action="#" class="mb-0">
-									<input type="email" class="form-control m-b-3" placeholder="Email address" required>
-
-									<input type="submit" class="btn btn-primary shadow-none" value="Subscribe">
-								</form>
-							</div><!-- End .widget -->
-						</div><!-- End .col-lg-3 -->
+					
 					</div><!-- End .row -->
 				</div><!-- End .container -->
 			</div><!-- End .footer-middle -->

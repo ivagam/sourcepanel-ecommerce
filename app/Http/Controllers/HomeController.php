@@ -35,13 +35,26 @@ class HomeController extends Controller
         $productBaseQuery = Product::query();
 
         if ($categoryId) {
-            $matchingCategoryIds = Category::whereRaw("FIND_IN_SET(?, category_ids)", [$categoryId])
-                ->pluck('category_id')
-                ->toArray();
+            if (is_numeric($categoryId)) {
+                // Case 1: category is ID → check in category_ids or exact match
+                $matchingCategoryIds = Category::whereRaw("FIND_IN_SET(?, category_ids)", [$categoryId])
+                    ->pluck('category_id')
+                    ->toArray();
 
-            $matchingCategoryIds[] = $categoryId;
+                $matchingCategoryIds[] = $categoryId;
+            } else {
+                // Case 2: category is NAME → use LIKE search
+                $matchingCategoryIds = Category::whereRaw(
+                    'LOWER(category_name) LIKE ?',
+                    ['%' . strtolower($categoryId) . '%']
+                )->pluck('category_id')->toArray();
+            }
 
-            $productBaseQuery->whereIn('category_id', $matchingCategoryIds);
+            if (!empty($matchingCategoryIds)) {
+                $productBaseQuery->whereIn('category_id', $matchingCategoryIds);
+            } else {
+                $productBaseQuery->whereRaw('0 = 1'); // no results
+            }
         }
 
         $subQuery = $productBaseQuery
@@ -67,6 +80,7 @@ class HomeController extends Controller
 
         return view('index', compact('products', 'categories', 'brands', 'banners', 'totalProducts', 'isLoggedIn'));
     }
+
 
     public function gallery(Request $request)
     {
@@ -224,6 +238,16 @@ class HomeController extends Controller
     public function cal(Request $request)
     {  
         return view('cal');
+    }
+
+     public function aboutus()
+    {
+        return view('about-us');
+    }
+
+     public function contactus()
+    {
+        return view('contact-us');
     }
 
 }

@@ -267,7 +267,8 @@ function setupBamaTable() {
         const valueCell = row.querySelector('.value');
         if(numberInput && valueCell){
             function updateValue() {
-                const num = parseFloat(numberInput.value)||0;
+                const raw = parseFloat(numberInput.value)||0;
+                const num = raw / 7;
                 let result = 0;
                 if(num<250) result=num+70;
                 else if(num<300) result=num+75;

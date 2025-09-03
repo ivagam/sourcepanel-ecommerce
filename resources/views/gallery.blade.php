@@ -364,7 +364,7 @@
                                         <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap; flex: 1;">
                                             <a href="https://wa.me/8618202031361?text=${encodeURIComponent('Check out this product: {{ env("SOURCE_PANEL_ECOMMERCE_URL") }}/product/' + product.product_url)}" 
                                                target="_blank" title="Share on WhatsApp" style="display:flex;align-items:center;">
-                                                <img src="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/public/whatsapp.png" width="24" height="24" />
+                                                <img src="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/public/whatsapp.png" width="24" height="24" alt="WhatsApp" />
                                             </a>
                                             <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/product/${product.product_url}" style="font-weight:bold; color:inherit; text-decoration:none;">
                                                 ${truncateText(product.product_name, 30)}
