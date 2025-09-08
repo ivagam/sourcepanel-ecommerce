@@ -1,66 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Auto Calculator</title>
 <style>
 body {
     font-family: Arial, sans-serif;
     margin: 10px;
 }
-
-/* Flex container for desktop two-column layout */
 .table-columns {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
 }
-
-/* Left and right columns */
 .column {
     flex: 1;
     min-width: 320px;
 }
-
-/* Wrapper for scroll on mobile */
 .table-wrapper {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     margin-bottom: 12px;
 }
-
-/* Base table styling */
-table { 
-    border-collapse: collapse; 
-    width: 100%; 
+table {
+    border-collapse: collapse;
+    width: 100%;
     min-width: 320px;
 }
-
-th, td { 
-    border: 1px solid #ddd; 
-    padding: 6px; 
-    text-align: center; 
+th, td {
+    border: 1px solid #ddd;
+    padding: 6px;
+    text-align: center;
     font-size: 14px;
 }
-
-input { 
-    width: 95%; 
-    padding: 5px; 
+input {
+    width: 95%;
+    padding: 5px;
     font-size: 13px;
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
-
-.value { 
-    font-size: 14px; 
-    font-weight: bold; 
+.value {
+    font-size: 14px;
+    font-weight: bold;
     background: #f9f9f9;
     padding: 6px;
 }
-
-.copy-btn {    
+.copy-btn {
     padding: 4px 10px;
     font-size: 13px;
     border: 1px solid #aaa;
@@ -77,25 +65,16 @@ input {
     display: none;
     margin-top: 2px;
 }
-
-/* Column width proportion */
 #otherTable th:nth-child(1), #otherTable td:nth-child(1),
 #watchTable th:nth-child(1), #watchTable td:nth-child(1) { width: 25%; }
-
 #otherTable th:nth-child(2), #otherTable td:nth-child(2),
 #watchTable th:nth-child(2), #watchTable td:nth-child(2) { width: 25%; }
-
 #otherTable th:nth-child(3), #otherTable td:nth-child(3),
 #watchTable th:nth-child(3), #watchTable td:nth-child(3) { width: 50%; }
-
-/* Gama / Bama — narrow number column */
 #gamaTable th:nth-child(1), #gamaTable td:nth-child(1),
 #bamaTable th:nth-child(1), #bamaTable td:nth-child(1) { width: 20%; }
-
 #gamaTable th:nth-child(2), #gamaTable td:nth-child(2),
 #bamaTable th:nth-child(2), #bamaTable td:nth-child(2) { width: 80%; }
-
-/* Responsive: mobile single column */
 @media (max-width: 768px) {
     .table-columns { flex-direction: column; }
 }
@@ -186,6 +165,7 @@ function adjustLastDigit(num) {
     });
     return n - lastDigit + closest;
 }
+
 function calculateValue(mainCategory, inputValue) {
     let dividedValue = inputValue / 7;
     let productPrice = 0;
@@ -221,6 +201,7 @@ function setupOtherTable() {
         }
     });
 }
+
 function setupWatchTable() {
     const table = document.getElementById('watchTable');
     table.querySelectorAll('tr').forEach(row => {
@@ -239,6 +220,7 @@ function setupWatchTable() {
         }
     });
 }
+
 function setupGamaTable() {
     const table = document.getElementById('gamaTable');
     table.querySelectorAll('tr').forEach(row => {
@@ -252,14 +234,15 @@ function setupGamaTable() {
                 else if(num<2100) result=num+550;
                 else if(num<3000) result=num+600;
                 else result=num*1.2;
-                result=Math.round(result);
-                valueCell.textContent = num?`${result}CNY+shipping fees`:'0';
+                result = adjustLastDigit(result);
+                valueCell.textContent = num ? `${result}CNY+shipping fees` : '0';
             }
             numberInput.addEventListener('input', updateValue);
             updateValue();
         }
     });
 }
+
 function setupBamaTable() {
     const table = document.getElementById('bamaTable');
     table.querySelectorAll('tr').forEach(row => {
@@ -274,8 +257,8 @@ function setupBamaTable() {
                 else if(num<300) result=num+75;
                 else if(num<400) result=num+80;
                 else result=num*1.2;
-                result=Math.round(result);
-                valueCell.textContent = num?`USD${result}+shipping fees`:'0';
+                result = adjustLastDigit(result);
+                valueCell.textContent = num ? `USD${result}+shipping fees` : '0';
             }
             numberInput.addEventListener('input', updateValue);
             updateValue();
@@ -288,16 +271,28 @@ function copyValues(tableId, btn){
     const table = document.getElementById(tableId);
     const values = [];
     table.querySelectorAll('.value').forEach(cell => {
-        if(cell.textContent!=='0') values.push(cell.textContent);
+        if(cell.textContent !== '0'){
+            values.push(cell.textContent);
+        }
     });
     if(values.length){
         navigator.clipboard.writeText(values.join('\n'));
         const msg = btn.nextElementSibling;
-        msg.style.display="block";
-        setTimeout(()=>msg.style.display="none",1500);
+        msg.style.display = "block";
+        setTimeout(() => msg.style.display = "none", 1500);
     }
+    // Clear all inputs and values in this table
+    table.querySelectorAll('input').forEach(input => {
+        input.value = '';
+    });
+    table.querySelectorAll('.value').forEach(cell => {
+        cell.textContent = '0';
+    });
 }
 
+
+
+// ===== Initialize =====
 setupOtherTable();
 setupWatchTable();
 setupGamaTable();

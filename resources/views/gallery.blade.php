@@ -15,8 +15,7 @@
     <link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.png">
 
     <style>
-        /* kept minimal and same style as you provided */
-        #category-header {
+       #category-header {
             position: fixed;
             top: 0;
             left: 0;
@@ -27,33 +26,54 @@
             padding: 10px 0;
             overflow-x: auto;
         }
-        #category-header a{
+
+        #category-header a {
             padding: 10px;
-            float:left;
+            float: left;
             cursor: pointer;
-            color:#000;
-        }
-        #category-header a:hover{
-            color: #035b34;
-        }
-        .bottom{
-            padding: 5px !important;
+            color: #000;
         }
 
+        #category-header a:hover {
+            color: #035b34;
+        }
+
+        .bottom {
+            padding: 5px !important;
+        }
         .slider-container {
             position: relative;
             overflow: hidden;
             width: 100%;
+            max-width: 600px;
+            height: 400px !important; /* force height */
             border-radius: 10px;
+            margin: auto;
         }
+
         .slider-wrapper {
             display: flex;
             transition: transform 0.4s ease-in-out;
+            height: 100% !important;
         }
+
         .slide {
             min-width: 100%;
-            height: 100%;
+            height: 100% !important;
+            box-sizing: border-box;
+            position: relative;
         }
+
+        .slide img,
+        .slide video {
+            width: 100%;
+            height: 100%;
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
         .slider-btn {
             position: absolute;
             top: 50%;
@@ -68,8 +88,14 @@
             padding: 0;
             line-height: 1;
         }
-        .slider-btn.prev { left: 10px; }
-        .slider-btn.next { right: 10px; }
+
+        .slider-btn.prev {
+            left: 10px;
+        }
+
+        .slider-btn.next {
+            right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -126,7 +152,7 @@
                                 <div class="imgBx slider-container">
                                     <div class="slider-wrapper">
                                         <div class="slide">
-                                            <video controls style="width:100%; height:100%; object-fit: cover;">
+                                            <video controls>
                                                 <source src="{{ $vid['url'] }}" type="video/{{ $vid['ext'] }}">
                                                 Your browser does not support the video tag.
                                             </video>
@@ -144,7 +170,7 @@
                                 if ($images->isEmpty()) continue;
                             @endphp
 
-                            <div class="card">
+                            <div class="card" @if($loop->first) style="top: 25px;" @endif>
                                 <div class="top">
                                     <div class="userDetails">
                                         <div class="bottom">
@@ -218,11 +244,11 @@
                                             @endphp
                                             <div class="slide">
                                                 @if($isVideo)
-                                                    <video controls style="width:100%; height:100%; object-fit: cover;">
+                                                    <video controls>
                                                         <source src="{{ $filePath }}" type="video/{{ $ext }}">
                                                     </video>
                                                 @else
-                                                    <img src="{{ $filePath }}" alt="{{ $product->product_name }}" style="width:100%; height:100%; object-fit: cover;">
+                                                    <img src="{{ $filePath }}" alt="{{ $product->product_name }}">
                                                 @endif
                                             </div>
                                         @endforeach
@@ -302,7 +328,7 @@
                             <div class="imgBx slider-container">
                                 <div class="slider-wrapper">
                                     <div class="slide">
-                                        <video controls style="width:100%; height:100%; object-fit: cover;">
+                                        <video controls>
                                             <source src="${url}" type="video/${ext}">
                                             Your browser does not support the video tag.
                                         </video>
@@ -336,10 +362,10 @@
                         return `
                             <div class="slide">
                                 ${isVideo 
-                                    ? `<video controls style="width:100%; height:100%; object-fit: cover;">
+                                    ? `<video controls>
                                         <source src="${url}" type="video/${ext}">
                                     </video>`
-                                    : `<img src="${url}" alt="${product.product_name}" style="width:100%; height:100%; object-fit: cover;">`}
+                                    : `<img src="${url}" alt="${product.product_name}">`}
                             </div>`;
                     }).join('');
 
