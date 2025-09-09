@@ -120,7 +120,7 @@
 												<a href="{{ route('product.show', $item['id']) }}">{{ $item['name'] }}</a>
 											</h5>
 										</td>
-										<td>${{ number_format($item['price'], 2) }}</td>
+										<td>USD {{ number_format($item['price']) }}</td>
 										
 										<td class="text-center">
 											<form action="{{ route('cart.update', $item['id']) }}" method="POST" class="d-inline-flex align-items-center" style="gap: 4px; margin-bottom: 10px;">
@@ -140,7 +140,7 @@
 											</form>
 										</td>
 										<td class="text-right">
-											<span class="subtotal-price">${{ number_format($item['qty'] * $item['price'], 2) }}</span>
+											<span class="subtotal-price">USD {{ number_format($item['qty'] * number_format($item['price'])) }}</span>
 										</td>
 									</tr>
 									@endforeach
@@ -172,7 +172,7 @@
 								<tbody>
 									<tr>
 										<td>Subtotal</td>
-										<td>${{ number_format($globalCartTotal ?? 0, 2) }}</td>
+										<td>USD {{ number_format($globalCartTotal) }}</td>
 									</tr>
 
 								</tbody>
@@ -180,7 +180,7 @@
 								<tfoot>
 									<tr>
 										<td>Total</td>
-										<td>${{ number_format($globalCartTotal ?? 0, 2) }}</td>
+										<td>USD {{ number_format($globalCartTotal) }}</td>
 									</tr>
 								</tfoot>
 							</table>

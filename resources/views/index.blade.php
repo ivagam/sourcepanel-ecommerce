@@ -144,9 +144,11 @@
                                                 @if(!empty($product->size))
                                                     <p class="product-description">Size: {{ $product->size }}</p>
                                                 @endif
+                                                @if(!empty($product->product_price))
                                                 <div class="price-box">
-                                                    <span class="product-price">${{ number_format($product->product_price ?? 0, 2) }}</span><br>                                                    
+                                                    <span class="product-price">USD {{ number_format($product->product_price ?? 0) }}</span><br>                                                    
                                                 </div>
+                                                @endif
                                                 <div>
                                                     <span style="color: red; font-size: 12px;">+ shipping fees</span>
                                                 </div>
@@ -458,10 +460,12 @@ function loadMoreProducts() {
                                 </a>
                             </h3>
                             
-                            <div class="price-box">
-                                ${oldPriceHtml}
-                                <span class="product-price">$${parseFloat(product.product_price ?? 0).toFixed(2)}</span>
-                            </div>
+                            ${product.product_price && product.product_price > 0 ? `
+                                <div class="price-box">
+                                    ${oldPriceHtml || ''}
+                                    <span class="product-price">USD ${parseFloat(product.product_price)}</span>
+                                </div>
+                            ` : ''}
                             <div>
                                 <span style="color: red; font-size: 15px;">+ shipping fees</span>
                             </div>

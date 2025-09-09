@@ -49,7 +49,7 @@
 				<hr class="short-divider">
 
 				<div class="price-box">
-					<span class="product-price">${{ number_format($product->product_price, 2) }}</span>
+					<span class="product-price">USD {{ number_format($product->product_price) }}</span>
 				</div>
 				<!-- End .price-box -->
 
@@ -99,8 +99,8 @@
 
 				<div class="product-action">
 					<div class="price-box product-filtered-price">
-						<del class="old-price"><span>${{ number_format($product->old_price ?? 0, 2) }}</span></del>
-						<span class="product-price">${{ number_format($product->product_price, 2) }}</span>
+						<del class="old-price"><span>USD {{ number_format($product->old_price ?? 0) }}</span></del>
+						<span class="product-price">USD {{ number_format($product->product_price) }}</span>
 					</div>
 
 					 <div class="product-single-qty">

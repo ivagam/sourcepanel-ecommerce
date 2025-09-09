@@ -199,10 +199,13 @@
                             @php
                                 $firstVariant = $variants->first();
                             @endphp
-                            <div class="price-box">
-                                <span id="variant-price" class="product-price">${{ number_format($firstVariant->product_price, 2) }}</span>
-                            </div>
                             
+                            @if (!empty($firstVariant->product_price))
+                            <div class="price-box">
+                                <span id="variant-price" class="product-price">USD {{ number_format($firstVariant->product_price) }}</span>
+                            </div>
+                            @endif
+
                             <div class="product-meta" style="margin: 10px 0;">
                                 <p>{{ $product->sku }} / {{ $product->purchase_code }}</p>
                             </div>
@@ -343,7 +346,7 @@
                                                     @endif
                                                 </div>                                                    
                                                 <div style="height: 20%; margin-top: 8px; font-size: 18px;">
-                                                    <strong>{{ $p->product_price ? '$' . number_format($p->product_price, 2) : '$0.00' }}</strong>
+                                                    <strong>{{ $p->product_price ? 'USD' . number_format($p->product_price) : '' }}</strong>
                                                 </div>
                                                 
                                             </div>
@@ -413,7 +416,7 @@
                                             <a href="{{ url('product/' . $related->product_url) }}">{{ $related->product_name }}</a>
                                         </h3>                                        
                                         <div class="price-box">
-                                            <span class="product-price">${{ number_format($related->product_price ?? 0, 2) }}</span>
+                                            <span class="product-price">USD {{ number_format($related->product_price) }}</span>
                                         </div>
                                     </div>
                                 </div>

@@ -201,7 +201,7 @@
 
                                                     @if($product->product_price && $product->product_price > 0)
                                                         <span style="color: #555;">
-                                                            ${{ number_format($product->product_price, 2) }}
+                                                            USD {{ number_format($product->product_price) }}
                                                         </span>
                                                     @endif                                               
 
@@ -349,7 +349,7 @@
 
                     let priceHTML = '';
                     if (product.product_price && product.product_price > 0) {
-                        priceHTML = `<span style="color: #555;">$${Number(product.product_price).toFixed(2)}</span>`;
+                        priceHTML = `<span style="color: #555;">USD ${Number(product.product_price)}</span>`;
                     }
 
                     let slidesHTML = images.map(img => {
