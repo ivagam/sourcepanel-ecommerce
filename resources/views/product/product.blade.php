@@ -202,7 +202,7 @@
                             
                             @if (!empty($firstVariant->product_price))
                             <div class="price-box">
-                                <span id="variant-price" class="product-price">USD {{ number_format($firstVariant->product_price) }}</span>
+                                <span id="variant-price" class="product-price">USD{{ number_format($firstVariant->product_price) }}</span>
                             </div>
                             @endif
 
@@ -416,7 +416,7 @@
                                             <a href="{{ url('product/' . $related->product_url) }}">{{ $related->product_name }}</a>
                                         </h3>                                        
                                         <div class="price-box">
-                                            <span class="product-price">USD {{ number_format($related->product_price) }}</span>
+                                            <span class="product-price">USD{{ number_format($related->product_price) }}</span>
                                         </div>
                                     </div>
                                 </div>

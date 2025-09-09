@@ -110,7 +110,7 @@
 													<a href="{{ route('product.show', $item['id'] ?? '#') }}">{{ $item['name'] ?? 'Product' }}</a>
 												</h4>
 												<span class="cart-product-info">
-													<span class="cart-product-qty">{{ $item['qty'] ?? 0 }}</span> × USD {{ number_format($item['price'])}}
+													<span class="cart-product-qty">{{ $item['qty'] ?? 0 }}</span> × USD{{ number_format($item['price'])}}
 												</span>
 											</div>
 											<figure class="product-image-container">
@@ -153,7 +153,7 @@
 									<div class="dropdown-cart-total">
 										<span>SUBTOTAL:</span>
 
-										<span class="cart-total-price float-right">USD {{ number_format($globalCartTotal) }}</span>
+										<span class="cart-total-price float-right">USD{{ number_format($globalCartTotal) }}</span>
 
 									</div><!-- End .dropdown-cart-total -->
 

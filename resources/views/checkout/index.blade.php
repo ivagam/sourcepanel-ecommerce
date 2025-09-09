@@ -266,7 +266,7 @@
                                             </h3>
                                         </td>
                                         <td class="price-col">
-                                            <span>USD {{ number_format($item['price'] * $item['qty']) }}</span>
+                                            <span>USD{{ number_format($item['price'] * $item['qty']) }}</span>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -279,13 +279,13 @@
                                         </td>
 
                                         <td class="price-col">
-                                            <span>USD {{ number_format($globalCartTotal) }}</span>
+                                            <span>USD{{ number_format($globalCartTotal) }}</span>
                                         </td>
                                     </tr>                                    
 
                                     <tr class="order-total">
                                         <td><h4>Total</h4></td>
-                                        <td><b class="total-price"><span>USD {{ number_format($globalCartTotal) }}</span></b></td>
+                                        <td><b class="total-price"><span>USD{{ number_format($globalCartTotal) }}</span></b></td>
                                     </tr>
                                 </tfoot>
                             </table>

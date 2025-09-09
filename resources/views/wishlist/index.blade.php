@@ -107,7 +107,7 @@
                                         <a href="{{ url('product/' . $product->product_id) }}">{{ $product->product_name }}</a>
                                     </h5>
                                 </td>
-                                <td class="price-box">USD {{ number_format($product->product_price) }}</td>                               
+                                <td class="price-box">USD{{ number_format($product->product_price) }}</td>                               
                                 <td class="action">
                                     <a href="{{ url('product/' . $product->product_id) }}" class="btn btn-quickview mt-1 mt-md-0" title="Quick View">Quick View</a>
 

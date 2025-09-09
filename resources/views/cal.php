@@ -54,8 +54,8 @@ input {
     border: 1px solid #aaa;
     background: #f1f1f1;
     border-radius: 4px;
-    cursor: pointer;
-    float: right;
+    cursor: pointer;    
+    margin-left: 50%;
 }
 .copy-btn:active {
     background: #ddd;
@@ -65,7 +65,7 @@ input {
     color: green;
     display: none;
     margin-top: 7px;
-    float: right;
+    float: left;
 }
 #otherTable th:nth-child(1), #otherTable td:nth-child(1),
 #watchTable th:nth-child(1), #watchTable td:nth-child(1) { width: 25%; }

@@ -146,7 +146,7 @@
                                                 @endif
                                                 @if(!empty($product->product_price))
                                                 <div class="price-box">
-                                                    <span class="product-price">USD {{ number_format($product->product_price ?? 0) }}</span><br>                                                    
+                                                    <span class="product-price">USD{{ number_format($product->product_price ?? 0) }}</span><br>                                                    
                                                 </div>
                                                 @endif
                                                 <div>
@@ -463,7 +463,7 @@ function loadMoreProducts() {
                             ${product.product_price && product.product_price > 0 ? `
                                 <div class="price-box">
                                     ${oldPriceHtml || ''}
-                                    <span class="product-price">USD ${parseFloat(product.product_price)}</span>
+                                    <span class="product-price">USD${parseFloat(product.product_price)}</span>
                                 </div>
                             ` : ''}
                             <div>
