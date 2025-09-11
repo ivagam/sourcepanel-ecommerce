@@ -186,15 +186,12 @@
                         </div>
 
                         <hr class="mt-1 mb-3 pb-2">
-
                        
                         <!-- End .feature-boxes-container -->
                     </div>
                     
                     <!-- End .col-lg-9 -->
-
-                    <div class="sidebar-overlay"></div>
-                    <div class="sidebar-toggle custom-sidebar-toggle"><i class="fas fa-sliders-h"></i></div>
+                     
                     <aside class="sidebar-home col-lg-3 order-lg-first mobile-sidebar">
                         <div class="side-menu-wrapper text-uppercase mb-2 d-none d-lg-block">
                             <h2 class="side-menu-title bg-gray ls-n-25">Browse Categories</h2>
@@ -218,7 +215,17 @@
 
                             <nav class="side-nav">
                                 <ul class="menu menu-vertical">
-                                    <li class="active"><a href="{{ route('home') }}"><i class="icon-home"></i>Home</a></li>
+                                    <li class="active"><a href="{{ route('home') }}"><i class="icon-home"></i>Home</a></li>                                    
+									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=1">Watches</a></li>
+									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Handbags">Handbags</a></li>
+									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Shoes">Shoes</a></li>
+                                    <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Clothings">Clothings</a></li>									
+									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Belts">Belts</a></li>
+                                    <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Sunglasses">Sunglasses</a></li>
+									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Jewelery">Jewelery</a></li>
+									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Accessories">Accessories</a></li>
+									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=113">Others</a></li>
+									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Tableware">Tableware</a></li>
                                     @php renderCategoriesFlat($categories); @endphp
                                 </ul>
                             </nav>
@@ -227,6 +234,8 @@
                         <!-- End .side-menu-container -->
 
                     </aside>
+                    <div class="sidebar-overlay"></div>                    
+                    
                     <!-- End .col-lg-3 -->
                 </div>
                 <!-- End .row -->
@@ -330,219 +339,219 @@
     <script src="assets/js/main.min.js"></script>
 
    <script>
-const SOURCE_PANEL_URL = "{{ env('SOURCE_PANEL_URL') }}";
-const SOURCE_PANEL_IMAGE_URL = "{{ env('SOURCE_PANEL_IMAGE_URL') }}";
-const isLoggedIn = {{ session('logged_in', false) ? 'true' : 'false' }};    
+    const SOURCE_PANEL_URL = "{{ env('SOURCE_PANEL_URL') }}";
+    const SOURCE_PANEL_IMAGE_URL = "{{ env('SOURCE_PANEL_IMAGE_URL') }}";
+    const isLoggedIn = {{ session('logged_in', false) ? 'true' : 'false' }};    
 
-let offset = {{ count($products) }};
- let totalProducts = {{ $totalProducts }};
-let isLoading = false;
+    let offset = {{ count($products) }};
+    let totalProducts = {{ $totalProducts }};
+    let isLoading = false;
 
-if (offset >= totalProducts) {
-    const loadMoreBtn = document.getElementById('loadMoreBtn');
-    if (loadMoreBtn) {
-        loadMoreBtn.style.display = 'none';
-    }
-}
-
-document.getElementById('loadMoreBtn').addEventListener('click', function () {
-    if (isLoading) return;
-    loadMoreProducts();
-});
-
-function getCategoryFromUrl() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('category');
-}
-
-const videoExtensions = ['mp4', 'mov', 'avi', 'webm'];
-
-function isVideo(filePath) {
-    const ext = filePath.split('.').pop().toLowerCase();
-    return videoExtensions.includes(ext);
-}
-
-function loadMoreProducts() {
-    isLoading = true;
-    document.getElementById('loading').style.display = 'block';
-
-    const category = getCategoryFromUrl();
-    const defaultImagePath = `${SOURCE_PANEL_IMAGE_URL}NPIA.png`;
-
-    fetch("{{ route('products.load.more') }}", {
-        method: "POST",
-        headers: {
-            "X-CSRF-TOKEN": "{{ csrf_token() }}",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ offset: offset, category: category })
-    })
-    .then(response => response.json())
-    .then(products => {
-        if (products.length === 0) {
-            document.getElementById('loading').innerText = 'No more products.';
-            document.getElementById('loadMoreBtn').style.display = 'none';
-            return;
+    if (offset >= totalProducts) {
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        if (loadMoreBtn) {
+            loadMoreBtn.style.display = 'none';
         }
+    }
 
-        products.forEach(product => {
-            const images = (product.images || []);
+    document.getElementById('loadMoreBtn').addEventListener('click', function () {
+        if (isLoading) return;
+        loadMoreProducts();
+    });
 
-            if (images.length === 0) return;
+    function getCategoryFromUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('category');
+    }
 
-            images.sort((a, b) => (a.serial_no || 0) - (b.serial_no || 0));
+    const videoExtensions = ['mp4', 'mov', 'avi', 'webm'];
 
-            const media = images.slice(0, 2);
-            
-            const file1 = media[0]?.file_path ? `${SOURCE_PANEL_IMAGE_URL}${media[0].file_path}` : defaultImagePath;
-            const file2 = media[1]?.file_path ? `${SOURCE_PANEL_IMAGE_URL}${media[1].file_path}` : null;
+    function isVideo(filePath) {
+        const ext = filePath.split('.').pop().toLowerCase();
+        return videoExtensions.includes(ext);
+    }
 
-            let imagesHtml = '';
+    function loadMoreProducts() {
+        isLoading = true;
+        document.getElementById('loading').style.display = 'block';
 
-            if (file1 && isVideo(file1)) {
-                imagesHtml += `
-                    <video class="preview-video" muted autoplay loop playsinline controls
-                        style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%; display:block;">
-                        <source src="${file1}" type="video/${file1.split('.').pop().toLowerCase()}">
-                    </video>
-                `;
-            } else {
-                imagesHtml += `
-                    <img class="preview-image"
-                        src="${file1}"
-                        alt="${product.product_name}"
-                        style="object-fit:cover; width: 100%; height: 100%; position: absolute; top:0; left:0; display:block;">
-                `;
+        const category = getCategoryFromUrl();
+        const defaultImagePath = `${SOURCE_PANEL_IMAGE_URL}NPIA.png`;
+
+        fetch("{{ route('products.load.more') }}", {
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ offset: offset, category: category })
+        })
+        .then(response => response.json())
+        .then(products => {
+            if (products.length === 0) {
+                document.getElementById('loading').innerText = 'No more products.';
+                document.getElementById('loadMoreBtn').style.display = 'none';
+                return;
             }
 
-            if (file2) {                
-                if (isVideo(file2)) {                    
+            products.forEach(product => {
+                const images = (product.images || []);
+
+                if (images.length === 0) return;
+
+                images.sort((a, b) => (a.serial_no || 0) - (b.serial_no || 0));
+
+                const media = images.slice(0, 2);
+                
+                const file1 = media[0]?.file_path ? `${SOURCE_PANEL_IMAGE_URL}${media[0].file_path}` : defaultImagePath;
+                const file2 = media[1]?.file_path ? `${SOURCE_PANEL_IMAGE_URL}${media[1].file_path}` : null;
+
+                let imagesHtml = '';
+
+                if (file1 && isVideo(file1)) {
                     imagesHtml += `
-                        <video class="hover-video" muted loop playsinline
-                            style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none;">
-                            <source src="${file2}" type="video/${file2.split('.').pop().toLowerCase()}">
+                        <video class="preview-video" muted autoplay loop playsinline controls
+                            style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%; display:block;">
+                            <source src="${file1}" type="video/${file1.split('.').pop().toLowerCase()}">
                         </video>
                     `;
                 } else {
                     imagesHtml += `
-                        <img class="hover-image"
-                            src="${file2}"
+                        <img class="preview-image"
+                            src="${file1}"
                             alt="${product.product_name}"
-                            style="object-fit:cover; width: 100%; height: 100%; position: absolute; top:0; left:0; display: none;">
+                            style="object-fit:cover; width: 100%; height: 100%; position: absolute; top:0; left:0; display:block;">
                     `;
                 }
-            }
 
-            let oldPriceHtml = product.old_price
-                ? `<span class='old-price'>$${parseFloat(product.old_price).toFixed(2)}</span>`
-                : '';
+                if (file2) {                
+                    if (isVideo(file2)) {                    
+                        imagesHtml += `
+                            <video class="hover-video" muted loop playsinline
+                                style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none;">
+                                <source src="${file2}" type="video/${file2.split('.').pop().toLowerCase()}">
+                            </video>
+                        `;
+                    } else {
+                        imagesHtml += `
+                            <img class="hover-image"
+                                src="${file2}"
+                                alt="${product.product_name}"
+                                style="object-fit:cover; width: 100%; height: 100%; position: absolute; top:0; left:0; display: none;">
+                        `;
+                    }
+                }
 
-            let newItem = `
-                <div class="col-12 col-sm-6 col-md-3 mb-4">
-                    <div class="product-default">
-                        <figure>
-                            <a href="product/${product.product_url}">
-                                <div class="media-wrapper" style="position: relative; width: 100%; padding-top: 100%; overflow: hidden;">
-                                    ${imagesHtml}
-                                </div>
-                            </a>
-                        </figure>
+                let oldPriceHtml = product.old_price
+                    ? `<span class='old-price'>$${parseFloat(product.old_price).toFixed(2)}</span>`
+                    : '';
 
-                        <div class="product-details text-center">
-                            <div class="category-list">
-                                <a href="${window.location.pathname}?category=${product.category_id}" class="product-category">
-                                    ${product.category_name ?? 'Uncategorized'}
-                                </a>
-                            </div>
-                            <h3 class="product-title">
+                let newItem = `
+                    <div class="col-12 col-sm-6 col-md-3 mb-4">
+                        <div class="product-default">
+                            <figure>
                                 <a href="product/${product.product_url}">
-                                    ${product.product_name.toLowerCase().replace(/\b\w/g, char => char.toUpperCase())}
+                                    <div class="media-wrapper" style="position: relative; width: 100%; padding-top: 100%; overflow: hidden;">
+                                        ${imagesHtml}
+                                    </div>
                                 </a>
-                            </h3>
-                            
-                            ${product.product_price && product.product_price > 0 ? `
-                                <div class="price-box">
-                                    ${oldPriceHtml || ''}
-                                    <span class="product-price">USD${parseFloat(product.product_price)}</span>
+                            </figure>
+
+                            <div class="product-details text-center">
+                                <div class="category-list">
+                                    <a href="${window.location.pathname}?category=${product.category_id}" class="product-category">
+                                        ${product.category_name ?? 'Uncategorized'}
+                                    </a>
                                 </div>
-                            ` : ''}
-                            <div>
-                                <span style="color: red; font-size: 15px;">+ shipping fees</span>
+                                <h3 class="product-title">
+                                    <a href="product/${product.product_url}">
+                                        ${product.product_name.toLowerCase().replace(/\b\w/g, char => char.toUpperCase())}
+                                    </a>
+                                </h3>
+                                
+                                ${product.product_price && product.product_price > 0 ? `
+                                    <div class="price-box">
+                                        ${oldPriceHtml || ''}
+                                        <span class="product-price">USD${parseFloat(product.product_price)}</span>
+                                    </div>
+                                ` : ''}
+                                <div>
+                                    <span style="color: red; font-size: 15px;">+ shipping fees</span>
+                                </div>
+                                ${isLoggedIn ? `
+                                    <a href="${SOURCE_PANEL_URL}/product/editProduct/${product.product_id}"
+                                        class="btn rounded-pill mt-4"
+                                        style="background-color: #5bc0de; color: #fff; padding: 10px 20px; text-align: center; font-weight: 500;">
+                                        Edit
+                                    </a>
+                                ` : ''}
                             </div>
-                            ${isLoggedIn ? `
-                                <a href="${SOURCE_PANEL_URL}/product/editProduct/${product.product_id}"
-                                    class="btn rounded-pill mt-4"
-                                    style="background-color: #5bc0de; color: #fff; padding: 10px 20px; text-align: center; font-weight: 500;">
-                                    Edit
-                                </a>
-                            ` : ''}
                         </div>
                     </div>
-                </div>
-            `;
+                `;
 
-            document.getElementById('product-list').insertAdjacentHTML('beforeend', newItem);
-        });
+                document.getElementById('product-list').insertAdjacentHTML('beforeend', newItem);
+            });
 
-        offset += products.length;
-        isLoading = false;
-        document.getElementById('loading').style.display = 'none';
-    })
-    .catch(() => {
-        isLoading = false;
-        document.getElementById('loading').style.display = 'none';
-    });
-}
-
-$(document).on('click', '.addToCartBtn', function (e) {
-    e.preventDefault();
-
-    let productId = $(this).data('product-id');
-    let productName = $(this).data('product-name');
-    let productPrice = $(this).data('product-price');
-    let qty = '1';
-    let filePath = $(this).data('product-filepath');
-
-    $.ajax({
-        url: "{{ route('add.to.cart') }}",
-        method: "POST",
-        data: {
-            _token: '{{ csrf_token() }}',
-            product_id: productId,
-            product_name: productName,
-            product_price: productPrice,
-            quantity: qty,
-            file_path: filePath
-        },
-        success: function(response) {
-            alert(response.success);
-            location.reload();
-        },
-        error: function (xhr) {
-            alert("Failed to add to cart");
-        }
-    });
-});
-
-
-document.querySelectorAll('.media-wrapper').forEach(wrapper => {
-    const preview = wrapper.querySelector('.preview-image, .preview-video');
-    const hover = wrapper.querySelector('.hover-image, .hover-video');
-
-    if (preview && hover) {
-        wrapper.addEventListener('mouseenter', () => {
-            preview.style.display = 'none';
-            hover.style.display = 'block';
-            if (hover.tagName === 'VIDEO') hover.play();
-        });
-
-        wrapper.addEventListener('mouseleave', () => {
-            preview.style.display = 'block';
-            hover.style.display = 'none';
-            if (hover.tagName === 'VIDEO') hover.pause();
+            offset += products.length;
+            isLoading = false;
+            document.getElementById('loading').style.display = 'none';
+        })
+        .catch(() => {
+            isLoading = false;
+            document.getElementById('loading').style.display = 'none';
         });
     }
-});
+
+    $(document).on('click', '.addToCartBtn', function (e) {
+        e.preventDefault();
+
+        let productId = $(this).data('product-id');
+        let productName = $(this).data('product-name');
+        let productPrice = $(this).data('product-price');
+        let qty = '1';
+        let filePath = $(this).data('product-filepath');
+
+        $.ajax({
+            url: "{{ route('add.to.cart') }}",
+            method: "POST",
+            data: {
+                _token: '{{ csrf_token() }}',
+                product_id: productId,
+                product_name: productName,
+                product_price: productPrice,
+                quantity: qty,
+                file_path: filePath
+            },
+            success: function(response) {
+                alert(response.success);
+                location.reload();
+            },
+            error: function (xhr) {
+                alert("Failed to add to cart");
+            }
+        });
+    });
+
+
+    document.querySelectorAll('.media-wrapper').forEach(wrapper => {
+        const preview = wrapper.querySelector('.preview-image, .preview-video');
+        const hover = wrapper.querySelector('.hover-image, .hover-video');
+
+        if (preview && hover) {
+            wrapper.addEventListener('mouseenter', () => {
+                preview.style.display = 'none';
+                hover.style.display = 'block';
+                if (hover.tagName === 'VIDEO') hover.play();
+            });
+
+            wrapper.addEventListener('mouseleave', () => {
+                preview.style.display = 'block';
+                hover.style.display = 'none';
+                if (hover.tagName === 'VIDEO') hover.pause();
+            });
+        }
+    });
 
 </script>
 

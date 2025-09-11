@@ -96,6 +96,48 @@
         .slider-btn.next {
             right: 10px;
         }
+
+        .video-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .video-wrapper video {
+            padding: 10px;
+            width: 100%;            
+            display: block;
+            border-radius: 10px;
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(72, 93, 99, 0.96);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .play-button:before {
+            content: "";
+            display: block;
+            width: 0;
+            height: 0;
+            border-left: 25px solid white;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            margin-left: 5px;
+        }
+
     </style>
 </head>
 <body>
@@ -148,17 +190,14 @@
 
                         {{-- Render the initial videos (keeps exactly same visual size as other cards) --}}
                         @foreach($initialVideos as $vid)
-                            <div class="card">
-                                <div class="imgBx slider-container">
-                                    <div class="slider-wrapper">
-                                        <div class="slide">
-                                            <video controls>
-                                                <source src="{{ $vid['url'] }}" type="video/{{ $vid['ext'] }}">
-                                                Your browser does not support the video tag.
-                                            </video>
-                                        </div>
+                            <div class="card" style="margin-bottom:20px;">                                
+                                    <div class="video-wrapper">
+                                        <video preload="metadata">
+                                            <source src="{{ $vid['url'] }}" type="video/{{ $vid['ext'] }}">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                        <div class="play-button"></div>
                                     </div>
-                                </div>
                             </div>
                         @endforeach
 
@@ -274,245 +313,238 @@
 
     {{-- expose variables to JS --}}
     <input type="hidden" id="categoryName" value="{{ $categoryName ?? '' }}"/>
-    <script>
-    // initial offsets:
-    // offsetProducts tracks how many products were initially loaded from server (server used take(12) in controller)
-    // We must keep incrementing offsetProducts by the number of products returned by each loadMore call.
-    let offsetProducts = {{ count($products) }};
-    let loading = false;
-    const isVideosPage = (document.getElementById('categoryName').value === 'videos');
 
-    window.addEventListener('scroll', () => {
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && !loading) {
-            loadMoreProducts();
+    <script>    
+        const baseUrl = "{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}";
+        const imageBaseUrl = "{{ env('SOURCE_PANEL_IMAGE_URL') }}";
+        let offsetProducts = {{ count($products) }};
+        let loading = false;
+        const isVideosPage = (document.getElementById('categoryName').value === 'videos');
+
+        window.addEventListener('scroll', () => {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && !loading) {
+                loadMoreProducts();
+            }
+        });
+
+        function truncateText(text, maxLength) {
+            return text.length > maxLength ? text.substring(0, maxLength) + '…' : text;
         }
-    });
 
-    function truncateText(text, maxLength) {
-        return text.length > maxLength ? text.substring(0, maxLength) + '…' : text;
-    }
+        function loadMoreProducts() {
+            loading = true;
+            const categoryName = document.getElementById('categoryName').value;
+            document.getElementById('loader').style.display = 'block';
 
-    function loadMoreProducts() {
-        loading = true;
-        const categoryName = document.getElementById('categoryName').value;
-        document.getElementById('loader').style.display = 'block';
+            fetch(`${baseUrl}/load-more-products`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ offset: offsetProducts, category: categoryName })
+            })
+            .then(response => response.json())
+            .then(products => {
+                const container = document.getElementById('product-list');
 
-        fetch('{{ env("SOURCE_PANEL_ECOMMERCE_URL") }}/load-more-products', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({ offset: offsetProducts, category: categoryName })
-        })
-        .then(response => response.json())
-        .then(products => {
-            const container = document.getElementById('product-list');
+                if (isVideosPage) {
+                    products.forEach(product => {
+                        const images = product.images || [];
+                        images.sort((a,b) => (a.serial_no || 0) - (b.serial_no || 0));
+                        images.forEach(img => {
+                            if (!img.file_path) return;
+                            const file = img.file_path;
+                            const ext = file.split('.').pop().toLowerCase();
+                            if (!['mp4','mov','webm','avi'].includes(ext)) return;
 
-            // If videos page: for each returned product, extract only video media and append a video-only card for each video found.
-            if (isVideosPage) {
-                products.forEach(product => {
-                    const images = product.images || [];
-                    images.sort((a,b) => (a.serial_no || 0) - (b.serial_no || 0));
-                    images.forEach(img => {
-                        if (!img.file_path) return;
-                        const file = img.file_path;
-                        const ext = file.split('.').pop().toLowerCase();
-                        if (!['mp4','mov','webm','avi'].includes(ext)) return; // only videos on videos page
-                        const url = '{{ env("SOURCE_PANEL_IMAGE_URL") }}' + file;
-
-                        // create a card that contains only the video (same size as product cards)
-                        const card = document.createElement('div');
-                        card.className = 'card';
-                        card.innerHTML = `
-                            <div class="imgBx slider-container">
-                                <div class="slider-wrapper">
-                                    <div class="slide">
-                                        <video controls>
-                                            <source src="${url}" type="video/${ext}">
-                                            Your browser does not support the video tag.
-                                        </video>
-                                    </div>
+                            const url = imageBaseUrl + file;
+                            const card = document.createElement('div');                        
+                            card.innerHTML = `
+                                <div class="card" style="margin-bottom:20px;">                                
+                                        <div class="video-wrapper">
+                                            <video width="100%" preload="metadata" style="max-width:100%; height:auto; cursor:pointer;">
+                                                <source src="${url}" type="video/${ext}">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                            <div class="play-button"></div>
+                                            </div>
                                 </div>
-                            </div>
-                        `;
-                        container.appendChild(card);
+                            `;
+                            container.appendChild(card);
+
+                            enableVideoClickPlay(card);
+                        });
                     });
-                });
-            } else {
-                // Normal page: append full product cards (name/price/whatsapp + slider) - keep markup same as server-rendered cards
-                products.forEach(product => {
-                    let images = product.images || [];
-                    if (images.length === 0) return;
+                } else {
+                    products.forEach(product => {
+                        let images = product.images || [];
+                        if (images.length === 0) return;
 
-                    images.sort((a, b) => (a.serial_no || 0) - (b.serial_no || 0));
+                        images.sort((a, b) => (a.serial_no || 0) - (b.serial_no || 0));
 
-                    let priceHTML = '';
-                    if (product.product_price && product.product_price > 0) {
-                        priceHTML = `<span style="color: #555;">USD${Number(product.product_price)}</span>`;
-                    }
+                        let priceHTML = '';
+                        if (product.product_price && product.product_price > 0) {
+                            priceHTML = `<span style="color: #555;">USD${Number(product.product_price)}</span>`;
+                        }
 
-                    let slidesHTML = images.map(img => {
-                        if (!img.file_path) return '';
-                        let file = img.file_path;
-                        if (!file) return '';
-                        let url = '{{ env("SOURCE_PANEL_IMAGE_URL") }}' + file;
-                        let ext = file.split('.').pop().toLowerCase();
-                        let isVideo = ['mp4','mov','webm','avi'].includes(ext);
-                        return `
-                            <div class="slide">
-                                ${isVideo 
-                                    ? `<video controls>
-                                        <source src="${url}" type="video/${ext}">
-                                    </video>`
-                                    : `<img src="${url}" alt="${product.product_name}">`}
-                            </div>`;
-                    }).join('');
+                        let slidesHTML = images.map(img => {
+                            if (!img.file_path) return '';
+                            let url = imageBaseUrl + img.file_path;
+                            let ext = img.file_path.split('.').pop().toLowerCase();
+                            let isVideo = ['mp4','mov','webm','avi'].includes(ext);
+                            return `
+                                <div class="slide">
+                                    ${isVideo 
+                                        ? `<video controls>
+                                            <source src="${url}" type="video/${ext}">
+                                        </video>`
+                                        : `<img src="${url}" alt="${product.product_name}">`
+                                    }
+                                </div>`;
+                        }).join('');
 
-                    let sliderButtons = "";
-                    if (images.length > 1) {
-                        sliderButtons = `
+                        let sliderButtons = images.length > 1 ? `
                             <button class="slider-btn prev">&#10094;</button>
                             <button class="slider-btn next">&#10095;</button>
-                        `;
-                    }
+                        ` : '';
 
-                    // Build the same top block (whatsapp, name, price, links)
-                    const topHtml = `
-                        <div class="top">
-                            <div class="userDetails">
-                                <div class="bottom">
-                                    <div class="actionBtns">
-                                        <div class="left"><span class="heart"></span></div>
-                                        <div class="right"></div>
-                                    </div>
-                                    <div style="position: relative; display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
-                                        <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap; flex: 1;">
-                                            <a href="https://wa.me/8618202031361?text=${encodeURIComponent('Check out this product: {{ env("SOURCE_PANEL_ECOMMERCE_URL") }}/product/' + product.product_url)}" 
-                                               target="_blank" title="Share on WhatsApp" style="display:flex;align-items:center;">
-                                                <img src="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/public/whatsapp.png" width="24" height="24" alt="WhatsApp" />
-                                            </a>
-                                            <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/product/${product.product_url}" style="font-weight:bold; color:inherit; text-decoration:none;">
-                                                ${truncateText(product.product_name, 30)}
-                                            </a>
-                                            ${priceHTML}
-                                            <div style="display:flex; align-items:center; gap:15px; flex:1;">
-                                                <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/product/${product.product_url}" target="_blank">View Page</a>
-                                                <a href="https://wa.me/8618202031361?text=${encodeURIComponent('Hi! I am interested in ' + product.product_name + '. Please share the price/availability. Link: ' + '{{ env("SOURCE_PANEL_ECOMMERCE_URL") }}/product/' + product.product_url)}" target="_blank" style="margin-left:auto;">Ask Price / Contact Us</a>
+                        const topHtml = `
+                            <div class="top">
+                                <div class="userDetails">
+                                    <div class="bottom">
+                                        <div class="actionBtns">
+                                            <div class="left"><span class="heart"></span></div>
+                                            <div class="right"></div>
+                                        </div>
+                                        <div style="position: relative; display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                                            <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap; flex: 1;">
+                                                <a href="https://wa.me/8618202031361?text=${encodeURIComponent('Check out this product: ' + baseUrl + '/product/' + product.product_url)}" 
+                                                target="_blank" title="Share on WhatsApp" style="display:flex;align-items:center;">
+                                                    <img src="${baseUrl}/public/whatsapp.png" width="24" height="24" alt="WhatsApp" />
+                                                </a>
+                                                <a href="${baseUrl}/product/${product.product_url}" style="font-weight:bold; color:inherit; text-decoration:none;">
+                                                    ${truncateText(product.product_name, 30)}
+                                                </a>
+                                                ${priceHTML}
+                                                <div style="display:flex; align-items:center; gap:15px; flex:1;">
+                                                    <a href="${baseUrl}/product/${product.product_url}" target="_blank">View Page</a>
+                                                    <a href="https://wa.me/8618202031361?text=${encodeURIComponent('Hi! I am interested in ' + product.product_name + '. Please share the price/availability. Link: ' + baseUrl + '/product/' + product.product_url)}" target="_blank" style="margin-left:auto;">Ask Price / Contact Us</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <div><span class="dot"><i class="fas fa-ellipsis-h"></i></span></div>
                             </div>
-                            <div><span class="dot"><i class="fas fa-ellipsis-h"></i></span></div>
-                        </div>
-                    `;
+                        `;
 
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = topHtml + `
-                        <div class="imgBx slider-container">
-                            <div class="slider-wrapper">
-                                ${slidesHTML}
+                        const card = document.createElement('div');
+                        card.className = 'card';
+                        card.innerHTML = topHtml + `
+                            <div class="imgBx slider-container">
+                                <div class="slider-wrapper">
+                                    ${slidesHTML}
+                                </div>
+                                ${sliderButtons}
                             </div>
-                            ${sliderButtons}
-                        </div>
-                    `;
-                    container.appendChild(card);
+                        `;
+                        container.appendChild(card);
+                    });
+                }
+
+                offsetProducts += products.length;
+                loading = false;
+                document.getElementById('loader').style.display = 'none';
+                initSliders();
+            })
+            .catch(err => {
+                console.error(err);
+                loading = false;
+                document.getElementById('loader').style.display = 'none';
+            });
+        }
+
+        function initSliders() {
+            document.querySelectorAll('.slider-container').forEach(container => {
+                const wrapper = container.querySelector('.slider-wrapper');
+                if (!wrapper) return;
+                const slides = container.querySelectorAll('.slide');
+                if (!slides || slides.length === 0) return;
+
+                let index = 0;
+                let startX = 0;
+                let endX = 0;
+
+                const updateSlide = () => {
+                    wrapper.style.transform = `translateX(-${index * 100}%)`;
+                };
+
+                const prevBtn = container.querySelector('.prev');
+                const nextBtn = container.querySelector('.next');
+
+                if (prevBtn && nextBtn) {
+                    prevBtn.onclick = () => { index = (index > 0) ? index - 1 : slides.length - 1; updateSlide(); };
+                    nextBtn.onclick = () => { index = (index < slides.length - 1) ? index + 1 : 0; updateSlide(); };
+                }
+
+                wrapper.addEventListener("touchstart", e => { startX = e.touches[0].clientX; });
+                wrapper.addEventListener("touchmove", e => { endX = e.touches[0].clientX; });
+                wrapper.addEventListener("touchend", () => {
+                    if (startX - endX > 50) index = (index < slides.length - 1) ? index + 1 : 0;
+                    else if (endX - startX > 50) index = (index > 0) ? index - 1 : slides.length - 1;
+                    updateSlide();
+                    startX = endX = 0;
                 });
-            }
 
-            // update offsetProducts by number of products returned (server returns products array)
-            offsetProducts += products.length;
+                updateSlide();
+            });
+        }
 
-            loading = false;
-            document.getElementById('loader').style.display = 'none';
+        function enableVideoClickPlay(parent = document) {
+            parent.querySelectorAll('.video-wrapper').forEach(wrapper => {
+                const video = wrapper.querySelector('video');
+                const button = wrapper.querySelector('.play-button');
 
-            // initialize sliders for newly appended items
-            initSliders();
-        })
-        .catch(err => {
-            console.error(err);
-            loading = false;
-            document.getElementById('loader').style.display = 'none';
-        });
-    }
+                if (!video || !button) return;
 
-    function initSliders() {
-        document.querySelectorAll('.slider-container').forEach(container => {
-            const wrapper = container.querySelector('.slider-wrapper');
-            if (!wrapper) return;
-            const slides = container.querySelectorAll('.slide');
-            if (!slides || slides.length === 0) return;
-            let index = 0;
-            let startX = 0;
-            let endX = 0;
+                wrapper.addEventListener('click', (e) => {
+                    if (e.target === button) return;
 
-            const updateSlide = () => {
-                wrapper.style.transform = `translateX(-${index * 100}%)`;
-
-                slides.forEach((slide, i) => {
-                    const video = slide.querySelector('video');
-                    if (video) {
-                        if (i === index) {
-                            video.play().catch(()=>{});
-                        } else {
-                            video.pause();
-                        }
+                    if (video.paused) {
+                        video.play();
+                        button.style.display = 'none';
+                    } else {
+                        video.pause();
+                        button.style.display = 'flex';
                     }
                 });
-            };
 
-            const prevBtn = container.querySelector('.prev');
-            const nextBtn = container.querySelector('.next');
+                button.addEventListener('click', () => {
+                    video.play();
+                    button.style.display = 'none';
+                });
 
-            if (prevBtn && nextBtn) {
-                prevBtn.onclick = () => {
-                    index = (index > 0) ? index - 1 : slides.length - 1;
-                    updateSlide();
-                };
-                nextBtn.onclick = () => {
-                    index = (index < slides.length - 1) ? index + 1 : 0;
-                    updateSlide();
-                };
-            }
-
-            wrapper.addEventListener("touchstart", e => {
-                startX = e.touches[0].clientX;
+                video.addEventListener('ended', () => {
+                    button.style.display = 'flex';
+                });
             });
+        }
 
-            wrapper.addEventListener("touchmove", e => {
-                endX = e.touches[0].clientX;
-            });
-
-            wrapper.addEventListener("touchend", () => {
-                if (startX - endX > 50) {
-                    index = (index < slides.length - 1) ? index + 1 : 0;
-                    updateSlide();
-                } else if (endX - startX > 50) {
-                    index = (index > 0) ? index - 1 : slides.length - 1;
-                    updateSlide();
-                }
-                startX = endX = 0;
-            });
-
-            updateSlide();
-        });
-    }
-
-    initSliders();
+        enableVideoClickPlay();
+        
     </script>
 
     <script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/5e565d3e298c395d1ce9e507/1j3igdrg8';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
-    })();
+        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        (function(){
+        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+        s1.async=true;
+        s1.src='https://embed.tawk.to/5e565d3e298c395d1ce9e507/1j3igdrg8';
+        s1.charset='UTF-8';
+        s1.setAttribute('crossorigin','*');
+        s0.parentNode.insertBefore(s1,s0);
+        })();
     </script>
 </body>
 </html>

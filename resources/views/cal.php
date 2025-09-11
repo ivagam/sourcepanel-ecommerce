@@ -74,9 +74,9 @@ input {
 #otherTable th:nth-child(3), #otherTable td:nth-child(3),
 #watchTable th:nth-child(3), #watchTable td:nth-child(3) { width: 50%; }
 #gamaTable th:nth-child(1), #gamaTable td:nth-child(1),
-#bamaTable th:nth-child(1), #bamaTable td:nth-child(1) { width: 20%; }
+#bamaTable th:nth-child(1), #bamaTable td:nth-child(1) { width: 25%; }
 #gamaTable th:nth-child(2), #gamaTable td:nth-child(2),
-#bamaTable th:nth-child(2), #bamaTable td:nth-child(2) { width: 80%; }
+#bamaTable th:nth-child(2), #bamaTable td:nth-child(2) { width: 25%; }
 @media (max-width: 768px) {
     .table-columns { flex-direction: column; }
 }
@@ -122,33 +122,43 @@ input {
 
     <!-- Right Column -->
     <div class="column">
-        <h3>Gama</h3>
-        <div class="table-wrapper">
-            <table id="gamaTable">
-                <thead>
-                    <tr><th>Number (CNY)</th><th>Value</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td><input type="number" class="number"></td><td class="value">0</td></tr>
-                </tbody>
-            </table>
-        </div>
-        <button class="copy-btn" onclick="copyValues('gamaTable', this)">Copy</button>
-        <div class="copied-msg">Copied!</div>
+        <!-- Gama Table -->
+            <h3>Gama</h3>
+            <div class="table-wrapper">
+                <table id="gamaTable">
+                    <thead>
+                        <tr><th>Factory</th><th>Number (CNY)</th><th>Value</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="text" class="factory"></td>
+                            <td><input type="number" class="number"></td>
+                            <td class="value">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button class="copy-btn" onclick="copyValues('gamaTable', this)">Copy</button>
+            <div class="copied-msg">Copied!</div>
 
-        <h3>Bama</h3>
-        <div class="table-wrapper">
-            <table id="bamaTable">
-                <thead>
-                    <tr><th>Number (USD)</th><th>Value</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td><input type="number" class="number"></td><td class="value">0</td></tr>
-                </tbody>
-            </table>
-        </div>
-        <button class="copy-btn" onclick="copyValues('bamaTable', this)">Copy</button>
-        <div class="copied-msg">Copied!</div>
+            <!-- Bama Table -->
+            <h3>Bama</h3>
+            <div class="table-wrapper">
+                <table id="bamaTable">
+                    <thead>
+                        <tr><th>Factory</th><th>Number (USD)</th><th>Value</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="text" class="factory"></td>
+                            <td><input type="number" class="number"></td>
+                            <td class="value">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button class="copy-btn" onclick="copyValues('bamaTable', this)">Copy</button>
+            <div class="copied-msg">Copied!</div>
     </div>
 </div>
 
@@ -222,28 +232,30 @@ function setupWatchTable() {
 
 function setupGamaTable() {
     setupTable('gamaTable', (row, inputs, valueCell) => {
-        const num = parseFloat(inputs[0].value) || 0;
+        const factory = inputs[0].value ? inputs[0].value + " " : "";
+        const num = parseFloat(inputs[1].value) || 0;
         let result = 0;
         if(num < 1750) result = num + 500;
         else if(num < 2100) result = num + 550;
         else if(num < 3000) result = num + 600;
         else result = num * 1.2;
         result = adjustLastDigits(result);
-        valueCell.textContent = num ? `${result}CNY+shipping fees` : '0';
+        valueCell.textContent = num ? `${factory}${result}CNY+shipping fees` : '0';
     });
 }
 
 function setupBamaTable() {
     setupTable('bamaTable', (row, inputs, valueCell) => {
-        const raw = parseFloat(inputs[0].value) || 0;
+        const factory = inputs[0].value ? inputs[0].value + " " : "";
+        const raw = parseFloat(inputs[1].value) || 0;
         const num = raw / 7;
         let result = 0;
         if(num < 250) result = num + 70;
         else if(num < 300) result = num + 75;
         else if(num < 400) result = num + 80;
         else result = num * 1.2;
-        result = adjustLastDigits(result);
-        valueCell.textContent = num ? `USD${result}+shipping fees` : '0';
+        result = adjustLastDigit(result);
+        valueCell.textContent = num ? `${factory}USD${result}+shipping fees` : '0';
     });
 }
 
@@ -270,7 +282,5 @@ setupWatchTable();
 setupGamaTable();
 setupBamaTable();
 </script>
-
-
 </body>
 </html>
