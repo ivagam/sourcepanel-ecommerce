@@ -341,12 +341,14 @@
    <script>
     const SOURCE_PANEL_URL = "{{ env('SOURCE_PANEL_URL') }}";
     const SOURCE_PANEL_IMAGE_URL = "{{ env('SOURCE_PANEL_IMAGE_URL') }}";
-    const isLoggedIn = {{ session('logged_in', false) ? 'true' : 'false' }};    
+    const isLoggedIn = {{ session('logged_in', false) ? 'true' : 'false' }};
 
     let offset = {{ count($products) }};
-    let totalProducts = {{ $totalProducts }};
+    const totalProducts = {{ $totalProducts }};
     let isLoading = false;
+    let currentSearch = ''; // Track current search term
 
+    // Hide load more button if all products are loaded
     if (offset >= totalProducts) {
         const loadMoreBtn = document.getElementById('loadMoreBtn');
         if (loadMoreBtn) {
@@ -354,11 +356,16 @@
         }
     }
 
-    document.getElementById('loadMoreBtn').addEventListener('click', function () {
-        if (isLoading) return;
-        loadMoreProducts();
-    });
+    // Setup load more button click
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', function () {
+            if (isLoading) return;
+            loadMoreProducts();
+        });
+    }
 
+    // Get category from URL query string
     function getCategoryFromUrl() {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get('category');
@@ -371,12 +378,31 @@
         return videoExtensions.includes(ext);
     }
 
+   
+    function getParamsFromUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return {
+            search: urlParams.get('search') || '',
+            category: urlParams.get('category') || ''
+        };
+    }
+
     function loadMoreProducts() {
+        if (isLoading) return;
         isLoading = true;
         document.getElementById('loading').style.display = 'block';
 
-        const category = getCategoryFromUrl();
+        const params = getParamsFromUrl(); // get both search and category
         const defaultImagePath = `${SOURCE_PANEL_IMAGE_URL}NPIA.png`;
+
+        let payload = {
+            offset: offset,
+            category: params.category
+        };
+
+        if (params.search) {
+            payload.search = params.search; // include search if present
+        }
 
         fetch("{{ route('products.load.more') }}", {
             method: "POST",
@@ -384,25 +410,24 @@
                 "X-CSRF-TOKEN": "{{ csrf_token() }}",
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ offset: offset, category: category })
+            body: JSON.stringify(payload)
         })
         .then(response => response.json())
         .then(products => {
             if (products.length === 0) {
                 document.getElementById('loading').innerText = 'No more products.';
                 document.getElementById('loadMoreBtn').style.display = 'none';
+                isLoading = false;
                 return;
             }
 
             products.forEach(product => {
-                const images = (product.images || []);
-
+                const images = product.images || [];
                 if (images.length === 0) return;
 
                 images.sort((a, b) => (a.serial_no || 0) - (b.serial_no || 0));
-
                 const media = images.slice(0, 2);
-                
+
                 const file1 = media[0]?.file_path ? `${SOURCE_PANEL_IMAGE_URL}${media[0].file_path}` : defaultImagePath;
                 const file2 = media[1]?.file_path ? `${SOURCE_PANEL_IMAGE_URL}${media[1].file_path}` : null;
 
@@ -424,8 +449,8 @@
                     `;
                 }
 
-                if (file2) {                
-                    if (isVideo(file2)) {                    
+                if (file2) {
+                    if (isVideo(file2)) {
                         imagesHtml += `
                             <video class="hover-video" muted loop playsinline
                                 style="object-fit: cover; position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none;">
@@ -446,7 +471,7 @@
                     ? `<span class='old-price'>$${parseFloat(product.old_price).toFixed(2)}</span>`
                     : '';
 
-                let newItem = `
+                const newItem = `
                     <div class="col-12 col-sm-6 col-md-3 mb-4">
                         <div class="product-default">
                             <figure>
@@ -456,7 +481,6 @@
                                     </div>
                                 </a>
                             </figure>
-
                             <div class="product-details text-center">
                                 <div class="category-list">
                                     <a href="${window.location.pathname}?category=${product.category_id}" class="product-category">
@@ -468,11 +492,10 @@
                                         ${product.product_name.toLowerCase().replace(/\b\w/g, char => char.toUpperCase())}
                                     </a>
                                 </h3>
-                                
                                 ${product.product_price && product.product_price > 0 ? `
                                     <div class="price-box">
-                                        ${oldPriceHtml || ''}
-                                        <span class="product-price">USD${parseFloat(product.product_price)}</span>
+                                        ${oldPriceHtml}
+                                        <span class="product-price">USD${parseFloat(product.product_price).toFixed(2)}</span>
                                     </div>
                                 ` : ''}
                                 <div>
@@ -503,14 +526,14 @@
         });
     }
 
+    // Add to cart functionality
     $(document).on('click', '.addToCartBtn', function (e) {
         e.preventDefault();
-
-        let productId = $(this).data('product-id');
-        let productName = $(this).data('product-name');
-        let productPrice = $(this).data('product-price');
-        let qty = '1';
-        let filePath = $(this).data('product-filepath');
+        const productId = $(this).data('product-id');
+        const productName = $(this).data('product-name');
+        const productPrice = $(this).data('product-price');
+        const qty = '1';
+        const filePath = $(this).data('product-filepath');
 
         $.ajax({
             url: "{{ route('add.to.cart') }}",
@@ -527,33 +550,42 @@
                 alert(response.success);
                 location.reload();
             },
-            error: function (xhr) {
+            error: function () {
                 alert("Failed to add to cart");
             }
         });
     });
 
+    // Hover effect for images/videos
+    function setupHoverEffects() {
+        document.querySelectorAll('.media-wrapper').forEach(wrapper => {
+            const preview = wrapper.querySelector('.preview-image, .preview-video');
+            const hover = wrapper.querySelector('.hover-image, .hover-video');
+            if (preview && hover) {
+                wrapper.addEventListener('mouseenter', () => {
+                    preview.style.display = 'none';
+                    hover.style.display = 'block';
+                    if (hover.tagName === 'VIDEO') hover.play();
+                });
+                wrapper.addEventListener('mouseleave', () => {
+                    preview.style.display = 'block';
+                    hover.style.display = 'none';
+                    if (hover.tagName === 'VIDEO') hover.pause();
+                });
+            }
+        });
+    }
 
-    document.querySelectorAll('.media-wrapper').forEach(wrapper => {
-        const preview = wrapper.querySelector('.preview-image, .preview-video');
-        const hover = wrapper.querySelector('.hover-image, .hover-video');
+    // Reapply hover effects after loading more products
+    new MutationObserver(() => setupHoverEffects())
+        .observe(document.getElementById('product-list'), { childList: true });
 
-        if (preview && hover) {
-            wrapper.addEventListener('mouseenter', () => {
-                preview.style.display = 'none';
-                hover.style.display = 'block';
-                if (hover.tagName === 'VIDEO') hover.play();
-            });
-
-            wrapper.addEventListener('mouseleave', () => {
-                preview.style.display = 'block';
-                hover.style.display = 'none';
-                if (hover.tagName === 'VIDEO') hover.pause();
-            });
-        }
+    // Initialize hover effects on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        setupHoverEffects();
     });
-
 </script>
+
 
 <!--Start of Tawk.to Script-->
 <script type="text/javascript">

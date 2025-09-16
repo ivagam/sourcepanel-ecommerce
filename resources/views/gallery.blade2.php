@@ -84,9 +84,12 @@
             box-shadow: none;
             color: green;
             font-size: 32px;
-            cursor: pointer;
-            padding: 0;
+            cursor: pointer;        
             line-height: 1;
+            position: absolute;        
+            background-color: rgba(0,0,0,0.5);        
+            padding: 8px 12px;        
+            border-radius: 4px;
         }
 
         .slider-btn.prev {
@@ -138,6 +141,24 @@
             margin-left: 5px;
         }
 
+        .prev-btn, .next-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            color: #fff;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s, transform 0.2s;
+            z-index: 10;
+        }
+
+        .prev-btn:hover, .next-btn:hover {
+            color: #ddd;
+            transform: translateY(-50%) scale(1.1);
+        }
+
     </style>
 </head>
 <body>
@@ -179,6 +200,7 @@
                                     $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
                                     if (in_array($ext, ['mp4','webm','mov','avi'])) {
                                         $initialVideos->push([
+                                            'product_id' => $product->product_id,
                                             'url' => env('SOURCE_PANEL_IMAGE_URL') . $file,
                                             'ext' => $ext,
                                             'product_name' => $product->product_name ?? '',
@@ -189,51 +211,62 @@
                                     }
                                 }
                             }
+                            $videosByProduct  = $initialVideos->groupBy('product_id');
                         @endphp
 
-                        {{-- Render the initial videos (keeps exactly same visual size as other cards) --}}                        
-                        @foreach($initialVideos as $vid)                        
-                            <div class="card" style="margin-bottom:20px;">  
+                        {{-- Render the initial videos (keeps exactly same visual size as other cards) --}}
+                        
+                        @foreach($videosByProduct as $productId => $videos)
+                            <div class="card" style="margin-bottom:20px;" data-product-id="{{ $productId }}">
+                                @php $currentProduct = $videos->first(); @endphp
                                 <div style="position: relative; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; padding: 10px">
-                                        <a href="https://wa.me/8618202031361?text={{ urlencode('Check out this product: ' . env('SOURCE_PANEL_ECOMMERCE_URL') . '/product/' . $product->product_url) }}" 
-                                            target="_blank" 
-                                            title="Share on WhatsApp"
+                                    <a href="https://wa.me/8618202031361?text={{ urlencode('Check out this product: ' . env('SOURCE_PANEL_ECOMMERCE_URL') . '/product/' . $currentProduct['product_url']) }}" 
+                                        target="_blank" 
+                                        title="Share on WhatsApp"
+                                        style="display: flex; align-items: center;">
+                                        <img src="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/public/whatsapp.png" 
+                                            alt="WhatsApp" 
+                                            width="24" 
+                                            height="24" />
+                                    </a>
+
+                                    <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/product/{{ $currentProduct['product_url'] }}" 
+                                        style="font-weight: bold; color: inherit; text-decoration: none;">
+                                        {{ \Illuminate\Support\Str::limit($currentProduct['product_name'], 30) }}
+                                    </a>
+
+                                    @if($currentProduct['product_price'] && $currentProduct['product_price'] > 0)
+                                        <span style="color: #555;">
+                                            USD{{ number_format($currentProduct['product_price']) }}
+                                        </span>
+                                    @endif
+
+                                    <div style="display: flex; align-items: center; gap: 15px; flex: 1;">
+                                        <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/product/{{ $currentProduct['product_url'] }}" 
+                                            title="View Product" 
+                                            target="_blank"
                                             style="display: flex; align-items: center;">
-                                            <img src="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/public/whatsapp.png" 
-                                                alt="WhatsApp" 
-                                                width="24" 
-                                                height="24" />
+                                            View Page
                                         </a>
-
-                                        <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/product/{{ $product->product_url }}" 
-                                            style="font-weight: bold; color: inherit; text-decoration: none;">
-                                            {{ \Illuminate\Support\Str::limit($vid['product_name'], 30) }}
-                                        </a>
-
-                                        @if($product->product_price && $product->product_price > 0)
-                                            <span style="color: #555;">
-                                                USD{{ number_format($vid['product_price']) }}
-                                            </span>
-                                        @endif
-
-                                        <div style="display: flex; align-items: center; gap: 15px; flex: 1;">
-                                            <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/product/{{ $vid['product_url'] }}" 
-                                                title="View Product" 
-                                                target="_blank"
-                                                style="display: flex; align-items: center;">
-                                                View Page
-                                            </a>
                                     </div>
-                                </div>                             
-                                <div class="video-wrapper">
-                                    <video preload="metadata">
-                                        <source src="{{ $vid['url'] }}" type="video/{{ $vid['ext'] }}">
-                                        Your browser does not support the video tag.
-                                    </video>
+                                </div>
+
+                                <div class="video-wrapper" style="position: relative;" data-current-index="0">
+                                    @foreach($videos as $index => $vid)
+                                        <video preload="metadata" style="{{ $index == 0 ? '' : 'display: none;' }}">
+                                            <source src="{{ $vid['url'] }}" type="video/{{ $vid['ext'] }}">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    @endforeach
                                     <div class="play-button"></div>
+                                    @if($videos->count() > 1)
+                                        <button class="prev-btn" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%);"> &lt; </button>
+                                        <button class="next-btn" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%);"> &gt; </button>
+                                    @endif
                                 </div>
                             </div>
                         @endforeach
+
 
                     @else
                         {{-- Normal product cards (unchanged) --}}
@@ -597,8 +630,51 @@
         }
 
         enableVideoClickPlay();
-        
+       
     </script>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.video-wrapper').forEach(wrapper => {
+        const videos = wrapper.querySelectorAll('video');
+        const prevBtn = wrapper.querySelector('.prev-btn');
+        const nextBtn = wrapper.querySelector('.next-btn');
+        let currentIndex = 0;
+
+        const updateVideoDisplay = () => {
+            videos.forEach((video, index) => {
+                if(index === currentIndex) {
+                    video.style.display = '';
+                    video.load();
+                    video.play().catch(error => {
+                        console.log("Play failed:", error);
+                    });
+                } else {
+                    video.style.display = 'none';
+                    video.pause();
+                }
+            });
+        };
+
+        // Only attach event listeners if both buttons exist
+        if(prevBtn && nextBtn) {
+            prevBtn.addEventListener('click', () => {
+                videos[currentIndex].pause();
+                currentIndex = (currentIndex - 1 + videos.length) % videos.length;
+                updateVideoDisplay();
+            });
+
+            nextBtn.addEventListener('click', () => {
+                videos[currentIndex].pause();
+                currentIndex = (currentIndex + 1) % videos.length;
+                updateVideoDisplay();
+            });
+        }
+
+        updateVideoDisplay();
+    });
+});
+</script>
 
     <script type="text/javascript">
         var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();

@@ -6,10 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Repladeez - China factory direct supply for Watches HandBags Shoes Clothes Sunglasses Jewellery</title>
+    <title>{{ \Illuminate\Support\Str::title($product->product_name) }}</title>
 
-    <meta name="keywords" content="HTML5 Template" />
-    <meta name="description" content="Repladeez - eCommerce Template">
+    <meta name="keywords" content="{{ ($product->meta_keywords) }}" />
+    <meta name="description" content="{{ ($product->meta_description) }}">
     <meta name="author" content="SW-THEMES">
 
     <!-- Favicon -->
@@ -202,10 +202,11 @@
                             
                             @if (!empty($firstVariant->product_price))
                             <div class="price-box">
-                                <span id="variant-price" class="product-price">USD{{ number_format($firstVariant->product_price) }}</span>
+                                <span id="variant-price" class="product-price" style="font-size: 30px; color: navy;">USD{{ number_format($firstVariant->product_price) }}</span>
+                                 <span style="font-size: 22px; color: navy;"> + shipping fees</span>
                             </div>
                             @endif
-
+                            
                             <div class="product-meta" style="margin: 10px 0;">
                                 <p>{{ $product->sku }} / {{ $product->purchase_code }}</p>
                             </div>

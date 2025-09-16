@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Banner;
 use App\Models\Admin;
+use App\Models\Whatsapp;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -25,6 +26,7 @@ class HomeController extends Controller
     {  
         return view('simple-login');
     }
+
     public function index(Request $request)
     {
         $isLoggedIn = session('frontend') == 'yes' ? true : false;
@@ -36,14 +38,12 @@ class HomeController extends Controller
 
         if ($categoryId) {
             if (is_numeric($categoryId)) {
-                // Case 1: category is ID → check in category_ids or exact match
                 $matchingCategoryIds = Category::whereRaw("FIND_IN_SET(?, category_ids)", [$categoryId])
                     ->pluck('category_id')
                     ->toArray();
 
                 $matchingCategoryIds[] = $categoryId;
             } else {
-                // Case 2: category is NAME → use LIKE search
                 $matchingCategoryIds = Category::whereRaw(
                     'LOWER(category_name) LIKE ?',
                     ['%' . strtolower($categoryId) . '%']
@@ -53,7 +53,7 @@ class HomeController extends Controller
             if (!empty($matchingCategoryIds)) {
                 $productBaseQuery->whereIn('category_id', $matchingCategoryIds);
             } else {
-                $productBaseQuery->whereRaw('0 = 1'); // no results
+                $productBaseQuery->whereRaw('0 = 1');
             }
         }
 
@@ -142,10 +142,35 @@ class HomeController extends Controller
         $offset = $request->input('offset', 0);
         $limit = 12;
         $categoryName = $request->input('category');
+        $search = strtolower($request->input('search', ''));
 
         $productBaseQuery = Product::query();
 
-        if ($categoryName === 'videos') {
+        if (!empty($search)) {
+            // Live search takes precedence if search is present
+            $productBaseQuery->leftJoin('category', function ($join) {
+                $join->on(DB::raw("FIND_IN_SET(category.category_id, products.category_ids)"), '>', DB::raw('0'));
+            })
+            ->where(function ($q) use ($search) {
+                $q->whereRaw("LOWER(products.product_name) LIKE ?", ['%' . $search . '%'])
+                ->orWhereRaw("LOWER(products.description) LIKE ?", ['%' . $search . '%'])
+                ->orWhereRaw("LOWER(category.category_name) LIKE ?", ['%' . $search . '%']);
+            });
+
+            $subQuery = $productBaseQuery
+                ->select(DB::raw('MIN(products.product_id) as id'))
+                ->groupBy('products.product_url');
+
+            $productIds = $subQuery->pluck('id')->toArray();
+
+            $products = Product::with(['images', 'category'])
+                ->whereIn('product_id', $productIds)
+                ->latest()
+                ->skip($offset)
+                ->take($limit)
+                ->get();
+
+        } elseif ($categoryName === 'videos') {
             $productBaseQuery->whereHas('images', function ($q) {
                 $q->whereRaw("LOWER(SUBSTRING_INDEX(file_path, '.', -1)) IN ('mp4','webm','mov','avi')");
             });
@@ -196,38 +221,49 @@ class HomeController extends Controller
     }
 
 
-   public function liveSearch(Request $request)
+   public function livesearch(Request $request)
     {
-        $search = strtolower($request->input('q'));
+        $isLoggedIn = session('frontend') == 'yes';
+        $initialLimit = 12;
 
-        if (!$search) {
-            return response()->json([]);
+        $search = strtolower($request->input('search', ''));
+
+        $productBaseQuery = Product::query();
+
+        if (!empty($search)) {
+            $productBaseQuery->leftJoin('category', function ($join) {
+                $join->on(DB::raw("FIND_IN_SET(category.category_id, products.category_ids)"), '>', DB::raw('0'));
+            })
+            ->where(function ($q) use ($search) {
+                $q->whereRaw("LOWER(products.product_name) LIKE ?", ['%' . $search . '%'])
+                ->orWhereRaw("LOWER(products.description) LIKE ?", ['%' . $search . '%'])
+                ->orWhereRaw("LOWER(category.category_name) LIKE ?", ['%' . $search . '%']);
+            });
         }
 
-        $query = Product::leftJoin('category', function ($join) {
-            $join->on(DB::raw("FIND_IN_SET(category.category_id, products.category_ids)"), '>', DB::raw('0'));
-        })
-        ->select('products.*', 'category.category_name')
-        ->where(function ($q) use ($search) {
-            $q->whereRaw("MATCH(products.product_name, products.description) AGAINST(? IN BOOLEAN MODE)", [$search])
-            ->orWhereRaw("LOWER(category.category_name) LIKE ?", ['%' . $search . '%'])
-            ->orWhereRaw("LOWER(products.sku) LIKE ?", ['%' . $search . '%']);
-        });
+        $subQuery = $productBaseQuery
+            ->select(DB::raw('MIN(products.product_id) as id'))
+            ->groupBy('products.product_url');
 
-        $products = $query->whereNotNull('product_url')
-            ->where('product_url', '!=', '')
-            ->limit(10)
-            ->get()
-            ->map(function ($product) {
-                return [
-                    'name' => $product->product_name,
-                    'url' => url('/product/' . $product->product_url),
-                    'type' => 'Product',
-                ];
-            });
+        $totalProducts = $subQuery->get()->count();
+        $productIds = $subQuery->pluck('id')->toArray();
 
-        return response()->json($products);
+        $products = Product::with(['images', 'category'])
+            ->whereIn('product_id', $productIds)
+            ->latest()
+            ->take($initialLimit)
+            ->get();
+
+        $categories = Category::with('children')
+            ->whereNull('subcategory_id')
+            ->get();
+
+        $brands = Brand::all();
+        $banners = Banner::all();
+
+        return view('index', compact('products', 'categories', 'brands', 'banners', 'totalProducts', 'isLoggedIn'));
     }
+
 
     
     public function documentation()
@@ -236,8 +272,14 @@ class HomeController extends Controller
     }
 
     public function cal(Request $request)
-    {  
+    {          
         return view('cal');
+    }
+
+    public function msg(Request $request)
+    {  
+        $msg = Whatsapp::all();
+        return view('msg', compact('msg'));
     }
 
      public function aboutus()

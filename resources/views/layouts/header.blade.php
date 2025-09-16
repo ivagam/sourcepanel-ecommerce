@@ -41,39 +41,38 @@
 					</div><!-- End .header-left -->
 
 					<div class="header-right w-lg-max">
-						<div
-							class="header-icon header-search header-search-inline header-search-category w-lg-max text-right mt-0">
-							<a href="#" class="search-toggle" role="button"><i class="icon-search-3"></i></a>
-							<form action="javascript:void(0);" method="get" autocomplete="off">
-								<div class="header-search-wrapper">
-									<input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." autocomplete="off" required>
-									<div id="live-search-results" class="live-results-box"></div>
-									<div class="select-custom">
-										@php
-											$selectedCategory = request()->query('category');
-											function renderCategoryOptions($categories, $prefix = '', $selectedCategory = null)
-											{
-												foreach ($categories as $category) {
-													$selected = ($category->category_id == $selectedCategory) ? 'selected' : '';
-													echo '<option value="' . $category->category_id . '" ' . $selected . '>' . $prefix . e($category->category_name) . '</option>';
+						<div class="header-icon header-search header-search-inline header-search-category w-lg-max text-right mt-0">
+						<a href="#" class="search-toggle" role="button"><i class="icon-search-3"></i></a>
+						<form action="{{ route('live.search') }}" method="GET" autocomplete="off">
+							<div class="header-search-wrapper">
+								<input type="search" class="form-control" name="search" id="search-input" placeholder="Search..." autocomplete="off" value="{{ request()->query('search') }}" required>
+								<div class="select-custom">
+									@php
+										$selectedCategory = request()->query('category');
+										function renderCategoryOptions($categories, $prefix = '', $selectedCategory = null)
+										{
+											foreach ($categories as $category) {
+												$selected = ($category->category_id == $selectedCategory) ? 'selected' : '';
+												echo '<option value="' . $category->category_id . '" ' . $selected . '>' . $prefix . e($category->category_name) . '</option>';
 
-													if ($category->children && $category->children->isNotEmpty()) {
-														renderCategoryOptions($category->children, $prefix . '- ', $selectedCategory);
-													}
+												if ($category->children && $category->children->isNotEmpty()) {
+													renderCategoryOptions($category->children, $prefix . '- ', $selectedCategory);
 												}
 											}
-										@endphp
+										}
+									@endphp
 
-										<select id="cat" name="cat" onchange="if(this.value) window.location.href='{{ url()->current() }}?category=' + this.value;">
-											<option value="" {{ $selectedCategory ? '' : 'selected' }}>All Categories</option>
-											@php renderCategoryOptions($categories, '', $selectedCategory); @endphp
-										</select>
-									</div>
-								<!-- End .select-custom -->
-									<button class="btn icon-magnifier p-0" type="submit"></button>
-								</div><!-- End .header-search-wrapper -->
-							</form>
-						</div><!-- End .header-search -->
+									<select id="cat" name="category">
+										<option value="" {{ $selectedCategory ? '' : 'selected' }}>All Categories</option>
+										@php renderCategoryOptions($categories, '', $selectedCategory); @endphp
+									</select>
+								</div><!-- End .select-custom -->
+
+								<button class="btn icon-magnifier p-0" type="submit"></button>
+							</div><!-- End .header-search-wrapper -->
+						</form>
+					</div>
+<!-- End .header-search -->
 
 						<!--<div class="header-contact d-none d-lg-flex pl-4 pr-4">
 							<img alt="phone" src="{{ asset('assets/images/phone.png') }}" width="30" height="30" class="pb-1">
@@ -244,46 +243,5 @@
         });
     });
 
-	$(document).ready(function() {
-    const input = $('#search-input');
-    const resultBox = $('#live-search-results');
-
-    input.on('keyup', function() {
-        let query = $(this).val().trim();
-
-        if (query.length > 1) {
-            $.ajax({
-                url: '{{ route("live.search") }}',
-                type: 'GET',
-                data: { q: query },
-                success: function(data) {
-                    resultBox.empty().show();
-
-                    if (data.length === 0) {
-                        resultBox.append('<div class="px-3 py-2 text-muted">No results found</div>');
-                    } else {
-                        data.forEach(item => {
-                            resultBox.append(`<a href="${item.url}">${item.name} <small>(${item.type})</small></a>`);
-                        });
-                    }
-                }
-            });
-        } else {
-            resultBox.hide();
-        }
-    });
-
-    // Hide results if clicking outside input or results
-    $(document).on('click', function(e) {
-        if (!$(e.target).closest('#search-input, #live-search-results').length) {
-            resultBox.hide();
-        }
-    });
-
-    // Optional: Hide results after clicking a result
-    resultBox.on('click', 'a', function() {
-        resultBox.hide();
-        input.val(''); // Optional: clear search input
-    });
-});
+	
 </script>
