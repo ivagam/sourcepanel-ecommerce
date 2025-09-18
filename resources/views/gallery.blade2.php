@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url('style.css') }}">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -84,12 +84,9 @@
             box-shadow: none;
             color: green;
             font-size: 32px;
-            cursor: pointer;        
+            cursor: pointer;
+            padding: 0;
             line-height: 1;
-            position: absolute;        
-            background-color: rgba(0,0,0,0.5);        
-            padding: 8px 12px;        
-            border-radius: 4px;
         }
 
         .slider-btn.prev {
@@ -141,39 +138,29 @@
             margin-left: 5px;
         }
 
-        .prev-btn, .next-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            color: #fff;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            transition: color 0.3s, transform 0.2s;
-            z-index: 10;
-        }
-
-        .prev-btn:hover, .next-btn:hover {
-            color: #ddd;
-            transform: translateY(-50%) scale(1.1);
-        }
-
     </style>
 </head>
 <body>
+
     <header id="category-header">
-        <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}" title="Go to Home">
-            <img src="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/assets/images/logo.png" width="75" height="34" alt="Repladeez Logo" />
-        </a>
-        <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/gallery?category=watches">Watches</a>
-        <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/gallery?category=handbags/wallets">Handbags</a>
-        <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/gallery?category=shoes">Shoes</a>
-        <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/gallery?category=clothings">Clothes</a>
-        <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/gallery?category=sunglasses">Sunglasses</a>
-        {{-- Videos link (goes to ?category=videos) --}}
-        <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/gallery?category=videos" style="display:flex;align-items:center;gap:5px;">Videos</a>
-    </header>
+    <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}" title="Go to Home">
+        <img src="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/assets/images/logo.png" width="75" height="34" alt="Repladeez Logo" />
+    </a>
+    <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/gallery?category=watches">Watches</a>
+    <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/gallery?category=handbags/wallets">Handbags</a>
+    <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/gallery?category=shoes">Shoes</a>
+    <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/gallery?category=clothings">Clothes</a>
+    <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/gallery?category=sunglasses">Sunglasses</a>
+    <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/gallery?category=videos" style="display:flex;align-items:center;gap:5px;">Videos</a>
+
+    <!-- Search Bar Section (added without touching other styles) -->
+    <div style="margin-left:auto; padding-right: 20px;">
+        <form action="{{ route('gallery.search') }}" method="GET" autocomplete="off">
+            <input type="search" name="search" id="search-input" placeholder="Search..." autocomplete="off" value="{{ request()->query('search') }}" style="padding: 5px 10px; border: 1px solid #ccc; border-radius: 4px;">
+            <button type="submit" style="padding: 5px 10px; border: none; background-color: #035b34; color: white; border-radius: 4px; cursor: pointer;">Search</button>
+        </form>
+    </div>
+</header>
 
     <main style="padding-top: 10px;">
         <div class="container">
@@ -200,7 +187,6 @@
                                     $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
                                     if (in_array($ext, ['mp4','webm','mov','avi'])) {
                                         $initialVideos->push([
-                                            'product_id' => $product->product_id,
                                             'url' => env('SOURCE_PANEL_IMAGE_URL') . $file,
                                             'ext' => $ext,
                                             'product_name' => $product->product_name ?? '',
@@ -211,62 +197,51 @@
                                     }
                                 }
                             }
-                            $videosByProduct  = $initialVideos->groupBy('product_id');
                         @endphp
 
-                        {{-- Render the initial videos (keeps exactly same visual size as other cards) --}}
-                        
-                        @foreach($videosByProduct as $productId => $videos)
-                            <div class="card" style="margin-bottom:20px;" data-product-id="{{ $productId }}">
-                                @php $currentProduct = $videos->first(); @endphp
+                        {{-- Render the initial videos (keeps exactly same visual size as other cards) --}}                        
+                        @foreach($initialVideos as $vid)                        
+                            <div class="card" style="margin-bottom:20px;">  
                                 <div style="position: relative; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; padding: 10px">
-                                    <a href="https://wa.me/8618202031361?text={{ urlencode('Check out this product: ' . env('SOURCE_PANEL_ECOMMERCE_URL') . '/product/' . $currentProduct['product_url']) }}" 
-                                        target="_blank" 
-                                        title="Share on WhatsApp"
-                                        style="display: flex; align-items: center;">
-                                        <img src="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/public/whatsapp.png" 
-                                            alt="WhatsApp" 
-                                            width="24" 
-                                            height="24" />
-                                    </a>
-
-                                    <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/product/{{ $currentProduct['product_url'] }}" 
-                                        style="font-weight: bold; color: inherit; text-decoration: none;">
-                                        {{ \Illuminate\Support\Str::limit($currentProduct['product_name'], 30) }}
-                                    </a>
-
-                                    @if($currentProduct['product_price'] && $currentProduct['product_price'] > 0)
-                                        <span style="color: #555;">
-                                            USD{{ number_format($currentProduct['product_price']) }}
-                                        </span>
-                                    @endif
-
-                                    <div style="display: flex; align-items: center; gap: 15px; flex: 1;">
-                                        <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/product/{{ $currentProduct['product_url'] }}" 
-                                            title="View Product" 
-                                            target="_blank"
+                                        <a href="https://wa.me/8618202031361?text={{ urlencode('Check out this product: ' . env('SOURCE_PANEL_ECOMMERCE_URL') . '/product/' . $product->product_url) }}" 
+                                            target="_blank" 
+                                            title="Share on WhatsApp"
                                             style="display: flex; align-items: center;">
-                                            View Page
+                                            <img src="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/public/whatsapp.png" 
+                                                alt="WhatsApp" 
+                                                width="24" 
+                                                height="24" />
                                         </a>
-                                    </div>
-                                </div>
 
-                                <div class="video-wrapper" style="position: relative;" data-current-index="0">
-                                    @foreach($videos as $index => $vid)
-                                        <video preload="metadata" style="{{ $index == 0 ? '' : 'display: none;' }}">
-                                            <source src="{{ $vid['url'] }}" type="video/{{ $vid['ext'] }}">
-                                            Your browser does not support the video tag.
-                                        </video>
-                                    @endforeach
+                                        <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/product/{{ $product->product_url }}" 
+                                            style="font-weight: bold; color: inherit; text-decoration: none;">
+                                            {{ \Illuminate\Support\Str::limit($vid['product_name'], 30) }}
+                                        </a>
+
+                                        @if($product->product_price && $product->product_price > 0)
+                                            <span style="color: #555;">
+                                                USD{{ number_format($vid['product_price']) }}
+                                            </span>
+                                        @endif
+
+                                        <div style="display: flex; align-items: center; gap: 15px; flex: 1;">
+                                            <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/product/{{ $vid['product_url'] }}" 
+                                                title="View Product" 
+                                                target="_blank"
+                                                style="display: flex; align-items: center;">
+                                                View Page
+                                            </a>
+                                    </div>
+                                </div>                             
+                                <div class="video-wrapper">
+                                    <video preload="metadata">
+                                        <source src="{{ $vid['url'] }}" type="video/{{ $vid['ext'] }}">
+                                        Your browser does not support the video tag.
+                                    </video>
                                     <div class="play-button"></div>
-                                    @if($videos->count() > 1)
-                                        <button class="prev-btn" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%);"> &lt; </button>
-                                        <button class="next-btn" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%);"> &gt; </button>
-                                    @endif
                                 </div>
                             </div>
                         @endforeach
-
 
                     @else
                         {{-- Normal product cards (unchanged) --}}
@@ -386,6 +361,17 @@
         const imageBaseUrl = "{{ env('SOURCE_PANEL_IMAGE_URL') }}";
         let offsetProducts = {{ count($products) }};
         let loading = false;
+        const searchForm = document.querySelector('form');
+        if (searchForm) {
+            searchForm.addEventListener('submit', function(e) {
+                offsetProducts = 0;
+                document.getElementById('product-list').innerHTML = '';
+            });
+        }
+
+        const searchInput = document.getElementById('search-input');
+        const searchValue = searchInput ? searchInput.value.trim() : '';
+
         const isVideosPage = (document.getElementById('categoryName').value === 'videos');
 
         window.addEventListener('scroll', () => {
@@ -409,7 +395,7 @@
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
-                body: JSON.stringify({ offset: offsetProducts, category: categoryName })
+                body: JSON.stringify({ offset: offsetProducts, category: categoryName, search: searchValue })
             })
             .then(response => response.json())
             .then(products => {
@@ -438,7 +424,7 @@
                                             target="_blank" 
                                             title="Share on WhatsApp"
                                             style="display: flex; align-items: center;">
-                                            <img src="${baseUrl}/public/whatsapp.png" 
+                                            <img src="${imageBaseUrl}/public/whatsapp.png" 
                                                 alt="WhatsApp" 
                                                 width="24" 
                                                 height="24" />
@@ -519,7 +505,7 @@
                                             <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap; flex: 1;">
                                                 <a href="https://wa.me/8618202031361?text=${encodeURIComponent('Check out this product: ' + baseUrl + '/product/' + product.product_url)}" 
                                                 target="_blank" title="Share on WhatsApp" style="display:flex;align-items:center;">
-                                                    <img src="${baseUrl}/public/whatsapp.png" width="24" height="24" alt="WhatsApp" />
+                                                    <img src="${imageBaseUrl}/public/whatsapp.png" width="24" height="24" alt="WhatsApp" />
                                                 </a>
                                                 <a href="${baseUrl}/product/${product.product_url}" style="font-weight:bold; color:inherit; text-decoration:none;">
                                                     ${truncateText(product.product_name, 30)}
@@ -630,51 +616,8 @@
         }
 
         enableVideoClickPlay();
-       
+        
     </script>
-
-    <script>
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.video-wrapper').forEach(wrapper => {
-        const videos = wrapper.querySelectorAll('video');
-        const prevBtn = wrapper.querySelector('.prev-btn');
-        const nextBtn = wrapper.querySelector('.next-btn');
-        let currentIndex = 0;
-
-        const updateVideoDisplay = () => {
-            videos.forEach((video, index) => {
-                if(index === currentIndex) {
-                    video.style.display = '';
-                    video.load();
-                    video.play().catch(error => {
-                        console.log("Play failed:", error);
-                    });
-                } else {
-                    video.style.display = 'none';
-                    video.pause();
-                }
-            });
-        };
-
-        // Only attach event listeners if both buttons exist
-        if(prevBtn && nextBtn) {
-            prevBtn.addEventListener('click', () => {
-                videos[currentIndex].pause();
-                currentIndex = (currentIndex - 1 + videos.length) % videos.length;
-                updateVideoDisplay();
-            });
-
-            nextBtn.addEventListener('click', () => {
-                videos[currentIndex].pause();
-                currentIndex = (currentIndex + 1) % videos.length;
-                updateVideoDisplay();
-            });
-        }
-
-        updateVideoDisplay();
-    });
-});
-</script>
 
     <script type="text/javascript">
         var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();

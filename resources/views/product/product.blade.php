@@ -202,8 +202,7 @@
                             
                             @if (!empty($firstVariant->product_price))
                             <div class="price-box">
-                                <span id="variant-price" class="product-price" style="font-size: 30px; color: navy;">USD{{ number_format($firstVariant->product_price) }}</span>
-                                 <span style="font-size: 22px; color: navy;"> + shipping fees</span>
+                                <span id="variant-price" class="product-price" style="font-size: 30px; color: navy;">USD{{ number_format($firstVariant->product_price) }}+shipping fees</span>                                 
                             </div>
                             @endif
                             

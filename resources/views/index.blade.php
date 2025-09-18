@@ -135,7 +135,7 @@
                                             <div class="product-details text-center">
                                                 <div class="category-list">
                                                     <a href="{{ url()->current() }}?category={{ $product->category_id }}" class="product-category">
-                                                        {{ $product->category->category_name ?? 'Uncategorized' }}
+                                                        {{ \Illuminate\Support\Str::words($product->category->category_name ?? 'Others', 6, '...') }}
                                                     </a>
                                                 </div>
                                                 <h3 class="product-title">
@@ -144,14 +144,11 @@
                                                 @if(!empty($product->size))
                                                     <p class="product-description">Size: {{ $product->size }}</p>
                                                 @endif
-                                                @if(!empty($product->product_price))
-                                                <div class="price-box">
-                                                    <span class="product-price">USD{{ number_format($product->product_price ?? 0) }}</span><br>                                                    
-                                                </div>
-                                                @endif
-                                                <div>
-                                                    <span style="color: red; font-size: 12px;">+ shipping fees</span>
-                                                </div>
+                                               @if(!empty($product->product_price))
+                                                    <div class="price-box">
+                                                        <span class="product-price">USD{{ number_format($product->product_price ?? 0) }}</span><span style="color: red; font-size: 12px;">+shipping fees</span>
+                                                    </div>
+                                                @endif                                              
                                                 @if(session('frontend'))
                                                     <a target="_blank" href="{{ env('SOURCE_PANEL_URL') }}/product/editProduct/{{ $product->product_id }}">
                                                         Edit
@@ -484,7 +481,7 @@
                             <div class="product-details text-center">
                                 <div class="category-list">
                                     <a href="${window.location.pathname}?category=${product.category_id}" class="product-category">
-                                        ${product.category_name ?? 'Uncategorized'}
+                                        ${product.category_name ?? 'Others'}
                                     </a>
                                 </div>
                                 <h3 class="product-title">
@@ -497,10 +494,11 @@
                                         ${oldPriceHtml}
                                         <span class="product-price">USD${parseFloat(product.product_price).toFixed(2)}</span>
                                     </div>
+                                    <div>
+                                        <span style="color: red; font-size: 15px;">+shipping fees</span>
+                                    </div>
                                 ` : ''}
-                                <div>
-                                    <span style="color: red; font-size: 15px;">+ shipping fees</span>
-                                </div>
+                                
                                 ${isLoggedIn ? `
                                     <a href="${SOURCE_PANEL_URL}/product/editProduct/${product.product_id}"
                                         class="btn rounded-pill mt-4"

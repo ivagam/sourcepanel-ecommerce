@@ -13,6 +13,7 @@ Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
 Route::get('/cal', [HomeController::class, 'cal'])->name('cal');
 Route::get('/msg', [HomeController::class, 'msg'])->name('msg');
 Route::get('/live-search', [HomeController::class, 'liveSearch'])->name('live.search');
+Route::get('/gallery/search', [HomeController::class, 'gallerysearch'])->name('gallery.search');
 Route::get('/documentation', [HomeController::class, 'documentation'])->name('documentation');
 Route::post('/load-more-products', [HomeController::class, 'loadMore'])->name('products.load.more');
 

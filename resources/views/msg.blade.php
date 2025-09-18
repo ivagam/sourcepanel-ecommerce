@@ -31,8 +31,18 @@
         }
         .shortcut {
             cursor: pointer;
-            color: #007bff;
-            text-decoration: underline;
+            color: #333;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            padding: 4px 25px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f0f0f0;
+            transition: background-color 0.2s ease;
+        }
+        .shortcut:hover {
+            background-color: #e0e0e0;
         }
         .copied-message {
             position: absolute;
