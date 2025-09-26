@@ -94,11 +94,11 @@ input {
                     <tr><th>Size (cm)</th><th>Number</th><th>Value</th></tr>
                 </thead>
                 <tbody>
-                    <tr><td><input type="number" class="size"></td><td><input type="number" class="number"></td><td class="value">0</td></tr>
-                    <tr><td><input type="number" class="size"></td><td><input type="number" class="number"></td><td class="value">0</td></tr>
-                    <tr><td><input type="number" class="size"></td><td><input type="number" class="number"></td><td class="value">0</td></tr>
-                    <tr><td><input type="number" class="size"></td><td><input type="number" class="number"></td><td class="value">0</td></tr>
-                    <tr><td><input type="number" class="size"></td><td><input type="number" class="number"></td><td class="value">0</td></tr>
+                    <tr><td><input type="text" class="size"></td><td><input type="number" class="number"></td><td class="value">0</td></tr>
+                    <tr><td><input type="text" class="size"></td><td><input type="number" class="number"></td><td class="value">0</td></tr>
+                    <tr><td><input type="text" class="size"></td><td><input type="number" class="number"></td><td class="value">0</td></tr>
+                    <tr><td><input type="text" class="size"></td><td><input type="number" class="number"></td><td class="value">0</td></tr>
+                    <tr><td><input type="text" class="size"></td><td><input type="number" class="number"></td><td class="value">0</td></tr>
                 </tbody>
             </table>
         </div>
@@ -224,15 +224,15 @@ function setupOtherTable() {
 
 function setupWatchTable() {
     setupTable('watchTable', (row, inputs, valueCell) => {
-        const factory = inputs[0].value ? inputs[0].value.toUpperCase() + " " : "";
+        const factoryName = inputs[0].value ? inputs[0].value.toUpperCase() + " Factory " : "";
         const number = parseFloat(inputs[1].value) || 0;
-        valueCell.textContent = number ? `${factory}Factory USD${calculateValue('1', number)}+shipping fees` : '0';
+        valueCell.textContent = number ? `${factoryName}USD${calculateValue('1', number)}+shipping fees` : '0';
     });
 }
 
 function setupGamaTable() {
     setupTable('gamaTable', (row, inputs, valueCell) => {
-        const factory = inputs[0].value ? inputs[0].value.toUpperCase() + " " : "";
+        const factory = inputs[0].value ? inputs[0].value.toUpperCase() + " Factory " : "";
         const num = parseFloat(inputs[1].value) || 0;
         let result = 0;
         if(num < 1750) result = num + 500;
@@ -240,13 +240,13 @@ function setupGamaTable() {
         else if(num < 3000) result = num + 600;
         else result = num * 1.2;
         result = adjustLastDigits(result);
-        valueCell.textContent = num ? `${factory}Factory ${result}CNY+shipping fees` : '0';
+        valueCell.textContent = num ? `${factory} ${result}CNY+shipping fees` : '0';
     });
 }
 
 function setupBamaTable() {
     setupTable('bamaTable', (row, inputs, valueCell) => {
-        const factory = inputs[0].value ? inputs[0].value.toUpperCase() + " " : "";
+        const factory = inputs[0].value ? inputs[0].value.toUpperCase() + " Factory " : "";
         const raw = parseFloat(inputs[1].value) || 0;
         const num = raw / 7;
         let result = 0;
@@ -255,7 +255,7 @@ function setupBamaTable() {
         else if(num < 400) result = num + 80;
         else result = num * 1.2;
         result = adjustLastDigit(result);
-        valueCell.textContent = num ? `${factory}Factory USD${result}+shipping fees` : '0';
+        valueCell.textContent = num ? `${factory} USD${result}+shipping fees` : '0';
     });
 }
 

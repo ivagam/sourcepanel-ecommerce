@@ -15,6 +15,24 @@
     <link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.png">
 
     <style>
+
+        @keyframes green-blink {
+            0% { background-color: #1cec0aff; }
+            50% { background-color: transparent; }
+            100% { background-color: #1cec0aff; }
+        }
+
+        .blink-logo {
+            animation: green-blink 1s infinite;
+            border-radius: 50%;
+            padding: 10px;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
        #category-header {
             position: fixed;
             top: 0;
@@ -66,6 +84,7 @@
 
         .slide img,
         .slide video {
+            object-fit: cover;
             width: 100%;
             height: 100%;
             display: block;
@@ -202,7 +221,7 @@
                                             <img src="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/public/whatsapp.png" 
                                                 alt="WhatsApp" 
                                                 width="24" 
-                                                height="24" />
+                                                height="24" class="blink-logo"/>
                                         </a>
 
                                         <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/product/{{ $product->product_url }}" 
@@ -264,7 +283,7 @@
                                                             <img src="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/public/whatsapp.png" 
                                                             alt="WhatsApp" 
                                                             width="24" 
-                                                            height="24" />
+                                                            height="24" class="blink-logo" />
                                                     </a>
 
                                                     <a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/product/{{ $product->product_url }}" 
@@ -408,7 +427,7 @@
                                             <img src="${baseUrl}/public/whatsapp.png" 
                                                 alt="WhatsApp" 
                                                 width="24" 
-                                                height="24" />
+                                                height="24" class="blink-logo"/>
                                         </a>
 
                                         <a href="${sourcePanelUrl}/product/${productUrl}" 
@@ -486,7 +505,7 @@
                                             <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap; flex: 1;">
                                                 <a href="https://wa.me/8618202031361?text=${encodeURIComponent('Check out this product: ' + baseUrl + '/product/' + product.product_url)}" 
                                                 target="_blank" title="Share on WhatsApp" style="display:flex;align-items:center;">
-                                                    <img src="${baseUrl}/public/whatsapp.png" width="24" height="24" alt="WhatsApp" />
+                                                    <img src="${baseUrl}/public/whatsapp.png" width="24" height="24" alt="WhatsApp" class="blink-logo"/>
                                                 </a>
                                                 <a href="${baseUrl}/product/${product.product_url}" style="font-weight:bold; color:inherit; text-decoration:none;">
                                                     ${truncateText(product.product_name, 30)}

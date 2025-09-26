@@ -1,4 +1,22 @@
 <style>
+
+@keyframes green-blink {
+    0% { background-color: #1cec0aff; }
+    50% { background-color: transparent; }
+    100% { background-color: #1cec0aff; }
+}
+
+.blink-logo {
+    animation: green-blink 1s infinite;
+    border-radius: 50%;
+    padding: 10px;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .live-results-box {
     position: absolute;
 	top: 50px;
@@ -72,6 +90,18 @@
                         </div><!-- End .header-search-wrapper -->
                     </form>
                 </div><!-- End .header-search -->
+
+                <div style="position: relative; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; padding: 10px">
+                    <a href="https://wa.me/8618202031361?text" 
+                        target="_blank" 
+                        title="Share on WhatsApp"
+                        style="display: flex; align-items: center;">
+                        <img src="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/public/whatsapp.png" 
+                            alt="WhatsApp" 
+                            width="24" 
+                            height="24" class="blink-logo"/>
+                    </a>
+                </div>
 
                 <div class="dropdown cart-dropdown">
                     <a href="#" title="Cart" class="dropdown-toggle dropdown-arrow cart-toggle" role="button"
