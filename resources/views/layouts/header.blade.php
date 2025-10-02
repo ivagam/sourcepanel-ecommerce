@@ -44,6 +44,13 @@
 .logo {
     max-width: 150px;
 }
+
+#search-input {    
+    font-size: 16px;
+    color: #222;
+    font-weight: 400;    
+}
+
 </style>
 <header class="header">			
 

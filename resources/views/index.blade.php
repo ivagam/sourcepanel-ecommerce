@@ -146,7 +146,9 @@
                                                 @endif
                                                @if(!empty($product->product_price))
                                                     <div class="price-box">
-                                                        <span class="product-price">USD{{ number_format($product->product_price ?? 0) }}</span><span style="color: red; font-size: 12px;">+shipping fees</span>
+                                                        <span class="product-price" style="font-weight: bold;">
+                                                            USD{{ $product->product_price ? rtrim(rtrim(number_format($product->product_price, 2), '0'), '.') : 0 }} +shipping fees
+                                                        </span>
                                                     </div>
                                                 @endif                                              
                                                 @if(session('frontend'))
@@ -492,10 +494,12 @@
                                 ${product.product_price && product.product_price > 0 ? `
                                     <div class="price-box">
                                         ${oldPriceHtml}
-                                        <span class="product-price">USD${parseFloat(product.product_price).toFixed(2)}</span>
-                                    </div>
-                                    <div>
-                                        <span style="color: red; font-size: 15px;">+shipping fees</span>
+                                        <span class="product-price" style="font-weight: bold;">
+                                            USD${parseFloat(product.product_price) % 1 === 0 
+                                                ? parseInt(product.product_price) 
+                                                : product.product_price
+                                            } +shipping fees
+                                        </span>
                                     </div>
                                 ` : ''}
                                 

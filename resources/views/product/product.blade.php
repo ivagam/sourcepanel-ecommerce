@@ -212,6 +212,7 @@
 
                             <div class="product-desc">
                                 {!! $product->description !!}
+                                {!! $product->chinese_description !!}
                             </div>
 
                             @php

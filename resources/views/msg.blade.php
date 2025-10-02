@@ -47,7 +47,7 @@
     .copied-message {
       position: absolute;
       top: 50%;
-      left: 100%;
+      left: 50%;
       transform: translate(10px, -50%);
       background-color: #4CAF50;
       color: white;

@@ -34,7 +34,8 @@ class HomeController extends Controller
         $initialLimit = 12;
         $categoryId = $request->query('category');
 
-        $productBaseQuery = Product::query();
+         $productBaseQuery = Product::query()
+        ->where('is_delete', '!=', 1);
 
         if ($categoryId) {
             if (is_numeric($categoryId)) {
@@ -87,7 +88,8 @@ class HomeController extends Controller
         $initialLimit = 12;
         $categoryName = $request->query('category');
 
-        $productBaseQuery = Product::query();
+        $productBaseQuery = Product::query()
+        ->where('is_delete', '!=', 1);
 
         if ($categoryName === 'videos') {
             $productBaseQuery->whereHas('images', function ($q) {
@@ -138,61 +140,62 @@ class HomeController extends Controller
     }
 
     public function gallerysearch(Request $request)
-{
-    $initialLimit = 12;
-    $categoryName = $request->query('category');
-    $search = strtolower($request->input('search', ''));
+    {
+        $initialLimit = 12;
+        $categoryName = $request->query('category');
+        $search = strtolower($request->input('search', ''));
 
-    $productBaseQuery = Product::query();
+        $productBaseQuery = Product::query()
+            ->where('is_delete', '!=', 1);
 
-    if ($categoryName === 'videos') {
-        $productBaseQuery->whereHas('images', function ($q) {
-            $q->whereRaw("LOWER(SUBSTRING_INDEX(file_path, '.', -1)) IN ('mp4','webm','mov','avi')");
-        });
-    }
-
-    if ($categoryName && $categoryName !== 'videos') {
-        $matchingCategoryIds = Category::where('category_name', 'like', "%$categoryName%")
-            ->pluck('category_id')
-            ->toArray();
-
-        if (!empty($matchingCategoryIds)) {
-            $productBaseQuery->where(function ($query) use ($matchingCategoryIds) {
-                foreach ($matchingCategoryIds as $catId) {
-                    $query->orWhere('category_id', $catId)
-                        ->orWhereRaw("FIND_IN_SET(?, category_ids)", [$catId]);
-                }
+        if ($categoryName === 'videos') {
+            $productBaseQuery->whereHas('images', function ($q) {
+                $q->whereRaw("LOWER(SUBSTRING_INDEX(file_path, '.', -1)) IN ('mp4','webm','mov','avi')");
             });
-        } else {
-            $productBaseQuery->whereRaw('0 = 1');
         }
+
+        if ($categoryName && $categoryName !== 'videos') {
+            $matchingCategoryIds = Category::where('category_name', 'like', "%$categoryName%")
+                ->pluck('category_id')
+                ->toArray();
+
+            if (!empty($matchingCategoryIds)) {
+                $productBaseQuery->where(function ($query) use ($matchingCategoryIds) {
+                    foreach ($matchingCategoryIds as $catId) {
+                        $query->orWhere('category_id', $catId)
+                            ->orWhereRaw("FIND_IN_SET(?, category_ids)", [$catId]);
+                    }
+                });
+            } else {
+                $productBaseQuery->whereRaw('0 = 1');
+            }
+        }
+
+        if (!empty($search)) {
+            $productBaseQuery->leftJoin('category', function ($join) {
+                $join->on(DB::raw("FIND_IN_SET(category.category_id, products.category_ids)"), '>', DB::raw('0'));
+            })
+            ->where(function ($q) use ($search) {
+                $q->whereRaw("LOWER(products.product_name) LIKE ?", ['%' . $search . '%'])
+                ->orWhereRaw("LOWER(products.description) LIKE ?", ['%' . $search . '%'])
+                ->orWhereRaw("LOWER(category.category_name) LIKE ?", ['%' . $search . '%']);
+            });
+        }
+
+        $subQuery = $productBaseQuery
+            ->select(DB::raw('MIN(products.product_id) as id'))
+            ->groupBy('products.product_url');
+
+        $productIds = $subQuery->pluck('id')->toArray();
+
+        $products = Product::with(['images', 'category'])
+            ->whereIn('product_id', $productIds)
+            ->latest()
+            ->take($initialLimit)
+            ->get();
+
+        return view('gallery', compact('products', 'categoryName'));
     }
-
-    if (!empty($search)) {
-        $productBaseQuery->leftJoin('category', function ($join) {
-            $join->on(DB::raw("FIND_IN_SET(category.category_id, products.category_ids)"), '>', DB::raw('0'));
-        })
-        ->where(function ($q) use ($search) {
-            $q->whereRaw("LOWER(products.product_name) LIKE ?", ['%' . $search . '%'])
-              ->orWhereRaw("LOWER(products.description) LIKE ?", ['%' . $search . '%'])
-              ->orWhereRaw("LOWER(category.category_name) LIKE ?", ['%' . $search . '%']);
-        });
-    }
-
-    $subQuery = $productBaseQuery
-        ->select(DB::raw('MIN(products.product_id) as id'))
-        ->groupBy('products.product_url');
-
-    $productIds = $subQuery->pluck('id')->toArray();
-
-    $products = Product::with(['images', 'category'])
-        ->whereIn('product_id', $productIds)
-        ->latest()
-        ->take($initialLimit)
-        ->get();
-
-    return view('gallery', compact('products', 'categoryName'));
-}
 
     public function loadMore(Request $request)
     {
@@ -201,7 +204,8 @@ class HomeController extends Controller
         $categoryName = $request->input('category');
         $search = strtolower($request->input('search', ''));
 
-        $productBaseQuery = Product::query();
+        $productBaseQuery = Product::query()
+        ->where('is_delete', '!=', 1);
 
         if (!empty($search)) {
             // Live search takes precedence if search is present
@@ -285,7 +289,8 @@ class HomeController extends Controller
 
         $search = strtolower($request->input('search', ''));
 
-        $productBaseQuery = Product::query();
+        $productBaseQuery = Product::query()
+        ->where('is_delete', '!=', 1);
 
         if (!empty($search)) {
             $productBaseQuery->leftJoin('category', function ($join) {
@@ -294,6 +299,7 @@ class HomeController extends Controller
             ->where(function ($q) use ($search) {
                 $q->whereRaw("LOWER(products.product_name) LIKE ?", ['%' . $search . '%'])
                 ->orWhereRaw("LOWER(products.description) LIKE ?", ['%' . $search . '%'])
+                ->orWhereRaw("LOWER(products.sku) LIKE ?", ['%' . $search . '%'])
                 ->orWhereRaw("LOWER(category.category_name) LIKE ?", ['%' . $search . '%']);
             });
         }
