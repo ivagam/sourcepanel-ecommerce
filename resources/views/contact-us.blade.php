@@ -6,10 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Repladeez - China factory direct supply for Watches HandBags Shoes Clothes Sunglasses Jewellery</title>
+    <title>Repladeez – Watches &amp; Handbags Factory Direct</title>
 
-    <meta name="keywords" content="HTML5 Template" />
-    <meta name="description" content="Repladeez - eCommerce Template">
+    <meta name="keywords" content="Contact Repladeez, Watches, Handbags, Factory direct, Shoes, Clothes, Sunglasses, Jewellery" />
+    <meta name="description" content="Get in touch with Repladeez for inquiries about watches, handbags, shoes,
+        clothes, sunglasses, and jewellery directly from top factories worldwide.">
     <meta name="author" content="SW-THEMES">
 
     <!-- Favicon -->

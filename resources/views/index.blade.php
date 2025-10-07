@@ -8,13 +8,13 @@
 
     <title>Repladeez - China factory direct supply for Watches HandBags Shoes Clothes Sunglasses Jewellery</title>
 
-    <meta name="keywords" content="HTML5 Template" />
-    <meta name="description" content="Repladeez - eCommerce Template">
+    <meta name="keywords" content="China factory direct supply, Watches, Handbags, Shoes, Clothes, Sunglasses, Jewellery" />
+    <meta name="description" content="Repladeez offers China factory direct supply of watches, handbags, shoes,
+        clothes, sunglasses, and jewellery at competitive prices for global buyers.">
     <meta name="author" content="SW-THEMES">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.png">
-
 
     <script>
         WebFontConfig = {
@@ -58,7 +58,6 @@
 
         @include('layouts.header')
         <!-- End .header -->
-
         <main class="main home">
             <div class="container mb-2">
                 @if(session('error'))

@@ -232,7 +232,7 @@ function setupWatchTable() {
 
 function setupGamaTable() {
     setupTable('gamaTable', (row, inputs, valueCell) => {
-        const factory = inputs[0].value ? inputs[0].value.toUpperCase() + " Factory " : "";
+        const factory = inputs[0].value ? inputs[0].value.toUpperCase() + " Factory" : "";
         const num = parseFloat(inputs[1].value) || 0;
         let result = 0;
         if(num < 1750) result = num + 500;
@@ -246,7 +246,7 @@ function setupGamaTable() {
 
 function setupBamaTable() {
     setupTable('bamaTable', (row, inputs, valueCell) => {
-        const factory = inputs[0].value ? inputs[0].value.toUpperCase() + " Factory " : "";
+        const factory = inputs[0].value ? inputs[0].value.toUpperCase() + " Factory" : "";
         const raw = parseFloat(inputs[1].value) || 0;
         const num = raw / 7;
         let result = 0;
