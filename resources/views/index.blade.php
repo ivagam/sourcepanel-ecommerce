@@ -48,6 +48,13 @@
 
     gtag('config', 'G-Q2JZF5MT1B');
     </script>
+    <style>
+        @media (max-width: 480px) {
+            .header-icon.header-search-inline {
+            display:block !important;
+            }
+        }
+    </style>
 
 </head>
 
@@ -190,48 +197,8 @@
                     
                     <!-- End .col-lg-9 -->
                      
-                    <aside class="sidebar-home col-lg-3 order-lg-first mobile-sidebar">
-                        <div class="side-menu-wrapper text-uppercase mb-2 d-none d-lg-block">
-                            <h2 class="side-menu-title bg-gray ls-n-25">Browse Categories</h2>
+                    @include('layouts.sidebar')
 
-                            @php
-                        function renderCategoriesFlat($categories, $prefix = '') {
-                            foreach ($categories as $category) {
-                                echo '<li>';
-                                echo '<a href="' . url()->current() . '?category=' . $category->category_id . '">';
-                                echo $prefix . e($category->category_name) . ' (' . ($category->products_count ?? 0) . ')';
-                                echo '</a>';
-                                echo '</li>';
-
-                                if ($category->children && $category->children->isNotEmpty()) {
-                                    // call recursively with indent
-                                    renderCategoriesFlat($category->children, $prefix . '- ');
-                                }
-                            }
-                        }
-                    @endphp
-
-                            <nav class="side-nav">
-                                <ul class="menu menu-vertical">
-                                    <li class="active"><a href="{{ route('home') }}"><i class="icon-home"></i>Home</a></li>                                    
-									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=1">Watches</a></li>
-									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Handbags">Handbags</a></li>
-									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Shoes">Shoes</a></li>
-                                    <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Clothings">Clothings</a></li>									
-									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Belts">Belts</a></li>
-                                    <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Sunglasses">Sunglasses</a></li>
-									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Jewelery">Jewelery</a></li>
-									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Accessories">Accessories</a></li>
-									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=113">Others</a></li>
-									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Tableware">Tableware</a></li>
-                                    @php renderCategoriesFlat($categories); @endphp
-                                </ul>
-                            </nav>
-
-                        </div>
-                        <!-- End .side-menu-container -->
-
-                    </aside>
                     <div class="sidebar-overlay"></div>                    
                     
                     <!-- End .col-lg-3 -->
@@ -316,10 +283,7 @@
             </div>
         </div>-->
         <!-- End .newsletter-popup-content -->
-
-        <button title="Close (Esc)" type="button" class="mfp-close">
-            ×
-        </button>
+        
     </div>
     <!-- End .newsletter-popup -->
 

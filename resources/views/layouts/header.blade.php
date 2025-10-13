@@ -1,4 +1,22 @@
 <style>
+.header-bottom.sticky-header {
+  position: relative;
+  top: -20px;
+}
+.megamenu.megamenu-fixed-width.megamenu-3cols {
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 8px;
+}
+
+.megamenu.megamenu-fixed-width.megamenu-3cols::-webkit-scrollbar {
+  width: 6px;
+}
+.megamenu.megamenu-fixed-width.megamenu-3cols::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 3px;
+}
 
 @keyframes green-blink {
     0% { background-color: #1cec0aff; }
@@ -54,12 +72,12 @@
 </style>
 <header class="header">			
 
-    <div class="header-middle sticky-header" data-sticky-options="{'mobile': true}">
+    <div class="header-middle sticky-header" data-sticky-options="{'mobile': false}">
         <div class="container" style="margin-bottom:7px">
-            <div class="header-left col-lg-2 w-auto pl-0">
-                <button class="mobile-menu-toggler text-primary mr-2" type="button">
+            <div class="header-left col-lg-2 w-auto pl-0"> 
+                <button class="mobile-menu-toggler mr-2" type="button">
                     <i class="fas fa-bars"></i>
-                </button>
+                </button>               
                 <a href="{{ route('home') }}" class="logo">
                     <img src="{{ asset('assets/images/logo.png') }}" width="211" height="84" alt="Repladeez Logo">
                 </a>
@@ -70,28 +88,7 @@
                     <a href="#" class="search-toggle" role="button"><i class="icon-search-3"></i></a>
                     <form action="{{ route('live.search') }}" method="GET" autocomplete="off">
                         <div class="header-search-wrapper">
-                            <input type="search" class="form-control" name="search" id="search-input" placeholder="Search..." autocomplete="off" value="{{ request()->query('search') }}" required>
-                            <div class="select-custom">
-                                @php
-                                    $selectedCategory = request()->query('category');
-                                    function renderCategoryOptions($categories, $prefix = '', $selectedCategory = null)
-                                    {
-                                        foreach ($categories as $category) {
-                                            $selected = ($category->category_id == $selectedCategory) ? 'selected' : '';
-                                            echo '<option value="' . $category->category_id . '" ' . $selected . '>' . $prefix . e($category->category_name) . '</option>';
-
-                                            if ($category->children && $category->children->isNotEmpty()) {
-                                                renderCategoryOptions($category->children, $prefix . '- ', $selectedCategory);
-                                            }
-                                        }
-                                    }
-                                @endphp
-
-                                <select id="cat" name="category">
-                                    <option value="" {{ $selectedCategory ? '' : 'selected' }}>All Categories</option>
-                                    @php renderCategoryOptions($categories, '', $selectedCategory); @endphp
-                                </select>
-                            </div><!-- End .select-custom -->
+                            <input type="search" class="form-control" name="search" id="search-input" placeholder="Search..." autocomplete="off" value="{{ request()->query('search') }}" required>                            
 
                             <button class="btn icon-magnifier p-0" type="submit"></button>
                         </div><!-- End .header-search-wrapper -->
@@ -110,7 +107,7 @@
                     </a>
                 </div>
 
-                <div class="dropdown cart-dropdown">
+                <!--<div class="dropdown cart-dropdown">
                     <a href="#" title="Cart" class="dropdown-toggle dropdown-arrow cart-toggle" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                         <i class="minicart-icon"></i>
@@ -165,20 +162,20 @@
                                         </figure>
                                     </div>
                                 @endforeach
-                            </div><!-- End .cart-product -->
+                            </div>
 
                             <div class="dropdown-cart-total">
                                 <span>SUBTOTAL:</span>
                                 <span class="cart-total-price float-right">USD{{ number_format($globalCartTotal) }}</span>
-                            </div><!-- End .dropdown-cart-total -->
+                            </div>
 
                             <div class="dropdown-cart-action">
                                 <a href="{{ route('cart.index') }}" class="btn btn-gray btn-block view-cart">View Cart</a>
                                 <a href="{{ route('checkout.index') }}" class="btn btn-dark btn-block">Checkout</a>
-                            </div><!-- End .dropdown-cart-action -->
-                        </div><!-- End .dropdownmenu-wrapper -->
-                    </div><!-- End .dropdown-menu -->
-                </div><!-- End .dropdown -->
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
 
             </div><!-- End .header-right -->
 
@@ -193,7 +190,7 @@
         </div><!-- End .container -->
     </div><!-- End .header-middle -->
 
-    <div class="header-bottom sticky-header d-none d-lg-block" data-sticky-options="{'mobile': false}">
+    <div class="header-bottom sticky-header" data-sticky-options="{'mobile': true}">
         <div class="container">
             <nav class="main-nav w-100">
                 @php
@@ -215,6 +212,104 @@
 
                 <ul class="menu">
                     <li><a href="{{ route('home') }}">Home</a></li>
+                    <li>
+                        <a>Brands</a>
+                        <div class="megamenu megamenu-fixed-width megamenu-3cols">
+                            <div class="row">
+                                <div class="col-lg-3">                                    
+                                    <ul class="submenu">
+                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Acne+Studios">Acne Studios</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Addidas">Addidas</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Alexander+Wang">Alexander Wang</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Alenander+Mcqueen">Alenander Mcqueen</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Alaia+Paris">Alaia Paris</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Ami+Paris">Ami Paris</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Amina+Muaddi">Amina Muaddi</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Amiri">Amiri</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Arcteryx">Arcteryx</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Armani">Armani</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Bally">Bally</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Balenciaga">Balenciaga</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Balmain">Balmain</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Berluti">Berluti</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Brunello+cucinelli">Brunello cucinelli</a></li>
+                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Bottega+Veneta">Bottega Veneta</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Burberry">Burberry</a></li>
+                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Cartier">Cartier</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-3">                                    
+                                    <ul class="submenu">
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Casablanca">Casablanca</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Chanel">Chanel</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Chloe">Chloe</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Coach">Coach</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=DG+%28Dolce+%26+Gabbana%29">DG (Dolce & Gabbana)</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dita">Dita</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dsquared2">Dsquared2</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dsquare">Dsquare</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dior+%28Christian+Dior%29">Dior (Christian Dior)</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Emporio+Armani">Emporio Armani</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Ferragamo">Ferragamo</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Fendi">Fendi</a></li>										
+                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Givenchy">Givenchy</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Golden+Goose">Golden Goose</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Gucci+%28GG%29">Gucci (GG)</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Hermes">Hermes</a></li>
+                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Jimmy+Choo">Jimmy Choo</a></li>
+                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Kaws">Kaws</a></li>
+                                    </ul>
+                                </div>
+                                 <div class="col-lg-3">                                    
+                                    <ul class="submenu">
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Kenzo">Kenzo</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Kiton">Kiton</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Lanvin">Lanvin</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Loewe">Loewe</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Loro+Piana">Loro Piana</a></li>
+                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Lv">LV</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Maison+Margiela">Maison Margiela</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Marc+Jacobs">Marc Jacobs</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=MontBlanc">MontBlanc</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Moncler">Moncler</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Nike">Nike</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Off+White">Off White</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Palm+Angels">Palm Angels</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Philipp+Plein">Philipp Plein</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Polene">Polene</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Prada">Prada</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Ralph+Lauren">Ralph Lauren</a></li>
+                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Rimova">Rimova</a></li>
+                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Stone+island">Stone island</a></li>										
+                                    </ul>
+                                </div>
+                                <div class="col-lg-3">                                    
+                                    <ul class="submenu">
+                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Supreme">Supreme</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=The+North+Face">The North Face</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=The+Row">The Row</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Thom+Browne">Thom Browne</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Timberland">Timberland</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Tod's">Tod's</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Tom+Ford">Tom Ford</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Tommy">Tommy</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Tory+Burch">Tory Burch</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=UGG">UGG</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Valentino">Valentino</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Van+Cleef+%26+Arpels">Van Cleef & Arpels</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Vetements">Vetements</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Versace">Versace</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Y-3">Y-3</a></li>
+                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Saint+Laurent">YSL (Saint Laurent)</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Yeezy">Yeezy</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Zimmermann">Zimmermann</a></li>
+                                    </ul>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <!-- End .megamenu -->
+                    </li>
                     <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=1">Watches</a></li>
                     <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Handbags">Handbags</a></li>
                     <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Clothings">Clothings</a></li>
@@ -230,6 +325,109 @@
             </nav>
         </div><!-- End .container -->
     </div><!-- End .header-bottom -->
+
+<div class="mobile-menu-container">
+        <div class="mobile-menu-wrapper">
+            <span class="mobile-menu-close"><i class="fa fa-times"></i></span>
+            <nav class="mobile-nav">
+               <ul class="mobile-menu">
+                    <li><a href="{{ route('home') }}">Home</a></li>
+                    <li>                        
+                        <a href="">Brands</a>
+                        <ul class="submenu">
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Acne+Studios">Acne Studios</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Addidas">Addidas</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Alexander+Wang">Alexander Wang</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Alenander+Mcqueen">Alenander Mcqueen</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Alaia+Paris">Alaia Paris</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Ami+Paris">Ami Paris</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Amina+Muaddi">Amina Muaddi</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Amiri">Amiri</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Arcteryx">Arcteryx</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Armani">Armani</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Bally">Bally</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Balenciaga">Balenciaga</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Balmain">Balmain</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Berluti">Berluti</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Brunello+cucinelli">Brunello cucinelli</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Bottega+Veneta">Bottega Veneta</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Burberry">Burberry</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Cartier">Cartier</a></li>                                 
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Casablanca">Casablanca</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Chanel">Chanel</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Chloe">Chloe</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Coach">Coach</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=DG+%28Dolce+%26+Gabbana%29">DG (Dolce & Gabbana)</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dita">Dita</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dsquared2">Dsquared2</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dsquare">Dsquare</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dior+%28Christian+Dior%29">Dior (Christian Dior)</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Emporio+Armani">Emporio Armani</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Ferragamo">Ferragamo</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Fendi">Fendi</a></li>										
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Givenchy">Givenchy</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Golden+Goose">Golden Goose</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Gucci+%28GG%29">Gucci (GG)</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Hermes">Hermes</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Jimmy+Choo">Jimmy Choo</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Kaws">Kaws</a></li>                                  
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Kenzo">Kenzo</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Kiton">Kiton</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Lanvin">Lanvin</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Loewe">Loewe</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Loro+Piana">Loro Piana</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Lv">LV</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Maison+Margiela">Maison Margiela</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Marc+Jacobs">Marc Jacobs</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=MontBlanc">MontBlanc</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Moncler">Moncler</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Nike">Nike</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Off+White">Off White</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Palm+Angels">Palm Angels</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Philipp+Plein">Philipp Plein</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Polene">Polene</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Prada">Prada</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Ralph+Lauren">Ralph Lauren</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Rimova">Rimova</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Stone+island">Stone island</a></li>										                                  
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Supreme">Supreme</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=The+North+Face">The North Face</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=The+Row">The Row</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Thom+Browne">Thom Browne</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Timberland">Timberland</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Tod's">Tod's</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Tom+Ford">Tom Ford</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Tommy">Tommy</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Tory+Burch">Tory Burch</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=UGG">UGG</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Valentino">Valentino</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Van+Cleef+%26+Arpels">Van Cleef & Arpels</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Vetements">Vetements</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Versace">Versace</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Y-3">Y-3</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Saint+Laurent">YSL (Saint Laurent)</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Yeezy">Yeezy</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Zimmermann">Zimmermann</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=1">Watches</a></li>
+                    <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Handbags">Handbags</a></li>
+                    <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Clothings">Clothings</a></li>
+                    <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Shoes">Shoes</a></li>
+                    <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Belts">Belts</a></li>
+                    <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Jewelery">Jewelery</a></li>
+                    <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Glassware">Glassware</a></li>
+                    <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=113">Others</a></li>
+                    <li><a href="{{ route('about-us') }}">About Us</a></li>
+                    <li><a href="{{ route('contact-us') }}">Contact Us</a></li>
+                    @php renderCategoryTree($categories); @endphp
+                </ul>                
+            </nav>
+            <!-- End .mobile-nav -->            
+        </div>
+        <!-- End .mobile-menu-wrapper -->
+    </div>
+    
 
 </header>
 

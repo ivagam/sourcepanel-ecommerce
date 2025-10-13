@@ -35,7 +35,8 @@ class HomeController extends Controller
         $categoryId = $request->query('category');
 
          $productBaseQuery = Product::query()
-        ->where('is_delete', '!=', 1);
+                ->where('is_delete', '!=', 1)
+                ->where('status', 1);
 
         if ($categoryId) {
             if (is_numeric($categoryId)) {
@@ -71,15 +72,12 @@ class HomeController extends Controller
             ->latest()
             ->take($initialLimit)
             ->get();
-
-        $categories = Category::with('children')
-            ->whereNull('subcategory_id')
-            ->get();
+       
 
         $brands = Brand::all();
         $banners = Banner::all();
 
-        return view('index', compact('products', 'categories', 'brands', 'banners', 'totalProducts', 'isLoggedIn'));
+        return view('index', compact('products', 'brands', 'banners', 'totalProducts', 'isLoggedIn'));
     }
 
 
@@ -89,7 +87,8 @@ class HomeController extends Controller
         $categoryName = $request->query('category');
 
         $productBaseQuery = Product::query()
-        ->where('is_delete', '!=', 1);
+        ->where('is_delete', '!=', 1)
+        ->where('status', 1);
 
         if ($categoryName === 'videos') {
             $productBaseQuery->whereHas('images', function ($q) {
@@ -146,7 +145,8 @@ class HomeController extends Controller
         $search = strtolower($request->input('search', ''));
 
         $productBaseQuery = Product::query()
-            ->where('is_delete', '!=', 1);
+            ->where('is_delete', '!=', 1)
+            ->where('status', 1);
 
         if ($categoryName === 'videos') {
             $productBaseQuery->whereHas('images', function ($q) {
@@ -203,12 +203,12 @@ class HomeController extends Controller
         $limit = 12;
         $categoryName = $request->input('category');
         $search = strtolower($request->input('search', ''));
-
+    
         $productBaseQuery = Product::query()
-        ->where('is_delete', '!=', 1);
+        ->where('is_delete', '!=', 1)
+        ->where('status', 1);
 
         if (!empty($search)) {
-            // Live search takes precedence if search is present
             $productBaseQuery->leftJoin('category', function ($join) {
                 $join->on(DB::raw("FIND_IN_SET(category.category_id, products.category_ids)"), '>', DB::raw('0'));
             })
@@ -218,19 +218,41 @@ class HomeController extends Controller
                 ->orWhereRaw("LOWER(category.category_name) LIKE ?", ['%' . $search . '%']);
             });
 
-            $subQuery = $productBaseQuery
-                ->select(DB::raw('MIN(products.product_id) as id'))
-                ->groupBy('products.product_url');
+            if ($categoryName && $categoryName !== 'videos') {
+                if (is_numeric($categoryName)) {
+                    $categoryName = Category::where('category_id', $categoryName)
+                        ->value('category_name');
+                }
 
-            $productIds = $subQuery->pluck('id')->toArray();
+                $matchingCategoryIds = Category::where('category_name', 'like', "%$categoryName%")
+                    ->pluck('category_id')
+                    ->toArray();
+
+                if (!empty($matchingCategoryIds)) {
+                    $productBaseQuery->where(function ($query) use ($matchingCategoryIds) {
+                        foreach ($matchingCategoryIds as $catId) {
+                            $query->orWhere('products.category_id', $catId) // explicitly specify table
+                                ->orWhereRaw("FIND_IN_SET(?, products.category_ids)", [$catId]);
+                        }
+                    });
+                } else {
+                    $productBaseQuery->whereRaw('0 = 1');
+                }
+            }
+
+            $productIds = $productBaseQuery
+                ->select(DB::raw('MIN(products.product_id) as id'))
+                ->groupBy('products.product_url')
+                ->orderBy('id', 'desc')
+                ->skip($offset)
+                ->take($limit)
+                ->pluck('id')
+                ->toArray();
 
             $products = Product::with(['images', 'category'])
                 ->whereIn('product_id', $productIds)
                 ->latest()
-                ->skip($offset)
-                ->take($limit)
                 ->get();
-
         } elseif ($categoryName === 'videos') {
             $productBaseQuery->whereHas('images', function ($q) {
                 $q->whereRaw("LOWER(SUBSTRING_INDEX(file_path, '.', -1)) IN ('mp4','webm','mov','avi')");
@@ -248,6 +270,7 @@ class HomeController extends Controller
 
         } else {
             if ($categoryName) {
+
                 $matchingCategoryIds = Category::where('category_name', 'like', "%$categoryName%")
                     ->pluck('category_id')
                     ->toArray();
@@ -281,16 +304,17 @@ class HomeController extends Controller
         return response()->json($products);
     }
 
-
    public function livesearch(Request $request)
     {
         $isLoggedIn = session('frontend') == 'yes';
         $initialLimit = 12;
 
         $search = strtolower($request->input('search', ''));
+        $categoryId = $request->input('category');
 
         $productBaseQuery = Product::query()
-        ->where('is_delete', '!=', 1);
+            ->where('is_delete', '!=', 1)
+            ->where('status', 1);
 
         if (!empty($search)) {
             $productBaseQuery->leftJoin('category', function ($join) {
@@ -302,6 +326,10 @@ class HomeController extends Controller
                 ->orWhereRaw("LOWER(products.sku) LIKE ?", ['%' . $search . '%'])
                 ->orWhereRaw("LOWER(category.category_name) LIKE ?", ['%' . $search . '%']);
             });
+        }
+
+        if (!empty($categoryId)) {
+            $productBaseQuery->whereRaw("FIND_IN_SET(?, products.category_ids)", [$categoryId]);
         }
 
         $subQuery = $productBaseQuery
@@ -324,10 +352,15 @@ class HomeController extends Controller
         $brands = Brand::all();
         $banners = Banner::all();
 
-        return view('index', compact('products', 'categories', 'brands', 'banners', 'totalProducts', 'isLoggedIn'));
+        return view('index', compact(
+            'products',
+            'categories',
+            'brands',
+            'banners',
+            'totalProducts',
+            'isLoggedIn'
+        ));
     }
-
-
     
     public function documentation()
     {
