@@ -148,7 +148,7 @@
                                                     <a href="{{ url('product/' . $product->product_url) }}">{{ \Illuminate\Support\Str::title($product->product_name) }}</a>
                                                 </h3>
                                                 @if(!empty($product->size))
-                                                    <p class="product-description">Size: {{ $product->size }}</p>
+                                                    <p class="product-description">Size: {{ str_replace(' ', '', $product->size) }}</p>
                                                 @endif
                                                @if(!empty($product->product_price))
                                                     <div class="price-box">
