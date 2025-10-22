@@ -96,7 +96,7 @@
                 </div><!-- End .header-search -->
 
                 <div style="position: relative; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; padding: 10px">
-                    <a href="https://wa.me/8618202031361?text" 
+                    <a href="https://api.whatsapp.com/send?phone=8618202031361&text={{ urlencode(url()->current()) }}"
                         target="_blank" 
                         title="Share on WhatsApp"
                         style="display: flex; align-items: center;">
@@ -244,17 +244,17 @@
 										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Chanel">Chanel</a></li>
 										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Chloe">Chloe</a></li>
 										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Coach">Coach</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=DG+%28Dolce+%26+Gabbana%29">DG (Dolce & Gabbana)</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dolce+%26+Gabbana">DG (Dolce & Gabbana)</a></li>
 										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dita">Dita</a></li>
 										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dsquared2">Dsquared2</a></li>
 										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dsquare">Dsquare</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dior+%28Christian+Dior%29">Dior (Christian Dior)</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dior">Dior (Christian Dior)</a></li>
 										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Emporio+Armani">Emporio Armani</a></li>
 										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Ferragamo">Ferragamo</a></li>
 										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Fendi">Fendi</a></li>										
                                         <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Givenchy">Givenchy</a></li>
 										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Golden+Goose">Golden Goose</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Gucci+%28GG%29">Gucci (GG)</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Gucci">Gucci (GG)</a></li>
 										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Hermes">Hermes</a></li>
                                         <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Jimmy+Choo">Jimmy Choo</a></li>
                                         <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Kaws">Kaws</a></li>
@@ -357,17 +357,17 @@
                             <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Chanel">Chanel</a></li>
                             <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Chloe">Chloe</a></li>
                             <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Coach">Coach</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=DG+%28Dolce+%26+Gabbana%29">DG (Dolce & Gabbana)</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dolce+%26+Gabbana">DG (Dolce & Gabbana)</a></li>
                             <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dita">Dita</a></li>
                             <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dsquared2">Dsquared2</a></li>
                             <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dsquare">Dsquare</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dior+%28Christian+Dior%29">Dior (Christian Dior)</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dior">Dior (Christian Dior)</a></li>
                             <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Emporio+Armani">Emporio Armani</a></li>
                             <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Ferragamo">Ferragamo</a></li>
                             <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Fendi">Fendi</a></li>										
                             <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Givenchy">Givenchy</a></li>
                             <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Golden+Goose">Golden Goose</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Gucci+%28GG%29">Gucci (GG)</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Gucci">Gucci (GG)</a></li>
                             <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Hermes">Hermes</a></li>
                             <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Jimmy+Choo">Jimmy Choo</a></li>
                             <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Kaws">Kaws</a></li>                                  

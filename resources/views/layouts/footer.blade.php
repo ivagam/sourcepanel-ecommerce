@@ -10,7 +10,7 @@
     							</div>
 
 								<div class="mt-1">
-									<a href="https://wa.me/qr/ZHOUTXW464FSB1" target="_blank" class="btn-success btn-sm">
+									<a href="https://api.whatsapp.com/send?phone=8618202031361&text={{ urlencode(url()->current()) }}" target="_blank" class="btn-success btn-sm">
 										Add me as a contact on WhatsApp
 									</a>
 								</div>

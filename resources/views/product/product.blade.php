@@ -57,6 +57,27 @@
         display:block !important;
         }
     }
+
+    .whatsapp-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background-color: #17a74d;
+        color: #fff;
+        text-decoration: none;
+        font-weight: 600;
+        padding: 10px 18px;
+        border-radius: 8px;
+        transition: none;
+        cursor: pointer;
+    }
+    
+    .whatsapp-btn img {
+        display: inline-block;
+    }
+    .whatsapp-btn span {
+        color: #fff !important;
+    }
 </style>
 <body>
     <div class="page-wrapper">
@@ -239,27 +260,18 @@
                             @endif
 
                             <div class="product-action">
-                               
-
-                                <div class="product-single-qty">
-                                    <input class="horizontal-quantity form-control" type="number" min="1" value="1" id="qty">
-                                </div>
-
-                                @php
-                                    $firstVariant = $variants->first();
-                                    $firstImage = optional($firstVariant->images->sortBy('serial_no')->first())->file_path;                                    
-                                @endphp
-
-                                <a href="javascript:;"
-                                    class="btn btn-dark mr-2 addToCartBtn"
-                                    data-product-id="{{ $firstVariant->product_id }}"
-                                    data-product-name="{{ $product->product_name }}"
-                                    data-product-price="{{ $firstVariant->product_price }}"
-                                    data-product-filepath="{{ $firstImage }}">
-                                    Add to Cart
-                                </a>                                
-
-                                <a href="cart.html" class="btn btn-gray view-cart d-none">View cart</a>
+                                
+                                    <a href="https://api.whatsapp.com/send?phone=8618202031361&text={{ urlencode(url()->current()) }}"
+                                        target="_blank"
+                                        title="Buy on WhatsApp"
+                                        class="whatsapp-btn">
+                                        <img src="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/public/whatsapp.png" 
+                                                alt="WhatsApp" 
+                                            width="24" 
+                                            height="24"/>
+                                        <span>Buy on WhatsApp</span>
+                                    </a>     
+                                
                             </div><!-- End .product-action -->
                         <div class="tab-content">
                         <div class="tab-pane fade show active" id="product-desc-content" role="tabpanel"

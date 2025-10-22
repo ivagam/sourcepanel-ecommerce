@@ -214,7 +214,7 @@
                         @foreach($initialVideos as $vid)                        
                             <div class="card" style="margin-bottom:20px;">  
                                 <div style="position: relative; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; padding: 10px">
-                                        <a href="https://wa.me/8618202031361?text={{ urlencode('Check out this product: ' . env('SOURCE_PANEL_ECOMMERCE_URL') . '/product/' . $product->product_url) }}" 
+                                        <a href="https://api.whatsapp.com/send?phone=8618202031361?text={{ urlencode(env('SOURCE_PANEL_ECOMMERCE_URL') . '/product/' . $product->product_url) }}" 
                                             target="_blank" 
                                             title="Share on WhatsApp"
                                             style="display: flex; align-items: center;">
@@ -276,7 +276,7 @@
                                             <div style="position: relative; display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
                                                 <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap; flex: 1;">
 
-                                                    <a href="https://wa.me/8618202031361?text={{ urlencode('Check out this product: ' . env('SOURCE_PANEL_ECOMMERCE_URL') . '/product/' . $product->product_url) }}" 
+                                                    <a href="https://api.whatsapp.com/send?phone=8618202031361&text={{ urlencode(env('SOURCE_PANEL_ECOMMERCE_URL') . '/product/' . $product->product_url) }}" 
                                                         target="_blank" 
                                                         title="Share on WhatsApp"
                                                         style="display: flex; align-items: center;">
@@ -420,7 +420,7 @@
                             card.innerHTML = `
                                 <div class="card" style="margin-bottom:20px;">  
                                     <div style="position: relative; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; padding: 10px">
-                                        <a href="https://wa.me/8618202031361?text=${encodeURIComponent('Check out this product: ' + sourcePanelUrl + '/product/' + productUrl)}" 
+                                        <a href="https://api.whatsapp.com/send?phone=8618202031361?text=${encodeURIComponent(sourcePanelUrl + '/product/' + productUrl)}" 
                                             target="_blank" 
                                             title="Share on WhatsApp"
                                             style="display: flex; align-items: center;">
@@ -503,7 +503,7 @@
                                         </div>
                                         <div style="position: relative; display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
                                             <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap; flex: 1;">
-                                                <a href="https://wa.me/8618202031361?text=${encodeURIComponent('Check out this product: ' + baseUrl + '/product/' + product.product_url)}" 
+                                                <a href="https://wa.me/8618202031361?text=${encodeURIComponent(baseUrl + '/product/' + product.product_url)}" 
                                                 target="_blank" title="Share on WhatsApp" style="display:flex;align-items:center;">
                                                     <img src="${baseUrl}/public/whatsapp.png" width="24" height="24" alt="WhatsApp" class="blink-logo"/>
                                                 </a>
