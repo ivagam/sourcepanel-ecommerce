@@ -69,6 +69,29 @@
     font-weight: 400;    
 }
 
+.header-bottom{
+        background-color:#08c;
+    }
+     .header .menu li{
+        background-color:#08c;
+        padding-left: 10px;
+        padding-right: 10px;      
+    }    
+    .header .menu li:hover{
+        background-color: #fff;
+        padding-left: 10px;
+        padding-right: 10px;
+        color:#08c !important;
+    }
+    .header .menu li a{
+        color:#fff !important;
+    }
+     .header .menu li a:hover{
+        color:#08c !important;
+    }
+    .megamenu-3cols{
+    background-color:#08c !important;
+    }
 </style>
 <header class="header">			
 
@@ -214,7 +237,7 @@
                     <li><a href="{{ route('home') }}">Home</a></li>
                     <li>
                         <a>Brands</a>
-                        <div class="megamenu megamenu-fixed-width megamenu-3cols">
+                        <div class="megamenu megamenu-fixed-width megamenu-3cols" >
                             <div class="row">
                                 <div class="col-lg-3">                                    
                                     <ul class="submenu">

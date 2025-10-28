@@ -58,6 +58,17 @@
         }
     }
 
+    .product-default {
+        padding: 10px;
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        transition: box-shadow 0.3s ease;
+    }
+
+    .product-default:hover {
+        box-shadow: 0 4px 12px rgba(0, 136, 204, 0.5);
+    }
+
     .whatsapp-btn {
         display: inline-flex;
         align-items: center;
@@ -78,6 +89,7 @@
     .whatsapp-btn span {
         color: #fff !important;
     }
+    
 </style>
 <body>
     <div class="page-wrapper">
@@ -226,9 +238,12 @@
                             @endphp
                             
                             @if (!empty($firstVariant->product_price))
-                            <div class="price-box">
-                                <span id="variant-price" class="product-price" style="font-size: 30px; color: navy;">USD{{ number_format($firstVariant->product_price) }}+shipping fees</span>
-                            </div>
+                                <div class="price-box" style="font-size: 30px; color: navy;">
+                                    <span id="variant-price" 
+                                        style="{{ $firstVariant->product_price != 175 ? 'text-decoration: underline; text-decoration-color: navy;' : '' }}">
+                                        USD{{ number_format($firstVariant->product_price) }} +shipping fees
+                                    </span>
+                                </div>
                             @endif
                             
                             <div class="product-meta" style="margin: 10px 0;">

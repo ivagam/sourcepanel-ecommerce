@@ -54,15 +54,71 @@
             display:block !important;
             }
         }
+        
+        .product-default {
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            transition: box-shadow 0.3s ease; /* smooth hover animation */
+        }
+
+        .product-default:hover {
+            box-shadow: 0 4px 12px rgba(0, 136, 204, 0.5); /* shadow with #08c tone */
+        }
+
+        #loading {
+            display: none;
+            padding: 10px;
+            margin: 20px auto;
+            text-align: center;
+            width: 100%;
+            position: relative;
+        }
+
+        .loading-overlay {
+            display: inline-block;
+            position: static;
+            background: transparent;
+            width: auto;
+            height: auto;
+        }
+
+        .bounce-loader {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .bounce-loader > div {
+            width: 10px;
+            height: 10px;
+            background-color: #007bff;
+            border-radius: 50%;
+            animation: bounceDelay 1.4s infinite ease-in-out both;
+        }
+
+        .bounce1 { animation-delay: -0.32s; }
+        .bounce2 { animation-delay: -0.16s; }
+
+        @keyframes bounceDelay {
+            0%, 80%, 100% {
+                transform: scale(0);
+                opacity: 0.4;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
     </style>
 
 </head>
 
 <body>
-    <div class="page-wrapper">
-        
+    <div class="page-wrapper">        
         <!-- End .top-notice -->
-
         @include('layouts.header')
         <!-- End .header -->
         <main class="main home">
@@ -138,25 +194,25 @@
                                                 </a>
                                             </figure>
 
-                                            <div class="product-details text-center">
-                                                <div class="category-list">
-                                                    <a href="{{ url()->current() }}?category={{ $product->category_id }}" class="product-category">
-                                                        {{ \Illuminate\Support\Str::words($product->category->category_name ?? 'Others', 6, '...') }}
-                                                    </a>
-                                                </div>
+                                            <div class="product-details text-center">                                                
                                                 <h3 class="product-title">
                                                     <a href="{{ url('product/' . $product->product_url) }}">{{ \Illuminate\Support\Str::title($product->product_name) }}</a>
                                                 </h3>
                                                 @if(!empty($product->size))
-                                                    <p class="product-description">Size: {{ str_replace(' ', '', $product->size) }}</p>
+                                                    <p class="product-description" style="margin: 0; padding: 0; line-height: 1;"> 
+                                                        Size: {{ str_replace(' ', '', $product->size) }}
+                                                    </p>
                                                 @endif
-                                               @if(!empty($product->product_price))
-                                                    <div class="price-box">
-                                                        <span class="product-price" style="font-weight: bold;">
-                                                            USD{{ $product->product_price ? rtrim(rtrim(number_format($product->product_price, 2), '0'), '.') : 0 }} +shipping fees
+
+                                                @if(!empty($product->product_price))
+                                                    <div class="price-box" style="font-size: 30px; margin: 0; padding: 0; line-height: 1;">
+                                                        <span class="product-price" 
+                                                            style="color: navy; font-weight: bold; {{ $product->product_price != 175 ? 'text-decoration: underline; text-decoration-color: navy;' : '' }}">
+                                                            USD{{ $product->product_price ? rtrim(rtrim(number_format($product->product_price, 2), '0'), '.') : 0 }} + shipping fees
                                                         </span>
                                                     </div>
-                                                @endif                                              
+                                                @endif
+                                           
                                                 @if(session('frontend'))
                                                     <a target="_blank" href="{{ env('SOURCE_PANEL_URL') }}/product/editProduct/{{ $product->product_id }}">
                                                         Edit
@@ -182,13 +238,17 @@
                             @endforeach
                         </div>
 
-                        <div id="loading" style="text-align:center; display:none; padding: 10px;">
-                            <strong>Loading more products...</strong>
+                        <div id="loading" style="display:none; padding: 10px;">
+                            <div class="loading-overlay">
+                                <div class="bounce-loader">
+                                    <div class="bounce1"></div>
+                                    <div class="bounce2"></div>
+                                    <div class="bounce3"></div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div style="text-align:center; margin-top: 10px;">
-                            <button id="loadMoreBtn" class="btn btn-primary btn-lg rounded-pill mt-4">Load More</button>
-                        </div>
+                        <div id="scroll-sentinel"></div>
 
                         <hr class="mt-1 mb-3 pb-2">
                        
@@ -308,26 +368,50 @@
     let offset = {{ count($products) }};
     const totalProducts = {{ $totalProducts }};
     let isLoading = false;
-    let currentSearch = ''; // Track current search term
+    let allProductsLoaded = false;
+    let currentSearch = '';
 
-    // Hide load more button if all products are loaded
-    if (offset >= totalProducts) {
-        const loadMoreBtn = document.getElementById('loadMoreBtn');
-        if (loadMoreBtn) {
-            loadMoreBtn.style.display = 'none';
-        }
+    const sentinel = document.getElementById('scroll-sentinel');
+
+    if (sentinel) {
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !isLoading && !allProductsLoaded) {
+                    loadMoreProducts();
+                }
+            });
+        }, { rootMargin: '100px' });
+
+        observer.observe(sentinel);
     }
 
-    // Setup load more button click
     const loadMoreBtn = document.getElementById('loadMoreBtn');
     if (loadMoreBtn) {
-        loadMoreBtn.addEventListener('click', function () {
-            if (isLoading) return;
-            loadMoreProducts();
-        });
+        loadMoreBtn.style.display = 'none';
     }
 
-    // Get category from URL query string
+    let scrollTimeout;
+    window.addEventListener('scroll', function () {
+        if (scrollTimeout) clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            if (isLoading || allProductsLoaded) return;
+            if (offset >= totalProducts) {
+                allProductsLoaded = true;
+                return;
+            }
+
+            // Use document.documentElement instead of document.body (better for mobile)
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+            const fullHeight = document.documentElement.scrollHeight;
+
+            if (scrollTop + viewportHeight >= fullHeight - 1000) { // smaller buffer works better on mobile
+                loadMoreProducts();
+            }
+        }, 150);
+    });
+
+
     function getCategoryFromUrl() {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get('category');
@@ -350,7 +434,7 @@
     }
 
     function loadMoreProducts() {
-        if (isLoading) return;
+        if (isLoading || allProductsLoaded) return;
         isLoading = true;
         document.getElementById('loading').style.display = 'block';
 
@@ -379,6 +463,7 @@
             if (products.length === 0) {
                 document.getElementById('loading').innerText = 'No more products.';
                 document.getElementById('loadMoreBtn').style.display = 'none';
+                allProductsLoaded = true;
                 isLoading = false;
                 return;
             }
@@ -434,7 +519,7 @@
                     : '';
 
                 const newItem = `
-                    <div class="col-12 col-sm-6 col-md-3 mb-4">
+                    <div class="col-12 col-sm-6 col-md-3">
                         <div class="product-default">
                             <figure>
                                 <a href="product/${product.product_url}">
@@ -444,25 +529,32 @@
                                 </a>
                             </figure>
                             <div class="product-details text-center">
-                                <div class="category-list">
-                                    <a href="${window.location.pathname}?category=${product.category_id}" class="product-category">
-                                        ${product.category_name ?? 'Others'}
-                                    </a>
-                                </div>
-                                <h3 class="product-title">
-                                    <a href="product/${product.product_url}">
-                                        ${product.product_name.toLowerCase().replace(/\b\w/g, char => char.toUpperCase())}
+                                <h3 class="product-title" style="margin: 0 0 5px; padding: 0; line-height: 1.2;">
+                                    <a href="product/${product.product_url}" style="text-decoration: none; color: inherit;">
+                                    ${product.product_name.toLowerCase().replace(/\b\w/g, char => char.toUpperCase())}
                                     </a>
                                 </h3>
+
+                                ${product.size ? `
+                                    <p class="product-description" style="margin: 0 0 4px; padding: 0; line-height: 1.2;">
+                                    Size: ${product.size.replace(/\s+/g, '')}
+                                    </p>
+                                ` : ''}
+
                                 ${product.product_price && product.product_price > 0 ? `
-                                    <div class="price-box">
-                                        ${oldPriceHtml}
-                                        <span class="product-price" style="font-weight: bold;">
-                                            USD${parseFloat(product.product_price) % 1 === 0 
-                                                ? parseInt(product.product_price) 
-                                                : product.product_price
-                                            } +shipping fees
-                                        </span>
+                                    <div class="price-box" style="font-size: 30px; margin: 0; padding: 0; line-height: 1;">
+                                    ${oldPriceHtml}
+                                    <span class="product-price" 
+                                            style="color: navy; font-weight: bold; ${
+                                            parseFloat(product.product_price) !== 175 
+                                                ? 'text-decoration: underline; text-decoration-color: navy;' 
+                                                : ''
+                                            }">
+                                        USD${parseFloat(product.product_price) % 1 === 0 
+                                        ? parseInt(product.product_price) 
+                                        : product.product_price
+                                        } + shipping fees
+                                    </span>
                                     </div>
                                 ` : ''}
                                 
@@ -523,16 +615,20 @@
 
     // Hover effect for images/videos
     function setupHoverEffects() {
-        document.querySelectorAll('.media-wrapper').forEach(wrapper => {
+        document.querySelectorAll('.product-default').forEach(product => {
+            const wrapper = product.querySelector('.media-wrapper');
+            if (!wrapper) return;
+
             const preview = wrapper.querySelector('.preview-image, .preview-video');
             const hover = wrapper.querySelector('.hover-image, .hover-video');
             if (preview && hover) {
-                wrapper.addEventListener('mouseenter', () => {
+                product.addEventListener('mouseenter', () => {
                     preview.style.display = 'none';
                     hover.style.display = 'block';
                     if (hover.tagName === 'VIDEO') hover.play();
                 });
-                wrapper.addEventListener('mouseleave', () => {
+
+                product.addEventListener('mouseleave', () => {
                     preview.style.display = 'block';
                     hover.style.display = 'none';
                     if (hover.tagName === 'VIDEO') hover.pause();
@@ -548,7 +644,8 @@
     // Initialize hover effects on page load
     document.addEventListener('DOMContentLoaded', () => {
         setupHoverEffects();
-    });
+    });    
+
 </script>
 
 

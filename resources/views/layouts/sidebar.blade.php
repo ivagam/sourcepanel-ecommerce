@@ -1,3 +1,21 @@
+<style>
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+.sidebar-home {
+  position: relative;
+  max-height: none;
+  overflow: visible;
+}
+body {
+  overflow-y: scroll;
+}
+.sidebar-overlay {
+  display: none !important;
+}
+</style>
 <aside class="sidebar-home col-lg-3 order-lg-first mobile-sidebar">
     @php
         use App\Models\Category;
@@ -71,7 +89,7 @@
                     <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Clothings">Clothings</a></li>
                     <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Belts">Belts</a></li>
                     <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Glassware">Glassware</a></li>
-                    <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Sunglasses">Sunglasses</a></li>
+                    <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Sunglasses">Sunglass</a></li>
                     <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Jewelery">Jewelery</a></li>
                     <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Accessories">Accessories</a></li>
                     <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=113">Others</a></li>
