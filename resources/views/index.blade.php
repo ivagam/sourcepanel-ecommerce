@@ -196,8 +196,11 @@
 
                                             <div class="product-details text-center">                                                
                                                 <h3 class="product-title">
-                                                    <a href="{{ url('product/' . $product->product_url) }}">{{ \Illuminate\Support\Str::title($product->product_name) }}</a>
+                                                    <a href="{{ url('product/' . $product->product_url) }}">
+                                                        {{ \Illuminate\Support\Str::title(preg_replace('/[.,]/', '', $product->product_name)) }}
+                                                    </a>
                                                 </h3>
+
                                                 @if(!empty($product->size))
                                                     <p class="product-description" style="margin: 0; padding: 0; line-height: 1;"> 
                                                         Size: {{ str_replace(' ', '', $product->size) }}
@@ -531,9 +534,14 @@
                             <div class="product-details text-center">
                                 <h3 class="product-title" style="margin: 0 0 5px; padding: 0; line-height: 1.2;">
                                     <a href="product/${product.product_url}" style="text-decoration: none; color: inherit;">
-                                    ${product.product_name.toLowerCase().replace(/\b\w/g, char => char.toUpperCase())}
+                                        ${product.product_name
+                                        .replace(/[.,]/g, '')
+                                        .toLowerCase()
+                                        .replace(/\b\w/g, char => char.toUpperCase())
+                                        .trim()
+                                        .replace(/\s+/g, ' ')} <!-- remove extra spaces -->
                                     </a>
-                                </h3>
+                                    </h3>
 
                                 ${product.size ? `
                                     <p class="product-description" style="margin: 0 0 4px; padding: 0; line-height: 1.2;">

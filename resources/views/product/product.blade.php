@@ -185,7 +185,9 @@
 
             
                         <div class="col-lg-7 col-md-6 product-single-details">
-                            <h1 class="product-title">{{ \Illuminate\Support\Str::title($product->product_name) }}</h1>                           
+                            <h1 class="product-title">
+                                {{ \Illuminate\Support\Str::title(preg_replace('/[.,]/', '', $product->product_name)) }}
+                            </h1>
 
                             @if(session('frontend'))
                                 <a target="_blank" href="{{ env('SOURCE_PANEL_URL') }}/product/editProduct/{{ $product->product_id }}">
