@@ -186,7 +186,8 @@ function calculateValue(category, inputValue) {
     let price = 0;
     if (category === '113') {
         if (divided <= 65) price = divided + 40;
-        else if (divided <= 199) price = divided * 1.6;
+        else if (divided <= 150) price = divided * 1.58;
+        else if (divided <= 199) price = divided * 1.595;
         else price = divided * 1.5;
     } else if (category === '1') {
         if (divided <= 100) price = divided + 80;

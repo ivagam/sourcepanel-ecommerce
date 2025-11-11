@@ -11,7 +11,7 @@
     <meta name="keywords" content="Contact Repladeez, Watches, Handbags, Factory direct, Shoes, Clothes, Sunglasses, Jewellery" />
     <meta name="description" content="Get in touch with Repladeez for inquiries about watches, handbags, shoes,
         clothes, sunglasses, and jewellery directly from top factories worldwide.">
-    <meta name="author" content="SW-THEMES">
+    <meta name="author" content="repladeez">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.png">

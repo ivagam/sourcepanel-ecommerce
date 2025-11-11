@@ -11,7 +11,7 @@
     <meta name="keywords" content="Watches, Handbags, Online store, Factory direct, Quality products, Worldwide delivery" />
     <meta name="description" content="Repladeez delivers quality watches and handbags worldwide, sourcing
             directly from top factories to ensure premium products for over a decade.">
-    <meta name="author" content="SW-THEMES">
+    <meta name="author" content="repladeez">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.png">

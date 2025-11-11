@@ -11,7 +11,7 @@
     <meta name="keywords" content="China factory direct supply, Watches, Handbags, Shoes, Clothes, Sunglasses, Jewellery" />
     <meta name="description" content="Repladeez offers China factory direct supply of watches, handbags, shoes,
         clothes, sunglasses, and jewellery at competitive prices for global buyers.">
-    <meta name="author" content="SW-THEMES">
+    <meta name="author" content="repladeez">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.png">
@@ -210,7 +210,7 @@
                                                 @if(!empty($product->product_price))
                                                     <div class="price-box" style="font-size: 30px; margin: 0; padding: 0; line-height: 1;">
                                                         <span class="product-price" 
-                                                            style="color: navy; font-weight: bold; {{ $product->product_price != 175 ? 'text-decoration: underline; text-decoration-color: navy;' : '' }}">
+                                                            style="color: navy; font-weight: bold; {{ $product->product_price != 164 ? 'text-decoration: underline; text-decoration-color: navy;' : '' }}">
                                                             USD{{ $product->product_price ? rtrim(rtrim(number_format($product->product_price, 2), '0'), '.') : 0 }} + shipping fees
                                                         </span>
                                                     </div>
@@ -369,7 +369,7 @@
     const isLoggedIn = {{ session('logged_in', false) ? 'true' : 'false' }};
 
     let offset = {{ count($products) }};
-    const totalProducts = {{ $totalProducts }};
+    const totalProducts = {{ $totalProducts ?? 0 }};
     let isLoading = false;
     let allProductsLoaded = false;
     let currentSearch = '';
@@ -398,12 +398,7 @@
         if (scrollTimeout) clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(() => {
             if (isLoading || allProductsLoaded) return;
-            if (offset >= totalProducts) {
-                allProductsLoaded = true;
-                return;
-            }
-
-            // Use document.documentElement instead of document.body (better for mobile)
+            
             const scrollTop = window.scrollY || document.documentElement.scrollTop;
             const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
             const fullHeight = document.documentElement.scrollHeight;
@@ -450,7 +445,7 @@
         };
 
         if (params.search) {
-            payload.search = params.search; // include search if present
+            payload.search = params.search;
         }
 
         fetch("{{ route('products.load.more') }}", {
@@ -554,7 +549,7 @@
                                     ${oldPriceHtml}
                                     <span class="product-price" 
                                             style="color: navy; font-weight: bold; ${
-                                            parseFloat(product.product_price) !== 175 
+                                            parseFloat(product.product_price) !== 164 
                                                 ? 'text-decoration: underline; text-decoration-color: navy;' 
                                                 : ''
                                             }">

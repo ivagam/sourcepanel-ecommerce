@@ -202,12 +202,14 @@ class HomeController extends Controller
         $offset = $request->input('offset', 0);
         $limit = 12;
         $categoryName = $request->input('category');
+        $isNumericCategory = is_numeric($categoryName);
         $search = strtolower($request->input('search', ''));
-    
-        $productBaseQuery = Product::query()
-        ->where('is_delete', '!=', 1)
-        ->where('status', 1);
 
+        $productBaseQuery = Product::query()
+            ->where('is_delete', '!=', 1)
+            ->where('status', 1);
+
+        // 🔹 CASE 1: Search term is present
         if (!empty($search)) {
             $productBaseQuery->leftJoin('category', function ($join) {
                 $join->on(DB::raw("FIND_IN_SET(category.category_id, products.category_ids)"), '>', DB::raw('0'));
@@ -219,19 +221,19 @@ class HomeController extends Controller
             });
 
             if ($categoryName && $categoryName !== 'videos') {
-                if (is_numeric($categoryName)) {
-                    $categoryName = Category::where('category_id', $categoryName)
-                        ->value('category_name');
+                // ✅ Unified category filter
+                if ($isNumericCategory) {
+                    $matchingCategoryIds = [$categoryName];
+                } else {
+                    $matchingCategoryIds = Category::where('category_name', 'like', "%$categoryName%")
+                        ->pluck('category_id')
+                        ->toArray();
                 }
-
-                $matchingCategoryIds = Category::where('category_name', 'like', "%$categoryName%")
-                    ->pluck('category_id')
-                    ->toArray();
 
                 if (!empty($matchingCategoryIds)) {
                     $productBaseQuery->where(function ($query) use ($matchingCategoryIds) {
                         foreach ($matchingCategoryIds as $catId) {
-                            $query->orWhere('products.category_id', $catId) // explicitly specify table
+                            $query->orWhere('products.category_id', $catId)
                                 ->orWhereRaw("FIND_IN_SET(?, products.category_ids)", [$catId]);
                         }
                     });
@@ -253,6 +255,8 @@ class HomeController extends Controller
                 ->whereIn('product_id', $productIds)
                 ->latest()
                 ->get();
+
+        // 🔹 CASE 2: Category = "videos"
         } elseif ($categoryName === 'videos') {
             $productBaseQuery->whereHas('images', function ($q) {
                 $q->whereRaw("LOWER(SUBSTRING_INDEX(file_path, '.', -1)) IN ('mp4','webm','mov','avi')");
@@ -268,12 +272,16 @@ class HomeController extends Controller
                 ->take($limit)
                 ->get();
 
+        // 🔹 CASE 3: Normal category load (no search)
         } else {
             if ($categoryName) {
-
-                $matchingCategoryIds = Category::where('category_name', 'like', "%$categoryName%")
-                    ->pluck('category_id')
-                    ->toArray();
+                if ($isNumericCategory) {
+                    $matchingCategoryIds = [$categoryName];
+                } else {
+                    $matchingCategoryIds = Category::where('category_name', 'like', "%$categoryName%")
+                        ->pluck('category_id')
+                        ->toArray();
+                }
 
                 if (!empty($matchingCategoryIds)) {
                     $productBaseQuery->where(function ($query) use ($matchingCategoryIds) {
@@ -309,42 +317,57 @@ class HomeController extends Controller
         $isLoggedIn = session('frontend') == 'yes';
         $initialLimit = 12;
 
-        $search = strtolower($request->input('search', ''));
+        $search = strtolower(trim($request->input('search', '')));
         $categoryId = $request->input('category');
 
         $productBaseQuery = Product::query()
             ->where('is_delete', '!=', 1)
             ->where('status', 1);
 
+        // ✅ Multi-word partial search support
         if (!empty($search)) {
+            $searchWords = preg_split('/\s+/', $search); // Split by any space
+
             $productBaseQuery->leftJoin('category', function ($join) {
                 $join->on(DB::raw("FIND_IN_SET(category.category_id, products.category_ids)"), '>', DB::raw('0'));
-            })
-            ->where(function ($q) use ($search) {
-                $q->whereRaw("LOWER(products.product_name) LIKE ?", ['%' . $search . '%'])
-                ->orWhereRaw("LOWER(products.description) LIKE ?", ['%' . $search . '%'])
-                ->orWhereRaw("LOWER(products.sku) LIKE ?", ['%' . $search . '%'])
-                ->orWhereRaw("LOWER(category.category_name) LIKE ?", ['%' . $search . '%']);
+            });
+
+            $productBaseQuery->where(function ($q) use ($searchWords) {
+                foreach ($searchWords as $word) {
+                    $word = trim($word);
+                    if ($word !== '') {
+                        $q->where(function ($inner) use ($word) {
+                            $inner->whereRaw("LOWER(products.product_name) LIKE ?", ['%' . $word . '%'])
+                                ->orWhereRaw("LOWER(products.description) LIKE ?", ['%' . $word . '%'])
+                                ->orWhereRaw("LOWER(products.sku) LIKE ?", ['%' . $word . '%'])
+                                ->orWhereRaw("LOWER(category.category_name) LIKE ?", ['%' . $word . '%']);
+                        });
+                    }
+                }
             });
         }
 
+        // ✅ Filter by category if given
         if (!empty($categoryId)) {
             $productBaseQuery->whereRaw("FIND_IN_SET(?, products.category_ids)", [$categoryId]);
         }
 
+        // ✅ Subquery to avoid duplicate product URLs
         $subQuery = $productBaseQuery
             ->select(DB::raw('MIN(products.product_id) as id'))
             ->groupBy('products.product_url');
 
-        $totalProducts = $subQuery->get()->count();
+        $totalProducts = $subQuery->count();
         $productIds = $subQuery->pluck('id')->toArray();
 
+        // ✅ Fetch final products with relations
         $products = Product::with(['images', 'category'])
             ->whereIn('product_id', $productIds)
             ->latest()
             ->take($initialLimit)
             ->get();
 
+        // ✅ Get categories, brands, banners
         $categories = Category::with('children')
             ->whereNull('subcategory_id')
             ->get();

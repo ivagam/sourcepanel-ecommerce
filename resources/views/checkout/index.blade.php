@@ -10,7 +10,7 @@
 
     <meta name="keywords" content="HTML5 Template" />
     <meta name="description" content="Repladeez - eCommerce Template">
-    <meta name="author" content="SW-THEMES">
+    <meta name="author" content="repladeez">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.png">

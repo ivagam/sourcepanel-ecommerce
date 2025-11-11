@@ -10,7 +10,7 @@
 
     <meta name="keywords" content="Watches HandBags Shoes Clothes Sunglasses Jewellery" />
     <meta name="description" content="Repladeez - China factory">
-    <meta name="author" content="SW-THEMES">
+    <meta name="author" content="repladeez">
 
     <link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.png">
 

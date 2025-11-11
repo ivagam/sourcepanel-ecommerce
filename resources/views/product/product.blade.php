@@ -10,7 +10,7 @@
 
     <meta name="keywords" content="{{ ($product->meta_keywords) }}" />
     <meta name="description" content="{{ ($product->meta_description) }}">
-    <meta name="author" content="SW-THEMES">
+    <meta name="author" content="repladeez">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../assets/images/icons/favicon.png">
@@ -242,7 +242,7 @@
                             @if (!empty($firstVariant->product_price))
                                 <div class="price-box" style="font-size: 30px; color: navy;">
                                     <span id="variant-price" 
-                                        style="{{ $firstVariant->product_price != 175 ? 'text-decoration: underline; text-decoration-color: navy;' : '' }}">
+                                        style="{{ $firstVariant->product_price != 164 ? 'text-decoration: underline; text-decoration-color: navy;' : '' }}">
                                         USD{{ number_format($firstVariant->product_price) }} +shipping fees
                                     </span>
                                 </div>
