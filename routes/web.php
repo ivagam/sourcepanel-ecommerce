@@ -9,6 +9,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProductController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/{category}', [HomeController::class, 'index'])->name('category');
 Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
 Route::get('/cal', [HomeController::class, 'cal'])->name('cal');
 Route::get('/msg', [HomeController::class, 'msg'])->name('msg');

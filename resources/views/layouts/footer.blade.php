@@ -24,15 +24,17 @@
 
 								<ul class="links">
 									<li><a href="{{ route('home') }}">Home</a></li>
-									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=1">Watches</a></li>
-									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Handbags">Handbags</a></li>
-									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Clothings">Clothings</a></li>
-									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Shoes">Shoes</a></li>
-									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Belts">Belts</a></li>
-									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Jewelery">Jewelery</a></li>									
-									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Glassware">Glassware</a></li>
-									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=Sunglasses">Sunglass</a></li>
-									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}?category=113">Others</a></li>
+									<li><a href="{{ url('watches') }}">Watches</a></li>
+									<li><a href="{{ url('handbags') }}">Handbags</a></li>
+									<li><a href="{{ url('shoes') }}">Shoes</a></li>
+									<li><a href="{{ url('clothings') }}">Clothings</a></li>                    
+									<li><a href="{{ url('belts') }}">Belts</a></li>
+									<li><a href="{{ url('glassware') }}">Glassware</a></li>
+									<li><a href="{{ url('sunglasses') }}">Sunglass</a></li>
+									<li><a href="{{ url('jewelery') }}">Jewelery</a></li>                    
+									<li><a href="{{ url('accessories') }}">Accessories</a></li>
+									<li><a href="{{ url('others') }}">Others</a></li>
+									<li><a href="{{ url('tableware') }}">Tableware</a></li>
 									<li><a href="{{ route('about-us') }}">About Us</a></li>
 									<li><a href="{{ route('contact-us') }}">Contact Us</a></li>
 									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/gallery">Product Gallery</a></li>

@@ -28,11 +28,11 @@ class HomeController extends Controller
     }
 
     public function index(Request $request)
-    {
+    {        
         $isLoggedIn = session('frontend') == 'yes' ? true : false;
 
         $initialLimit = 12;
-        $categoryId = $request->query('category');
+        $categoryId = $request->category ?? $request->query('category');
 
          $productBaseQuery = Product::query()
                 ->where('is_delete', '!=', 1)
@@ -201,7 +201,10 @@ class HomeController extends Controller
     {
         $offset = $request->input('offset', 0);
         $limit = 12;
+        
         $categoryName = $request->input('category');
+        $categoryName = $categoryName ?: null; 
+
         $isNumericCategory = is_numeric($categoryName);
         $search = strtolower($request->input('search', ''));
 

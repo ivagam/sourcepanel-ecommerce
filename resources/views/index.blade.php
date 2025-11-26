@@ -136,6 +136,7 @@
                         <!-- End .home-slider -->                       
                        
                       <div id="product-list" class="row pb-4">
+                        
                             @foreach($products as $product)
                                 @php
                                     $videoExtensions = ['mp4', 'mov', 'avi', 'webm'];
@@ -193,7 +194,7 @@
                                                 </div>
                                                 </a>
                                             </figure>
-
+        
                                             <div class="product-details text-center">                                                
                                                 <h3 class="product-title">
                                                     <a href="{{ url('product/' . $product->product_url) }}">
@@ -424,10 +425,12 @@
 
    
     function getParamsFromUrl() {
+        const path = window.location.pathname.replace(/^\/|\/$/g, ''); // remove leading/trailing slash
         const urlParams = new URLSearchParams(window.location.search);
+
         return {
             search: urlParams.get('search') || '',
-            category: urlParams.get('category') || ''
+            category: path || urlParams.get('category') || ''
         };
     }
 
@@ -441,7 +444,9 @@
 
         let payload = {
             offset: offset,
-            category: params.category
+            category: params.category && params.category !== 'sourcepanel-ecommerce'
+                ? params.category.split('/').pop()
+                : ""
         };
 
         if (params.search) {
