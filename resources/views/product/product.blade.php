@@ -8,6 +8,8 @@
 
     <title>{{ \Illuminate\Support\Str::title($product->product_name) }}</title>
 
+    <link rel="canonical" href="{{ rtrim(env('SOURCE_PANEL_ECOMMERCE_URL'), '/') . request()->getPathInfo() }}" />
+    
     <meta name="keywords" content="{{ ($product->meta_keywords) }}" />
     <meta name="description" content="{{ ($product->meta_description) }}">
     <meta name="author" content="repladeez">

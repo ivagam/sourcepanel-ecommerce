@@ -241,91 +241,91 @@
                             <div class="row">
                                 <div class="col-lg-3">                                    
                                     <ul class="submenu">
-                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Acne+Studios">Acne Studios</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Addidas">Addidas</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Alexander+Wang">Alexander Wang</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Alenander+Mcqueen">Alenander Mcqueen</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Alaia+Paris">Alaia Paris</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Ami+Paris">Ami Paris</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Amina+Muaddi">Amina Muaddi</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Amiri">Amiri</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Arcteryx">Arcteryx</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Armani">Armani</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Bally">Bally</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Balenciaga">Balenciaga</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Balmain">Balmain</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Berluti">Berluti</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Brunello+cucinelli">Brunello cucinelli</a></li>
-                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Bottega+Veneta">Bottega Veneta</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Burberry">Burberry</a></li>
-                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Cartier">Cartier</a></li>
+                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Acne+Studios">Acne Studios</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Addidas">Addidas</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Alexander+Wang">Alexander Wang</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Alenander+Mcqueen">Alenander Mcqueen</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Alaia+Paris">Alaia Paris</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Ami+Paris">Ami Paris</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Amina+Muaddi">Amina Muaddi</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Amiri">Amiri</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Arcteryx">Arcteryx</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Armani">Armani</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Bally">Bally</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Balenciaga">Balenciaga</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Balmain">Balmain</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Berluti">Berluti</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Brunello+cucinelli">Brunello cucinelli</a></li>
+                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Bottega+Veneta">Bottega Veneta</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Burberry">Burberry</a></li>
+                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Cartier">Cartier</a></li>
                                     </ul>
                                 </div>
                                 <div class="col-lg-3">                                    
                                     <ul class="submenu">
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Casablanca">Casablanca</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Chanel">Chanel</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Chloe">Chloe</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Coach">Coach</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dolce+%26+Gabbana">DG (Dolce & Gabbana)</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dita">Dita</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dsquared2">Dsquared2</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dsquare">Dsquare</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dior">Dior (Christian Dior)</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Emporio+Armani">Emporio Armani</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Ferragamo">Ferragamo</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Fendi">Fendi</a></li>										
-                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Givenchy">Givenchy</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Golden+Goose">Golden Goose</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Gucci">Gucci (GG)</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Hermes">Hermes</a></li>
-                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Jimmy+Choo">Jimmy Choo</a></li>
-                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Kaws">Kaws</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Casablanca">Casablanca</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Chanel">Chanel</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Chloe">Chloe</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Coach">Coach</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Dolce+%26+Gabbana">DG (Dolce & Gabbana)</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Dita">Dita</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Dsquared2">Dsquared2</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Dsquare">Dsquare</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Dior">Dior (Christian Dior)</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Emporio+Armani">Emporio Armani</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Ferragamo">Ferragamo</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Fendi">Fendi</a></li>										
+                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Givenchy">Givenchy</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Golden+Goose">Golden Goose</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Gucci">Gucci (GG)</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Hermes">Hermes</a></li>
+                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Jimmy+Choo">Jimmy Choo</a></li>
+                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Kaws">Kaws</a></li>
                                     </ul>
                                 </div>
                                  <div class="col-lg-3">                                    
                                     <ul class="submenu">
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Kenzo">Kenzo</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Kiton">Kiton</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Lanvin">Lanvin</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Loewe">Loewe</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Loro+Piana">Loro Piana</a></li>
-                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Lv">LV</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Maison+Margiela">Maison Margiela</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Marc+Jacobs">Marc Jacobs</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=MontBlanc">MontBlanc</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Moncler">Moncler</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Nike">Nike</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Off+White">Off White</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Palm+Angels">Palm Angels</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Philipp+Plein">Philipp Plein</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Polene">Polene</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Prada">Prada</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Ralph+Lauren">Ralph Lauren</a></li>
-                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Rimova">Rimova</a></li>
-                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Stone+island">Stone island</a></li>										
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Kenzo">Kenzo</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Kiton">Kiton</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Lanvin">Lanvin</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Loewe">Loewe</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Loro+Piana">Loro Piana</a></li>
+                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Lv">LV</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Maison+Margiela">Maison Margiela</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Marc+Jacobs">Marc Jacobs</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/MontBlanc">MontBlanc</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Moncler">Moncler</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Nike">Nike</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Off+White">Off White</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Palm+Angels">Palm Angels</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Philipp+Plein">Philipp Plein</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Polene">Polene</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Prada">Prada</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Ralph+Lauren">Ralph Lauren</a></li>
+                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Rimova">Rimova</a></li>
+                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Stone+island">Stone island</a></li>										
                                     </ul>
                                 </div>
                                 <div class="col-lg-3">                                    
                                     <ul class="submenu">
-                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Supreme">Supreme</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=The+North+Face">The North Face</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=The+Row">The Row</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Thom+Browne">Thom Browne</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Timberland">Timberland</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Tod's">Tod's</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Tom+Ford">Tom Ford</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Tommy">Tommy</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Tory+Burch">Tory Burch</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=UGG">UGG</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Valentino">Valentino</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Van+Cleef+%26+Arpels">Van Cleef & Arpels</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Vetements">Vetements</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Versace">Versace</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Y-3">Y-3</a></li>
-                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Saint+Laurent">YSL (Saint Laurent)</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Yeezy">Yeezy</a></li>
-										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Zimmermann">Zimmermann</a></li>
+                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Supreme">Supreme</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/The+North+Face">The North Face</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/The+Row">The Row</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Thom+Browne">Thom Browne</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Timberland">Timberland</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Tod's">Tod's</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Tom+Ford">Tom Ford</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Tommy">Tommy</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Tory+Burch">Tory Burch</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/UGG">UGG</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Valentino">Valentino</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Van+Cleef+%26+Arpels">Van Cleef & Arpels</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Vetements">Vetements</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Versace">Versace</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Y-3">Y-3</a></li>
+                                        <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Saint+Laurent">YSL (Saint Laurent)</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Yeezy">Yeezy</a></li>
+										<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Zimmermann">Zimmermann</a></li>
                                     </ul>
                                 </div>
                                 
@@ -359,79 +359,79 @@
                     <li>                        
                         <a href="">Brands</a>
                         <ul class="submenu">
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Acne+Studios">Acne Studios</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Addidas">Addidas</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Alexander+Wang">Alexander Wang</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Alenander+Mcqueen">Alenander Mcqueen</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Alaia+Paris">Alaia Paris</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Ami+Paris">Ami Paris</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Amina+Muaddi">Amina Muaddi</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Amiri">Amiri</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Arcteryx">Arcteryx</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Armani">Armani</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Bally">Bally</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Balenciaga">Balenciaga</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Balmain">Balmain</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Berluti">Berluti</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Brunello+cucinelli">Brunello cucinelli</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Bottega+Veneta">Bottega Veneta</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Burberry">Burberry</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Cartier">Cartier</a></li>                                 
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Casablanca">Casablanca</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Chanel">Chanel</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Chloe">Chloe</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Coach">Coach</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dolce+%26+Gabbana">DG (Dolce & Gabbana)</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dita">Dita</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dsquared2">Dsquared2</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dsquare">Dsquare</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Dior">Dior (Christian Dior)</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Emporio+Armani">Emporio Armani</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Ferragamo">Ferragamo</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Fendi">Fendi</a></li>										
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Givenchy">Givenchy</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Golden+Goose">Golden Goose</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Gucci">Gucci (GG)</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Hermes">Hermes</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Jimmy+Choo">Jimmy Choo</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Kaws">Kaws</a></li>                                  
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Kenzo">Kenzo</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Kiton">Kiton</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Lanvin">Lanvin</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Loewe">Loewe</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Loro+Piana">Loro Piana</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Lv">LV</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Maison+Margiela">Maison Margiela</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Marc+Jacobs">Marc Jacobs</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=MontBlanc">MontBlanc</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Moncler">Moncler</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Nike">Nike</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Off+White">Off White</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Palm+Angels">Palm Angels</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Philipp+Plein">Philipp Plein</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Polene">Polene</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Prada">Prada</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Ralph+Lauren">Ralph Lauren</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Rimova">Rimova</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Stone+island">Stone island</a></li>										                                  
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Supreme">Supreme</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=The+North+Face">The North Face</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=The+Row">The Row</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Thom+Browne">Thom Browne</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Timberland">Timberland</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Tod's">Tod's</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Tom+Ford">Tom Ford</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Tommy">Tommy</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Tory+Burch">Tory Burch</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=UGG">UGG</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Valentino">Valentino</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Van+Cleef+%26+Arpels">Van Cleef & Arpels</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Vetements">Vetements</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Versace">Versace</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Y-3">Y-3</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Saint+Laurent">YSL (Saint Laurent)</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Yeezy">Yeezy</a></li>
-                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/live-search?search=Zimmermann">Zimmermann</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Acne+Studios">Acne Studios</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Addidas">Addidas</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Alexander+Wang">Alexander Wang</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Alenander+Mcqueen">Alenander Mcqueen</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Alaia+Paris">Alaia Paris</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Ami+Paris">Ami Paris</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Amina+Muaddi">Amina Muaddi</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Amiri">Amiri</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Arcteryx">Arcteryx</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Armani">Armani</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Bally">Bally</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Balenciaga">Balenciaga</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Balmain">Balmain</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Berluti">Berluti</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Brunello+cucinelli">Brunello cucinelli</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Bottega+Veneta">Bottega Veneta</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Burberry">Burberry</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Cartier">Cartier</a></li>                                 
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Casablanca">Casablanca</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Chanel">Chanel</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Chloe">Chloe</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Coach">Coach</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Dolce+%26+Gabbana">DG (Dolce & Gabbana)</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Dita">Dita</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Dsquared2">Dsquared2</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Dsquare">Dsquare</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Dior">Dior (Christian Dior)</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Emporio+Armani">Emporio Armani</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Ferragamo">Ferragamo</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Fendi">Fendi</a></li>										
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Givenchy">Givenchy</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Golden+Goose">Golden Goose</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Gucci">Gucci (GG)</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Hermes">Hermes</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Jimmy+Choo">Jimmy Choo</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Kaws">Kaws</a></li>                                  
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Kenzo">Kenzo</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Kiton">Kiton</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Lanvin">Lanvin</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Loewe">Loewe</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Loro+Piana">Loro Piana</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Lv">LV</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Maison+Margiela">Maison Margiela</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Marc+Jacobs">Marc Jacobs</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/MontBlanc">MontBlanc</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Moncler">Moncler</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Nike">Nike</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Off+White">Off White</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Palm+Angels">Palm Angels</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Philipp+Plein">Philipp Plein</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Polene">Polene</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Prada">Prada</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Ralph+Lauren">Ralph Lauren</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Rimova">Rimova</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Stone+island">Stone island</a></li>										                                  
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Supreme">Supreme</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/The+North+Face">The North Face</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/The+Row">The Row</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Thom+Browne">Thom Browne</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Timberland">Timberland</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Tod's">Tod's</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Tom+Ford">Tom Ford</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Tommy">Tommy</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Tory+Burch">Tory Burch</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/UGG">UGG</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Valentino">Valentino</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Van+Cleef+%26+Arpels">Van Cleef & Arpels</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Vetements">Vetements</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Versace">Versace</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Y-3">Y-3</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Saint+Laurent">YSL (Saint Laurent)</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Yeezy">Yeezy</a></li>
+                            <li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/Zimmermann">Zimmermann</a></li>
                         </ul>
                     </li>
                     <li><a href="{{ url('watches') }}">Watches</a></li>

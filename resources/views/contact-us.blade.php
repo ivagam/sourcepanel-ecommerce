@@ -8,6 +8,8 @@
 
     <title>Repladeez – Watches &amp; Handbags Factory Direct</title>
 
+    <link rel="canonical" href="{{ rtrim(env('SOURCE_PANEL_ECOMMERCE_URL'), '/') . request()->getPathInfo() }}" />
+    
     <meta name="keywords" content="Contact Repladeez, Watches, Handbags, Factory direct, Shoes, Clothes, Sunglasses, Jewellery" />
     <meta name="description" content="Get in touch with Repladeez for inquiries about watches, handbags, shoes,
         clothes, sunglasses, and jewellery directly from top factories worldwide.">

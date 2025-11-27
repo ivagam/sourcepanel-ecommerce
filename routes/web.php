@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -7,22 +8,29 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\MsgController;
+use App\Http\Controllers\CalController;
+
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/{category}', [HomeController::class, 'index'])->name('category');
-Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
-Route::get('/cal', [HomeController::class, 'cal'])->name('cal');
-Route::get('/msg', [HomeController::class, 'msg'])->name('msg');
-Route::get('/live-search', [HomeController::class, 'liveSearch'])->name('live.search');
-Route::get('/gallery/search', [HomeController::class, 'gallerysearch'])->name('gallery.search');
-Route::get('/documentation', [HomeController::class, 'documentation'])->name('documentation');
-Route::post('/load-more-products', [HomeController::class, 'loadMore'])->name('products.load.more');
+Route::get('/msg', [MsgController::class, 'index'])->name('msg'); 
+Route::get('/cal', [CalController::class, 'index'])->name('cal');
+Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery');
 
+Route::get('/live-search', [HomeController::class, 'liveSearch'])->name('live.search');
+
+Route::get('/documentation', [HomeController::class, 'documentation'])->name('documentation');
 Route::get('/about-us', [HomeController::class, 'aboutus'])->name('about-us');
 Route::get('/contact-us', [HomeController::class, 'contactus'])->name('contact-us');
 
 Route::get('/login', [HomeController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [HomeController::class, 'login']);
+
+Route::get('/gallery/search', [GalleryController::class, 'gallerysearch'])->name('gallery.search');
+Route::post('/load-more-products', [HomeController::class, 'loadMore'])->name('products.load.more');
+
+Route::get('/{category}', [HomeController::class, 'index'])->name('category');
 
 Route::get('/forgot-password', [AuthController::class, 'showForgotForm'])->name('forgot.password');
 Route::post('/forgot-password', [AuthController::class, 'sendResetLink']);

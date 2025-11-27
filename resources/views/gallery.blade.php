@@ -8,6 +8,8 @@
 
     <title>Repladeez - China factory direct supply for Watches HandBags Shoes Clothes Sunglasses Jewellery</title>
 
+    <link rel="canonical" href="{{ rtrim(env('SOURCE_PANEL_ECOMMERCE_URL'), '/') . request()->getPathInfo() }}" />
+    
     <meta name="keywords" content="Watches HandBags Shoes Clothes Sunglasses Jewellery" />
     <meta name="description" content="Repladeez - China factory">
     <meta name="author" content="repladeez">

@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>Repladeez – Quality Watches &amp; Handbags Online</title>
+    
+    <link rel="canonical" href="{{ rtrim(env('SOURCE_PANEL_ECOMMERCE_URL'), '/') . request()->getPathInfo() }}" />
 
     <meta name="keywords" content="Watches, Handbags, Online store, Factory direct, Quality products, Worldwide delivery" />
     <meta name="description" content="Repladeez delivers quality watches and handbags worldwide, sourcing

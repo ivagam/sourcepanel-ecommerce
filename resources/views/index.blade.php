@@ -8,6 +8,8 @@
 
     <title>Repladeez - China factory direct supply for Watches HandBags Shoes Clothes Sunglasses Jewellery</title>
 
+    <link rel="canonical" href="{{ rtrim(env('SOURCE_PANEL_ECOMMERCE_URL'), '/') . request()->getPathInfo() }}" />
+
     <meta name="keywords" content="China factory direct supply, Watches, Handbags, Shoes, Clothes, Sunglasses, Jewellery" />
     <meta name="description" content="Repladeez offers China factory direct supply of watches, handbags, shoes,
         clothes, sunglasses, and jewellery at competitive prices for global buyers.">
@@ -425,14 +427,24 @@
 
    
     function getParamsFromUrl() {
-        const path = window.location.pathname.replace(/^\/|\/$/g, ''); // remove leading/trailing slash
-        const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(window.location.search);
+    let search = urlParams.get('search') || '';
+    let category = urlParams.get('category') || '';
 
-        return {
-            search: urlParams.get('search') || '',
-            category: path || urlParams.get('category') || ''
-        };
+    // If the path is like /live-search or /category-name, pick it
+    const pathSegments = window.location.pathname.split('/').filter(Boolean);
+    const lastSegment = pathSegments[pathSegments.length - 1];
+
+    // Only use path as category if it’s not the homepage or index
+    if (lastSegment && lastSegment !== 'live-search' && lastSegment !== 'sourcepanel-ecommerce') {
+        category = lastSegment;
     }
+
+    return {
+        search: search,
+        category: category
+    };
+}
 
     function loadMoreProducts() {
         if (isLoading || allProductsLoaded) return;
