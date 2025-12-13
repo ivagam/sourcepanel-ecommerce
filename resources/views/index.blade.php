@@ -6,13 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Repladeez - China factory direct supply for Watches HandBags Shoes Clothes Sunglasses Jewellery</title>
+    <title>{{ $seo['title'] ?? 'Repladeez – Luxury Fashion & Factory Direct Store' }}</title>
 
     <link rel="canonical" href="{{ rtrim(env('SOURCE_PANEL_ECOMMERCE_URL'), '/') . request()->getPathInfo() }}" />
 
-    <meta name="keywords" content="China factory direct supply, Watches, Handbags, Shoes, Clothes, Sunglasses, Jewellery" />
-    <meta name="description" content="Repladeez offers China factory direct supply of watches, handbags, shoes,
-        clothes, sunglasses, and jewellery at competitive prices for global buyers.">
+    <meta name="description" content="{{ $seo['description'] ?? 'Shop luxury watches, handbags, shoes and more at factory direct pricing.' }}">
+    <meta name="keywords" content="{{ $seo['keywords'] ?? 'luxury fashion, handbags, watches, shoes' }}">
+
     <meta name="author" content="repladeez">
 
     <!-- Favicon -->
@@ -113,6 +113,11 @@
                 opacity: 1;
             }
         }
+        .title
+        {
+            font-size: 20px;
+            font-weight: bold;
+        }
 
     </style>
 
@@ -135,9 +140,11 @@
              
                 <div class="row">
                     <div class="col-lg-9">                        
-                        <!-- End .home-slider -->                       
-                       
-                      <div id="product-list" class="row pb-4">
+                        <!-- End .home-slider -->                      
+
+                        <h1 class="title">{{ $seo['h1'] ?? 'Repladeez Fashion Store' }}</h1>
+
+                      <div id="product-list" class="row pb-4">                      
                         
                             @foreach($products as $product)
                                 @php
