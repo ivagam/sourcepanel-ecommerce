@@ -116,7 +116,7 @@
 						Add to Cart
 					</a>
 
-					<a href="cart.html" class="btn view-cart d-none">View cart</a>
+					<a href="#" class="btn view-cart d-none">View cart</a>
 				</div><!-- End .product-action -->
 
 				<hr class="divider mb-0 mt-0">
@@ -135,7 +135,7 @@
 						<a href="#" class="social-icon social-mail icon-mail-alt" target="_blank" title="Mail"></a>
 					</div><!-- End .social-icons -->
 
-					<!--<a href="wishlist.html" class="btn-icon-wish add-wishlist" title="Add to Wishlist"><i
+					<!--<a href="#" class="btn-icon-wish add-wishlist" title="Add to Wishlist"><i
 							class="icon-wishlist-2"></i><span>Add to
 							Wishlist</span></a>-->
 				</div><!-- End .product single-share -->

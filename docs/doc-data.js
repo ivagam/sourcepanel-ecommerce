@@ -1378,7 +1378,7 @@ Porto.miniPopup.open({
             &lt;span class="product-price"&gt;$49.00&lt;/span&gt;
         &lt;/div&gt;&lt;!-- End .price-box --&gt;
         &lt;div class="product-action"&gt;
-            &lt;a href="wishlist.html" class="btn-icon-wish" title="wishlist"&gt;&lt;i class="icon-heart"&gt;&lt;/i&gt;&lt;/a&gt;
+            &lt;a href="#" class="btn-icon-wish" title="wishlist"&gt;&lt;i class="icon-heart"&gt;&lt;/i&gt;&lt;/a&gt;
             &lt;a href="product.html" class="btn-icon btn-add-cart"&gt;
                 &lt;i class="fa fa-arrow-right"&gt;&lt;/i&gt;&lt;span&gt;SELECT OPTIONS&lt;/span&gt;
             &lt;/a&gt;

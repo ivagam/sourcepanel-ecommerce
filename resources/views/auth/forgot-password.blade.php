@@ -98,7 +98,7 @@
 									</div>
 
 									<div class="form-footer mb-0">
-										<a href="login.html">Click here to login</a>
+										<a href="#">Click here to login</a>
 
 										<button type="submit"
 											class="btn btn-md btn-primary form-footer-right font-weight-normal text-transform-none mr-0">
@@ -190,10 +190,10 @@
 						<a href="#">Pages<span class="tip tip-hot">Hot!</span></a>
 						<ul>
 							<li>
-								<a href="wishlist.html">Wishlist</a>
+								<a href="#">Wishlist</a>
 							</li>
 							<li>
-								<a href="cart.html">Shopping Cart</a>
+								<a href="#">Shopping Cart</a>
 							</li>
 							<li>
 								<a href="checkout.html">Checkout</a>
@@ -202,7 +202,7 @@
 								<a href="dashboard.html">Dashboard</a>
 							</li>
 							<li>
-								<a href="login.html">Login</a>
+								<a href="#">Login</a>
 							</li>
 							<li>
 								<a href="forgot-password.html">Forgot Password</a>
@@ -247,12 +247,12 @@
 				</ul>
 
 				<ul class="mobile-menu">
-					<li><a href="login.html">My Account</a></li>
+					<li><a href="#">My Account</a></li>
 					<li><a href="contact.html">Contact Us</a></li>
 					<li><a href="blog.html">Blog</a></li>
-					<li><a href="wishlist.html">My Wishlist</a></li>
-					<li><a href="cart.html">Cart</a></li>
-					<li><a href="login.html" class="login-link">Log In</a></li>
+					<li><a href="#">My Wishlist</a></li>
+					<li><a href="#">Cart</a></li>
+					<li><a href="#" class="login-link">Log In</a></li>
 				</ul>
 			</nav><!-- End .mobile-nav -->
 
@@ -284,17 +284,17 @@
 			</a>
 		</div>
 		<div class="sticky-info">
-			<a href="wishlist.html" class="">
+			<a href="#" class="">
 				<i class="icon-wishlist-2"></i>Wishlist
 			</a>
 		</div>
 		<div class="sticky-info">
-			<a href="login.html" class="">
+			<a href="#" class="">
 				<i class="icon-user-2"></i>Account
 			</a>
 		</div>
 		<div class="sticky-info">
-			<a href="cart.html" class="">
+			<a href="#" class="">
 				<i class="icon-shopping-cart position-relative">
 					<span class="cart-count badge-circle">3</span>
 				</i>Cart
