@@ -33,6 +33,35 @@
         })(document);
     </script>
 
+    <style>
+    .py-5 {
+        font-family: 'Open Sans', Arial, sans-serif;
+        font-size: 16px;
+        color: #222;
+        line-height: 1.7;
+    }
+    .repladeez-list {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .repladeez-list li {
+        position: relative;
+        padding-left: 28px;
+        margin-bottom: 10px;
+    }
+
+    .repladeez-list li::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: #22c55e;
+        font-weight: bold;
+    }
+
+    </style>
+
     <!-- Plugins CSS File -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 
@@ -60,11 +89,65 @@
 
         <div class="container py-5">
             <h1 class="mb-4 text-center">About Us</h1>
-            <div class="mx-auto" style="max-width: 667px; text-align: justify;">                
-                <p>Hi.. we are Nikki & Karen 🙂 Greetings..</p>
-                <p>We are selling Watches and Hand-Bags online for over a decade now. Our team is having immense experience working with the best factories here over years now, we individuals have teamed up to serve quality Watches & Handbags to our clients worldwide. Getting your orders direct from factory to make sure you get only the best always – each time, every time.</p>
-                <p>Again for many of our valued clients worldwide - we thank you for the trust you have put on us all these years and for your continued patronage with us, considering – we have slashed our prices without compromising quality or services – Watches, Handbags, Shoes, Clothes, Sunglasses, Belts, Jewelry all you can order with us. We specialize in wholesale orders direct factory supply top quality products. You’ll find us the best with the quality, prices, delivery and services we offer than any other sellers out there.</p>
-                <p>We treat all big & small orders a wholesale order and treat all new or old clients the same. So we do not have a discount offer code/ free shipping/ or discount structure.. We are transparent with clients orders. No other sellers offers QC images or videos before shipping like we do letting clients see what they have ordered and what they are getting shipped. Accepting orders is a responsibility for us and we thrive to deliver the best. Delivery is guaranteed with us.. if seized or lost in transit – we reship order at our own expenses with just an extra shipping fees from you. Please send images for the items you wish to order with us to help us check the availability with factory and update you soon. You can reach us on online chatting here or email us to asiaticwatches@gmail.com Make your shopping a pleasant experience with us each time – every time 🙂 Happy Shipping..</p>
+            <div class="mx-auto" style="max-width: 760px; text-align: justify;">                
+                <h4>Welcome to Repladeez</h4>
+
+                <p>Hi! We’re <strong>Nikki & Karen</strong></p>
+                <p>Greetings from <strong>Repladeez</strong></p>
+
+                <p>
+                    We have been selling <strong>watches and handbags online for over a decade</strong>, backed by a highly experienced team that has worked closely with <strong>top factories for many years</strong>. Together, we’ve partnered to bring <strong>premium-quality Watches & Handbags</strong> to clients worldwide—<strong>direct from the factory</strong>, ensuring you receive the best quality <strong>every single time</strong>.
+                </p>
+
+                <p>
+                    To our <strong>valued clients across the globe</strong>, we sincerely thank you for the trust and continued support you’ve shown us over the years. At <strong>Repladeez</strong>, we’ve <strong>slashed prices without compromising on quality or service</strong>, offering a wide range of products including:
+                </p>
+
+                <p>
+                    <strong>Watches • Handbags • Shoes • Clothing • Sunglasses • Belts • Jewelry</strong>
+                </p>
+
+                <p>
+                    We specialize in <strong>wholesale orders with direct factory supply,</strong> delivering <strong>top-tier quality products.</strong> Whether your order is big or small, we treat <strong>every order as wholesale and every client equally</strong>—new or existing.
+                </p>
+
+                <h3><strong>Why Choose Repladeez?</strong></h3>
+
+                    <ul class="repladeez-list">
+                        <li><strong>Direct factory sourcing</strong></li>
+                        <li><strong>Competitive pricing with premium quality</strong></li>
+                        <li><strong>QC images & videos before shipping</strong> (no other sellers offer this transparency)</li>
+                        <li><strong>Reliable delivery worldwide</strong></li>
+                        <li><strong>Guaranteed shipping</strong> – if your order is seized or lost in transit, we reship (only additional shipping cost applies)</li>
+                        <li><strong>Honest, transparent ordering process</strong></li>
+                    </ul>
+
+                    <p>
+                        Accepting an order is a <strong>responsibility</strong> we take seriously.  
+                        At <strong>Repladeez</strong>, we thrive on delivering exactly what you order—
+                        <strong>no surprises, no compromises.</strong>
+                    </p>
+
+                    <h3><strong>How to Order</strong></h3>
+
+                    <p>
+                        Please send us <strong>images of the items you wish to order</strong>, so we can check availability
+                        with the factory and get back to you promptly.
+                    </p>
+
+                    <p>
+                        📩 <strong>Email:</strong> <a href="mailto:asiaticwatches@gmail.com">asiaticwatches@gmail.com</a><br>
+                        💬 <strong>Online Chat:</strong> Available here for quick assistance
+                    </p>
+
+                    <p>
+                        Make your shopping experience <strong>smooth, transparent, and enjoyable</strong> with
+                        <strong>Repladeez</strong>—<br>
+                        <strong>each time, every time</strong>
+                    </p>
+
+                    <p><strong>Happy Shipping!</strong></p>
+
             </div>
         </div>
 
