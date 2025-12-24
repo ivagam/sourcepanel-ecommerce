@@ -150,7 +150,7 @@
                                 @php
                                     $videoExtensions = ['mp4', 'mov', 'avi', 'webm'];
                                     $media = $product->images->sortBy('serial_no')->take(2);
-                                    $firstMedia = $media->first();
+                                    $firstMedia = $media->first();                                    
                                     $secondMedia = $media->skip(1)->first();
                                 @endphp
                                 
@@ -161,7 +161,10 @@
                                                     @php
                                                     $defaultImage = env('SOURCE_PANEL_IMAGE_URL') . 'NPIA.png';
 
-                                                    $file1 = $firstMedia && !empty($firstMedia->file_path) ? $firstMedia->file_path : 'NPIA.png';
+                                                    $file1 = ($firstMedia && !empty($firstMedia['file_path']))
+                                                        ? $firstMedia['file_path']
+                                                        : 'NPIA.png';
+
                                                     $ext1 = strtolower(pathinfo($file1, PATHINFO_EXTENSION));
                                                 @endphp
 
@@ -217,7 +220,7 @@
                                                     </p>
                                                 @endif
 
-                                                @if(!empty($product->product_price))
+                                                @if(isset($product->product_price) && is_numeric($product->product_price))
                                                     <div class="price-box" style="font-size: 30px; margin: 0; padding: 0; line-height: 1;">
                                                         <span class="product-price" 
                                                             style="color: navy; font-weight: bold; {{ $product->product_price != 164 ? 'text-decoration: underline; text-decoration-color: navy;' : '' }}">

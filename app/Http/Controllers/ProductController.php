@@ -3,57 +3,71 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Product;
+use Illuminate\Support\Facades\Http;
 
 class ProductController extends Controller
 {
+    private string $apiBaseUrl = 'https://api.sourcepanel.xyz/';
+
     public function quickView($id)
     {
-        $product = Product::with('images')->findOrFail($id);
+        $response = Http::get($this->apiBaseUrl . "product/quick-view/{$id}");
+        $data = $response->json();
+
+        $product = $this->normalizeProduct((object) $data['product']);
 
         return view('ajax.product-quick-view', compact('product'));
     }
 
     public function show($slug)
-    {        
+    {
+        $response = Http::get($this->apiBaseUrl . "product/{$slug}");
+        $data = $response->json();
+
         
-        $product = Product::with('images', 'category')
-            ->where('product_url', $slug)
-            ->firstOrFail();                    
-       
-        $variants = Product::with('images')
-            ->where('product_url', $slug)
-            ->orderBy('size')
-            ->get();
 
-        $skuProducts = Product::with(['images' => function($query) {
-                $query->orderBy('serial_no')->limit(1);
-            }])
-            ->where('sku', $product->sku)
-            ->where('product_id', '!=', $product->product_id)
-            ->get();
+        $product = $this->normalizeProduct((object) $data['product']);
 
-        if (!empty($product->sku)) {
-            $relatedProducts = Product::with('images', 'category')
-                ->where('sku', $product->sku)
-                ->where('product_id', '!=', $product->product_id)
-                ->take(10)
-                ->get();
-        } else {
-            $relatedProducts = collect(); // return empty collection
-        }
+        $variants = collect($data['variants'])
+            ->map(fn ($v) => $this->normalizeProduct((object) $v));
 
-        $prevProduct = Product::with('images')
-            ->where('product_id', '<', $product->product_id)
-            ->orderBy('product_id', 'desc')
-            ->first();
+        $relatedProducts = collect($data['relatedProducts'])
+            ->map(fn ($r) => $this->normalizeProduct((object) $r));
 
-        $nextProduct = Product::with('images')
-            ->where('product_id', '>', $product->product_id)
-            ->orderBy('product_id', 'asc')
-            ->first();
+        $skuProducts = collect($data['skuProducts'])
+            ->map(fn ($s) => $this->normalizeProduct((object) $s));
 
-        return view('product.product', compact('product', 'variants', 'relatedProducts', 'prevProduct', 'nextProduct', 'skuProducts'));
+        $prevProduct = $data['prevProduct']
+            ? $this->normalizeProduct((object) $data['prevProduct'])
+            : null;
+
+        $nextProduct = $data['nextProduct']
+            ? $this->normalizeProduct((object) $data['nextProduct'])
+            : null;
+
+        return view('product.product', compact(
+            'product',
+            'variants',
+            'relatedProducts',
+            'prevProduct',
+            'nextProduct',
+            'skuProducts'
+        ));
     }
 
+    private function normalizeProduct(object $product): object
+    {
+        $product->images = collect($product->ProductImages ?? [])
+            ->map(fn ($img) => (object) $img);
+
+        unset($product->ProductImages);
+
+        $product->title = $product->title
+            ?? $product->product_name
+            ?? null;
+
+        $product->chinese_description = $product->chinese_description ?? null;
+
+        return $product;
+    }
 }
