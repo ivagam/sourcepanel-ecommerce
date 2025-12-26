@@ -46,52 +46,7 @@ class HomeController extends Controller
         ]);
     }
 
-    public function gallery(Request $request)
-    {
-        echo 'hi'; exit;
-        $categoryName = $request->query('category', '');
-
-        $response = Http::get($this->apiBaseUrl . 'gallery', [
-            'category' => $categoryName,
-        ]);
-
-        $data = $response->json();
-
-        $products = collect($data['products'] ?? [])->map(function ($item) {
-            $item['images'] = collect($item['ProductImages'] ?? [])->map(fn($img) => (object) $img);
-            unset($item['ProductImages']);
-            return (object) $item;
-        });
-
-        return view('gallery', [
-            'products' => $products,
-            'categoryName' => $data['categoryName'] ?? $categoryName,
-        ]);
-    }
-
-    public function gallerysearch(Request $request)
-    {
-        $categoryName = $request->query('category', '');
-        $search = $request->input('search', '');
-
-        $response = Http::get($this->apiBaseUrl . 'gallery-search', [
-            'category' => $categoryName,
-            'search' => $search,
-        ]);
-
-        $data = $response->json();
-
-        $products = collect($data['products'] ?? [])->map(function ($item) {
-            $item['images'] = collect($item['ProductImages'] ?? [])->map(fn($img) => (object) $img);
-            unset($item['ProductImages']);
-            return (object) $item;
-        });
-
-        return view('gallery', [
-            'products' => $products,
-            'categoryName' => $data['categoryName'] ?? $categoryName,
-        ]);
-    }
+    
 
     public function loadMore(Request $request)
     {
@@ -122,10 +77,10 @@ class HomeController extends Controller
 
         $data = $response->json();
 
-        $products = collect($data['products'] ?? [])->map(function ($item) {
-            $item['images'] = collect($item['ProductImages'] ?? []);
-            unset($item['ProductImages']);
-            return (object) $item;
+         $products = collect($data['products'] ?? [])->map(function ($p) {
+            $p = (object) $p;
+            $p->images = collect($p->images ?? []);
+            return $p;
         });
 
         $categories = collect($data['categories'] ?? [])->map(function ($cat) {
