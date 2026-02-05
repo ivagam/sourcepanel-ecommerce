@@ -22,6 +22,13 @@ class HomeController extends Controller
 
     public function index(Request $request)
     {    
+        $slug = trim($request->path(), '/');
+
+        if ($slug === "") {
+            $slug = "/";
+        }
+        $seo = config("seo_master.$slug") ?? null;
+
         $category = $request->route('category') ?? $request->query('category');    
         $category = str_replace('-', ' ', $category ?? '');
 
@@ -40,13 +47,12 @@ class HomeController extends Controller
         });
         
         return view('index', [
+            'seo'            => $seo,
             'products'      => $products,
             'totalProducts' => $data['totalProducts'] ?? 0,
             'isLoggedIn'    => session('frontend') === 'yes',
         ]);
-    }
-
-    
+    }    
 
     public function loadMore(Request $request)
     {

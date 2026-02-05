@@ -354,7 +354,8 @@
                                 </div>             
                         </div>
                         @endif  
-                        @if (!empty($product->size))
+                        
+                        @if (!empty($product->size))                        
                             <strong class="product-size me-3"> Size: <span id="variant-size">{{ str_replace(' ', '', $product->size) }}</span></strong>
                         @endif
                     </div>

@@ -7,6 +7,7 @@
             "description" => "Repladeez offers China factory direct supply of watches, handbags, shoes, clothes, sunglasses, and jewellery at competitive prices for global buyers.",
             "keywords" => "China factory direct supply, Watches, Handbags, Shoes, Clothes, Sunglasses, Jewellery",
             "h1" => "China Factory Direct Supply",
+            "p" =>"Repladeez is a global sourcing platform specialising in China factory direct supply of high-demand consumer products. We provide watches, handbags, shoes, clothing, sunglasses, and jewellery sourced directly from trusted Chinese factories, enabling international buyers to access competitive pricing, consistent quality, and reliable fulfilment. Our model eliminates intermediaries, streamlines procurement, and delivers scalable supply for wholesalers, retailers, e-commerce brands, and private-label businesses worldwide."
         ],
         "about-us" => [
             "title" => "About Repladeez – Quality Watches & Handbags Online",
@@ -276,25 +277,56 @@
             "title" => "Luxury Watches – RepLadeez Premium Timepieces & Accessories",
             "description" => "Discover premium watches and timepieces at RepLadeez — classic, designer, and luxury watch collections with worldwide delivery.",
             "keywords" => "luxury watches, designer watches, timepieces, watches online, premium accessories",
-            "h1" => "Luxury Watch Collection",
+            "h1" => "Wholesale Watches – Trusted Global Supply for Retailers",
+            "p" => "China is a leading hub for high-quality watch sourcing, offering a wide range of styles suitable for online stores, boutiques, and wholesale buyers. Our platform connects retailers with reliable watch suppliers, making it easy to source on-trend and luxury-style watches at competitive prices.
+                    Our wholesale watch supply includes:
+                    ● Stainless steel, ceramic, and alloy cases
+                    ● Japanese and Chinese movements
+                    ● Custom dial designs and logo engraving
+                    ● Water-resistance and durability testing
+                    ● Packaging solutions for retail and gifting
+                    By working with verified suppliers through our e-commerce platform, retailers benefit from consistent product quality, flexible order quantities, fast fulfilment, and pricing designed to support healthy profit margins.",
         ],
         "handbags" => [
             "title" => "Handbags – RepLadeez Designer Bags & Accessories",
             "description" => "Explore premium handbags and accessories at RepLadeez. Discover leather totes, clutches, cross-body bags and more — worldwide shipping available.",
             "keywords" => "handbags, designer bags, leather handbags, women’s bags, bag accessories",
-            "h1" => "Designer Handbags & Bags",
+            "h1" => "Handbags & Leather Goods – Factory Direct Fashion Supply",
+            "p" =>  "Our China factory direct supply of handbags covers a wide spectrum of styles, materials, and finishes to meet international fashion demand. Factories specialise in PU leather, genuine leather, canvas, and mixed-material construction with strict quality controls.
+                    Product categories include:
+                    ● Luxury-inspired handbags
+                    ● Tote bags, crossbody bags, backpacks
+                    ● Wallets and small leather goods
+                    ● Custom hardware and branding
+                    Direct sourcing enables trend-responsive production, low minimum order quantities, and private-label development for global fashion brands.",
         ],
         "clothings" => [
             "title" => "Clothing – RepLadeez Fashion & Apparel Store",
             "description" => "Shop stylish clothing at RepLadeez. Find dresses, jackets, tops, trousers and casual wear for men and women — quality fashion, global delivery.",
             "keywords" => "clothing, fashion apparel, women’s clothing, men’s fashion, casual wear",
-            "h1" => "Fashion Clothing Collection",
+            "h1" => "Clothing & Apparel – End-to-End Factory Sourcing",
+            "p" =>  "Our China factory direct clothing supply supports brands seeking fast fashion, private label apparel, and bulk garment production. We work with factories equipped for cut-and-sew, embroidery, printing, and finishing.
+                    Apparel categories include:
+                    ● Men’s, women’s, and unisex clothing
+                    ● Casual wear, streetwear, and formalwear
+                    ● Seasonal collections and custom designs
+                    ● Fabric sourcing and colour matching
+                    Direct factory access enables shorter production cycles, design flexibility, and quality assurance across batches.",
         ],
         "shoes" => [
             "title" => "Shoes – RepLadeez Footwear Collection & Fashion",
             "description" => "Discover shoes & footwear at RepLadeez: sneakers, boots, sandals and designer shoes for every style — comfort, quality and worldwide delivery.",
             "keywords" => "shoes, footwear, sneakers, boots, designer shoes, sandals",
-            "h1" => "Footwear & Shoes Collection",
+            "h1" => "Shoes & Footwear – Wholesale Supply for Retailers",
+            "p"  => "China is a major global source for footwear, offering a wide variety of styles suitable for online stores, brands, and wholesale buyers. Our platform connects retailers with trusted footwear suppliers, making it easy to source quality products without managing factory production.
+                    Our footwear selection includes:
+                    ● Sneakers and sports shoes
+                    ● Formal shoes and loafers
+                    ● Sandals, slides, and seasonal footwear
+                    ● Multiple materials, sizes, and style options
+                    ● Retail-ready packaging and private-label support
+                    By sourcing through verified suppliers, retailers benefit from consistent quality, flexible order quantities, reliable fulfilment, and competitive pricing that supports strong margins."
+
         ],
         "belts" => [
             "title" => "Belts – RepLadeez Fashion Accessories Store",
@@ -306,7 +338,14 @@
             "title" => "Jewellery – RepLadeez Luxury Accessories & Jewelry",
             "description" => "Explore jewellery and accessories at RepLadeez: necklaces, rings, bracelets, watches and more — luxury pieces, stylish designs, delivered worldwide.",
             "keywords" => "jewellery, fashion jewelry, rings, necklaces, bracelets, luxury accessories",
-            "h1" => "Luxury Jewelry & Accessories",
+            "h1" => "Jewellery – Precision Craftsmanship at Factory Prices",
+            "p" =>  "We provide China factory direct jewellery supply across fashion, costume, and premium segments. Factories specialise in gold-plated, silver, stainless steel, and gemstone jewellery with scalable output.
+                        Jewellery categories include:
+                        ● Necklaces, bracelets, rings, and earrings
+                        ● Custom moulds and designs
+                        ● Anti-tarnish and durability finishes
+                        ● Retail-ready packaging
+                        Direct sourcing supports design confidentiality, quality consistency, and efficient scaling.",
         ],
         "glassware" => [
             "title" => "Glassware Collection – RepLadeez Home & Decor Shop",
@@ -318,7 +357,15 @@
             "title" => "Sunglasses & Eyewear – RepLadeez Designer Shades",
             "description" => "Browse our selection of sunglasses and eyewear at RepLadeez. Stylish frames, designer shades and UV-protected lenses with global delivery.",
             "keywords" => "sunglasses, eyewear, designer sunglasses, UV sunglasses, fashion glasses",
-            "h1" => "Designer Sunglasses & Eyewear",
+            "h1" => "Sunglasses – Wholesale Eyewear for Retailers",
+            "p"  => "China is a key global source for sunglasses, offering a wide range of styles suited for online stores, brands, and wholesale buyers. Our platform connects retailers with reliable eyewear suppliers, making it easy to source quality sunglasses without dealing directly with manufacturing.
+                    Our sunglasses range includes:
+                    ● UV400 and polarised lens sunglasses
+                    ● Acetate, TR90, and metal frame styles
+                    ● Fashion, lifestyle, and classic designs
+                    ● Private-label branding and packaging options
+                    ● Products compliant with international quality standards
+                    By sourcing through verified suppliers, retailers benefit from consistent product quality, flexible order quantities, dependable fulfilment, and competitive pricing that supports strong margins.",
         ],
         "others" => [
             "title" => "Fashion & Accessories – RepLadeez Miscellaneous Store",
