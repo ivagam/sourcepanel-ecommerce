@@ -21,10 +21,11 @@ class ProductController extends Controller
 
     public function show($slug)
     {
-        $response = Http::get($this->apiBaseUrl . "product/{$slug}");
-        $data = $response->json();
+        $seoKey = 'product/' . $slug;
+        $seo = config("seo_master.$seoKey") ?? null;
 
-        
+        $response = Http::get($this->apiBaseUrl . "product/{$slug}");
+        $data = $response->json();        
 
         $product = $this->normalizeProduct((object) $data['product']);
 
@@ -51,7 +52,8 @@ class ProductController extends Controller
             'relatedProducts',
             'prevProduct',
             'nextProduct',
-            'skuProducts'
+            'skuProducts',
+            'seo'
         ));
     }
 
