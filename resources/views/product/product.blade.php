@@ -244,7 +244,7 @@
                             @if (!empty($firstVariant->product_price))
                                 <div class="price-box" style="font-size: 30px; color: navy;">
                                     <span id="variant-price" 
-                                        style="{{ $firstVariant->product_price != 164 ? 'text-decoration: underline; text-decoration-color: navy;' : '' }}">
+                                        style="{{ $firstVariant->purchase_value != 715 ? 'text-decoration: underline; text-decoration-color: navy;' : '' }}">
                                         USD{{ number_format($firstVariant->product_price) }} +shipping fees
                                     </span>
                                 </div>

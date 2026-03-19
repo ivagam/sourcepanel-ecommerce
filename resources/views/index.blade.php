@@ -229,7 +229,7 @@
                                                     @if(isset($product->product_price) && is_numeric($product->product_price))
                                                         <div class="price-box" style="font-size: 30px; margin: 0; padding: 0; line-height: 1;">
                                                             <span class="product-price" 
-                                                                style="color: navy; font-weight: bold; {{ $product->product_price != 164 ? 'text-decoration: underline; text-decoration-color: navy;' : '' }}">
+                                                                style="color: navy; font-weight: bold; {{ $product->purchase_value != 715 ? 'text-decoration: underline; text-decoration-color: navy;' : '' }}">
                                                                 USD{{ $product->product_price ? rtrim(rtrim(number_format($product->product_price, 2), '0'), '.') : 0 }} + shipping fees
                                                             </span>
                                                         </div>
@@ -582,7 +582,7 @@
                                         ${oldPriceHtml}
                                         <span class="product-price" 
                                                 style="color: navy; font-weight: bold; ${
-                                                parseFloat(product.product_price) !== 164 
+                                                parseFloat(product.purchase_value) !== 715 
                                                     ? 'text-decoration: underline; text-decoration-color: navy;' 
                                                     : ''
                                                 }">

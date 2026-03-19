@@ -7,7 +7,7 @@
             "description" => "Repladeez offers China factory direct supply of watches, handbags, shoes, clothes, sunglasses, and jewellery at competitive prices for global buyers.",
             "keywords" => "China factory direct supply, Watches, Handbags, Shoes, Clothes, Sunglasses, Jewellery",
             "h1" => "China Factory Direct Supply",
-            "p" =>"Repladeez is a global sourcing platform specialising in China factory direct supply of high-demand consumer products. We provide watches, handbags, shoes, clothing, sunglasses, and jewellery sourced directly from trusted Chinese factories, enabling international buyers to access competitive pricing, consistent quality, and reliable fulfilment. Our model eliminates intermediaries, streamlines procurement, and delivers scalable supply for wholesalers, retailers, e-commerce brands, and private-label businesses worldwide."
+            "p" =>"Repladeez.com are most trusted online source for global wholesale supplier without any middle man - from direct China factories supply for latest new arrivals high-demand consumer products. We offer from top quality factories - watches, handbags, shoes, clothing, sunglasses, and jewellery  enabling international buyers to access competitive pricing, consistent quality, and reliable fulfilment to top e-commerce brands, private-label businesses, individual buyers We ship worldwide and delivery is guaranteed with us."
         ],
         "about-us" => [
             "title" => "About Repladeez – Quality Watches & Handbags Online",

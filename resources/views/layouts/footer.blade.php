@@ -38,6 +38,7 @@
 									<li><a href="{{ route('about-us') }}">About Us</a></li>
 									<li><a href="{{ route('contact-us') }}">Contact Us</a></li>
 									<li><a href="{{ env('SOURCE_PANEL_ECOMMERCE_URL') }}/gallery">Product Gallery</a></li>
+									<li><a href="https://parcelsapp.com/" target="_blank" rel="noopener noreferrer">Ship</a></li>
 								</ul>
 							</div><!-- End .widget -->
 						</div><!-- End .col-lg-3 -->

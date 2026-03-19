@@ -164,42 +164,37 @@
 
     <script>
     // ===== Utility Functions =====
-    function adjustLastDigit(num) {
-        let n = Math.ceil(num);
+    function adjustLastDigit(num, allowedDigits = [2, 4, 6, 8]) {
+        let n = Math.round(num);
         let last = n % 10;
-
-        if (last % 2 !== 0) {
-            n += 1;
-            last = n % 10;
-        }
-
-        if (last === 0) return n;
-        if (last === 2 || last === 4 || last === 6 || last === 8) return n;
-
-        return n + (10 - last);
+        let closest = allowedDigits.reduce((prev, curr) => {
+            const prevDiff = Math.abs(last - prev);
+            const currDiff = Math.abs(last - curr);
+            if (currDiff < prevDiff) return curr;
+            if (currDiff === prevDiff) return Math.max(curr, prev);
+            return prev;
+        });
+        return n - last + closest;
     }
 
-    function adjustLastDigits(num) {
-        return adjustLastDigit(num);
+    function adjustLastDigits(num, allowedDigits = [0, 2, 4, 6, 8]) {
+        return adjustLastDigit(num, allowedDigits);
     }
 
     function calculateValue(category, inputValue) {
-        let divided = inputValue / 6.9;   // ✅ changed
+        let divided = inputValue / 6.8;
         let price = 0;
-
         if (category === '113') {
-            if (divided <= 65) price = divided + 40;
-            else if (divided <= 150) price = divided * 1.6;
-            else if (divided <= 199) price = divided * 1.595;
-            else price = divided * 1.6;
+            if (divided <= 65) price = divided + 40;            
+            else if (divided <= 199) price = divided * 1.6;
+            else price = divided * 1.5;
         } else if (category === '1') {
             if (divided <= 100) price = divided + 80;
             else if (divided <= 199) price = divided + 90;
             else if (divided <= 339) price = divided + 100;
             else price = divided * 1.3;
         }
-
-        return adjustLastDigit(price * 7); // ✅ multiply by 7
+        return adjustLastDigit(price);
     }
 
     // ===== Generic Setup Function =====
@@ -223,64 +218,44 @@
         setupTable('otherTable', (row, inputs, valueCell) => {
             const size = inputs[0].value ? inputs[0].value + "cm " : "";
             const number = parseFloat(inputs[1].value) || 0;
-            valueCell.textContent = number
-                ? `${size}USD${calculateValue('113', number)}+shipping fees`
-                : '0';
+            valueCell.textContent = number ? `${size}USD${calculateValue('113', number)}+shipping fees` : '0';
         });
     }
 
     function setupWatchTable() {
         setupTable('watchTable', (row, inputs, valueCell) => {
-            const factoryName = inputs[0].value
-                ? inputs[0].value.toUpperCase() + " Factory "
-                : "";
+            const factoryName = inputs[0].value ? inputs[0].value.toUpperCase() + " Factory " : "";
             const number = parseFloat(inputs[1].value) || 0;
-            valueCell.textContent = number
-                ? `${factoryName}USD${calculateValue('1', number)}+shipping fees`
-                : '0';
+            valueCell.textContent = number ? `${factoryName}USD${calculateValue('1', number)}+shipping fees` : '0';
         });
     }
 
     function setupGamaTable() {
         setupTable('gamaTable', (row, inputs, valueCell) => {
-            const factory = inputs[0].value
-                ? inputs[0].value.toUpperCase() + " Factory"
-                : "";
+            const factory = inputs[0].value ? inputs[0].value.toUpperCase() + " Factory" : "";
             const num = parseFloat(inputs[1].value) || 0;
-
             let result = 0;
-            if (num < 1750) result = num + 500;
-            else if (num < 2100) result = num + 550;
-            else if (num < 3000) result = num + 600;
+            if(num < 1750) result = num + 500;
+            else if(num < 2100) result = num + 550;
+            else if(num < 3000) result = num + 600;
             else result = num * 1.2;
-
-            result = adjustLastDigits(result * 7); // ✅ multiply by 7
-
-            valueCell.textContent = num
-                ? `${factory} ${result}CNY+shipping fees`
-                : '0';
+            result = adjustLastDigits(result);
+            valueCell.textContent = num ? `${factory} ${result}CNY+shipping fees` : '0';
         });
     }
 
     function setupBamaTable() {
         setupTable('bamaTable', (row, inputs, valueCell) => {
-            const factory = inputs[0].value
-                ? inputs[0].value.toUpperCase() + " Factory"
-                : "";
+            const factory = inputs[0].value ? inputs[0].value.toUpperCase() + " Factory" : "";
             const raw = parseFloat(inputs[1].value) || 0;
-            const num = raw / 6.9; // ✅ changed
-
+            const num = raw / 6.8;
             let result = 0;
-            if (num < 250) result = num + 70;
-            else if (num < 300) result = num + 75;
-            else if (num < 400) result = num + 80;
-            else result = num * 1.2;
-
-            result = adjustLastDigit(result * 7); // ✅ multiply by 7
-
-            valueCell.textContent = num
-                ? `${factory} USD${result}+shipping fees`
-                : '0';
+            if(num < 250) result = num + 70;
+            else if(num < 300) result = num + 75;
+            else if(num < 400) result = num + 80;
+            else result = num * 1.24;
+            result = adjustLastDigit(result);
+            valueCell.textContent = num ? `${factory} USD${result}+shipping fees` : '0';
         });
     }
 
@@ -290,14 +265,13 @@
         const values = Array.from(table.querySelectorAll('.value'))
             .map(cell => cell.textContent)
             .filter(text => text !== '0');
-
-        if (values.length) {
+        if(values.length) {
             navigator.clipboard.writeText(values.join('\n'));
             const msg = btn.nextElementSibling;
             msg.style.display = "block";
             setTimeout(() => msg.style.display = "none", 1500);
         }
-
+        // Clear inputs and reset values
         table.querySelectorAll('input').forEach(input => input.value = '');
         table.querySelectorAll('.value').forEach(cell => cell.textContent = '0');
     }
@@ -307,7 +281,6 @@
     setupWatchTable();
     setupGamaTable();
     setupBamaTable();
-</script>
-
+    </script>
     </body>
     </html>

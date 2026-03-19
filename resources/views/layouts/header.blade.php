@@ -347,6 +347,7 @@
                         <li><a href="{{ url('others') }}">Others</a></li>
                         <li><a href="{{ route('about-us') }}">About Us</a></li>
                         <li><a href="{{ route('contact-us') }}">Contact Us</a></li>
+                        <li><a href="https://parcelsapp.com/" target="_blank" rel="noopener noreferrer">SHIP</a></li>
                     @php renderCategoryTree($categories); @endphp
                 </ul>
             </nav>
