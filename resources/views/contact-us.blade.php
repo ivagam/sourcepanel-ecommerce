@@ -64,6 +64,7 @@
         <div class="container py-5">            
             <div class="mx-auto" style="max-width: 480px; text-align: justify;">   
             <h1 class="mb-4 text-center">Contact Us</h1>
+            <p>Hi..yess you can always send images here on our whatsapp number anywhere from internet.. all we can check and update you soon</p>
             <p>Email asiaticwatches@gmail.com or through our Online chatting.<br> you can also add us on whatsapp +86 182 0203 1361</p>
         </div>
         </div>
