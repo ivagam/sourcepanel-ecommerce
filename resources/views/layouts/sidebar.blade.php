@@ -18,9 +18,26 @@ body {
 </style>
 <aside class="sidebar-home col-lg-3 order-lg-first mobile-sidebar">
     @php
-        use App\Models\Category;
+        use Illuminate\Support\Facades\Http;
 
-        $categories = Category::with('children')->whereNull('subcategory_id')->get();
+        $search = request()->get('search');
+        $activeCategoryId = request()->get('category');
+
+        try {
+            $response = Http::get(env('SOURCEPANEL_API_BASE_URL'), [
+                'domain_id' => env('DOMAIN_ID', 1),
+                'category' => $activeCategoryId,
+                'search' => $search
+            ]);
+
+            $data = $response->json();
+
+            $categories = collect($data['categories'] ?? []);
+
+        } catch (\Exception $e) {
+            $categories = collect([]);
+        }
+
         $search = request()->get('search');
         $activeCategoryId = request()->get('category');
 

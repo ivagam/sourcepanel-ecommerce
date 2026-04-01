@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    protected $connection = 'source_panel'; // This is key!
+    
     protected $table = 'products';
     protected $primaryKey = 'product_id';
 

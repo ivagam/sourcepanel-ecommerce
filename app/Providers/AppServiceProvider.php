@@ -4,8 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
-use App\Models\Category;
-use App\Models\Product;
+use Illuminate\Support\Facades\Http;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,6 +16,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('*', function ($view) {
+
+            // ✅ Cart (no DB)
             $cart = session('cart', []);
             $cartCount = collect($cart)->sum('qty');
             $cartTotal = collect($cart)->sum(function ($item) {
@@ -27,21 +28,20 @@ class AppServiceProvider extends ServiceProvider
             $view->with('globalCartCount', $cartCount);
             $view->with('globalCartTotal', $cartTotal);
 
+            // ✅ API call (replace DB)
             $domainId = env('DOMAIN_ID', 1);
 
-            $categories = Category::with(['children' => function ($query) use ($domainId) {
-                $query->whereRaw('FIND_IN_SET(?, domains)', [$domainId]);
-            }])
-            ->whereNull('subcategory_id')
-            ->whereRaw('FIND_IN_SET(?, domains)', [$domainId])
-            ->get();
+            try {
+                $response = Http::get(env('SOURCEPANEL_API_BASE_URL'), [
+                    'domain_id' => $domainId
+                ]);
 
-            foreach ($categories as $category) {
-                $category->products_count = Product::where('category_id', $category->category_id)->count();
+                $data = $response->json();
 
-                foreach ($category->children as $child) {
-                    $child->products_count = Product::where('category_id', $child->category_id)->count();
-                }
+                $categories = collect($data['categories'] ?? []);
+
+            } catch (\Exception $e) {
+                $categories = collect([]);
             }
 
             $view->with('categories', $categories);
